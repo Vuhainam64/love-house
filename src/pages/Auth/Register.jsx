@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FaEnvelope } from "react-icons/fa6";
+import { FaEnvelope, FaPhone } from "react-icons/fa6";
 import { MdOutlineDriveFileRenameOutline, MdPassword } from "react-icons/md";
 import { toast } from "react-toastify";
 import { motion } from "framer-motion";
@@ -138,29 +138,6 @@ function Register({ setIsPopup, setPopupEmail, setIsLoading }) {
     <>
       <p className="text-xl text-textColor -mt-6">Sign Up with following</p>
       <form onSubmit={handleSubmit}>
-        {/* <div className="flex items-center justify-between w-full md:w-96">
-          <UserAuthInput
-            lable="First Name"
-            placeHolder="First Name"
-            isPass={false}
-            key="FirstName"
-            setStateFunction={setFristName}
-            Icon={MdOutlineDriveFileRenameOutline}
-          />
-          {errors.firstName && (
-            <p className="text-red-500">{errors.firstName}</p>
-          )}
-
-          <UserAuthInput
-            lable="Last Name"
-            placeHolder="Last Name"
-            isPass={false}
-            key="LastName"
-            setStateFunction={setLastName}
-            Icon={MdOutlineDriveFileRenameOutline}
-          />
-          {errors.lastName && <p className="text-red-500">{errors.lastName}</p>}
-        </div> */}
         <div className="flex items-center justify-between w-full md:w-96">
           {/* frist name  */}
           <div>
@@ -209,7 +186,7 @@ function Register({ setIsPopup, setPopupEmail, setIsLoading }) {
           isPass={false}
           key="PhoneNumber"
           setStateFunction={setPhoneNumber}
-          Icon={FaEnvelope}
+          Icon={FaPhone}
           setGetEmailValidationStatus={setGetEmailValidationStatus}
         />
         {errors.phoneNumber && (

@@ -1,51 +1,52 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-
 import { MutatingDots, Pagination } from "../../../components";
-import { getAllAccount } from "../../../api";
+import {
+  getAllAccount,
+  getAllRoles,
+  assignRoleForUser,
+  removeRoleForUser,
+} from "../../../api";
 import { setAllUsers } from "../../../context/actions/allUsersAction";
+import { setAllRoles } from "../../../context/actions/allRolesAction";
 
 function UsersList() {
   const allUsers = useSelector((state) => state?.allUsers?.allUsers);
+  const allRoles = useSelector((state) => state?.allRoles?.allRoles);
   const dispatch = useDispatch();
 
-  const allRoles = [
-    { roleId: 1, role_name: "Admin" },
-    { roleId: 2, role_name: "Staff" },
-    { roleId: 3, role_name: "Customer" },
-  ];
-
   const [loading, setLoading] = useState(true);
-  const [selectedRole, setSelectedRole] = useState({}); // Changed to an object to store both role ID and user ID
+  const [selectedRole, setSelectedRole] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [curentPageShowCourse, setCurentPageShowCourse] = useState([]);
   const [totalItems, setTotalItems] = useState();
 
-  const fetchAllUsers = async () => {
-    try {
-      const userData = await getAllAccount();
-      dispatch(setAllUsers(userData));
-    } catch (error) {
-      console.error("Error fetching users:", error);
-      dispatch(setAllUsers([]));
-    }
-  };
-
   useEffect(() => {
     async function fetchUsers() {
       try {
         const userData = await getAllAccount(1, 100);
-        setLoading(false);
-        dispatch(setAllUsers(userData?.result?.data));
+        dispatch(setAllUsers(userData.result.data));
       } catch (error) {
-        console.error("Error fetching users:", error);
+        console.log("Error fetching users:", error);
         dispatch(setAllUsers([]));
       }
     }
 
+    async function fetchRoles() {
+      try {
+        const rolesData = await getAllRoles();
+        dispatch(setAllRoles(rolesData.result.data));
+      } catch (error) {
+        console.log("Error fetching roles:", error);
+        dispatch(setAllRoles([]));
+      }
+      setLoading(false);
+    }
+
     fetchUsers();
+    fetchRoles();
   }, [dispatch]);
 
   useEffect(() => {
@@ -57,7 +58,6 @@ function UsersList() {
 
       const lastIndex = Math.min(firstItem + itemsPerPage, allUsers.length);
       setCurentPageShowCourse(allUsers.slice(firstItem, lastIndex));
-      console.log("curentPageShowCourse: ", curentPageShowCourse);
     }
   }, [currentPage, itemsPerPage, allUsers]);
 
@@ -69,184 +69,180 @@ function UsersList() {
     setItemsPerPage(itemNumber);
   };
 
-  const updateUserRole = async () => {
-    const updatedRole = parseInt(selectedRole.roleId);
-
+  const updateUserRole = async (userId) => {
     try {
-      // Assuming you have an updateRole function
-      // const updatedUser = await updateRole(selectedRole.userId, updatedRole);
-      // Below is a placeholder since the updateRole function is not provided
-      const updatedUser = { success: true };
-      if (updatedUser.success) {
-        console.log("User role updated successfully:", updatedUser);
+      const updatedUser = await assignRoleForUser(userId);
+      if (updatedUser?.isSuccess) {
+        console.log("User role assigned successfully:", updatedUser);
         toast.success("Update User Successfully ~");
-        fetchAllUsers();
-        setSelectedRole({}); // Reset selected role after updating
+        setSelectedRole({});
       } else {
-        console.error("Error updating user role");
+        console.error("Error assigning user role");
       }
     } catch (error) {
-      console.error("Error calling API to update user role:", error);
+      console.error("Error calling API to assign user role:", error);
     }
   };
 
-  const chooseID = (userId) => {
-    setSelectedRole({ userId, roleId: 0 }); // Set roleId to 0 initially
-    console.log("setSelectedRole: ", setSelectedRole);
+  const removeUserRole = async (userId) => {
+    try {
+      const removedUser = await removeRoleForUser(userId);
+      if (removedUser?.isSuccess) {
+        console.log("User role removed successfully:", removedUser);
+        toast.success("Remove User Role Successfully ~");
+        setSelectedRole({});
+      } else {
+        console.error("Error removing user role");
+      }
+    } catch (error) {
+      console.error("Error calling API to remove user role:", error);
+    }
+  };
+
+  const chooseID = (userId, roleId) => {
+    setSelectedRole({ userId, roleId });
   };
 
   return (
     <>
       {loading ? (
-        <>
-          <div className="flex items-center justify-center h-full">
-            <MutatingDots />
-          </div>
-        </>
+        <div className="flex items-center justify-center h-full">
+          <MutatingDots />
+        </div>
       ) : (
-        <>
-          <div className="text-gray-900">
-            <div className="p-4 flex">
-              <h1 className="text-3xl">Users</h1>
-            </div>
-            <div className="px-3 py-4 flex justify-center ">
-              <table className="table-auto w-full border-collapse">
-                <thead className="text-white h-10 px-5 py-1 bg-gray-700">
-                  <tr className="text-left">
-                    <th className="w-[20%] rounded-tl-lg">
-                      <div className="h-full pl-5 items-center whitespace-nowrap">
-                        <label>Name</label>
-                      </div>
-                    </th>
-                    <th className="w-[20%] ">
-                      <div className="h-full pl-5 whitespace-nowrap">
-                        <label>Email</label>
-                      </div>
-                    </th>
-                    <th className="w-[20%] ">
-                      <div className="h-full pl-5 whitespace-nowrap">
-                        <label>Verify</label>
-                      </div>
-                    </th>
-                    <th className="w-[20%] ">
-                      <div className="h-full text-center whitespace-nowrap">
-                        <label>Role</label>
-                      </div>
-                    </th>
-                    <th className="w-[20%] rounded-tr-lg">
-                      <div className="h-full text-center whitespace-nowrap">
-                        <label>Edit</label>
-                      </div>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {curentPageShowCourse &&
-                    curentPageShowCourse.map((user, index) => (
-                      <tr
-                        className="border-b hover:bg-orange-100 bg-white shadow-lg"
-                        key={index}
-                      >
-                        <td className="p-3 px-5">
-                          <div className="bg-transparent border-gray-300 py-2 w-full">
-                            {user.user.firstName} {user.user.lastName}
-                          </div>
-                        </td>
-                        <td className="p-3 px-5">
-                          <div className="bg-transparent border-gray-300 py-2 w-full">
-                            {user.user.email}
-                          </div>
-                        </td>
-                        <td className="p-3 px-5">
-                          <div className="bg-transparent border-gray-300 py-2 w-full">
-                            {user.user.isVerified ? "verify" : "not verify"}
-                          </div>
-                        </td>
-                        <td className="p-3 px-5 text-center">
-                          {selectedRole.userId === user.id ? (
-                            <select
-                              onChange={(e) =>
-                                setSelectedRole({
-                                  ...selectedRole,
-                                  roleId: e.target.value,
-                                })
-                              }
-                              defaultValue={user.roleId}
-                            >
-                              {allRoles.map((role, index) => (
-                                <option key={index} value={role.roleId}>
-                                  {role.role_name}
-                                </option>
-                              ))}
-                            </select>
-                          ) : (
-                            <div className="bg-transparent border-gray-300 py-2 w-full">
-                              {roles.map((role) =>
-                                role.roleId === user.roleId ? (
-                                  <span key={role.roleId}>
-                                    {role.role_name}
-                                  </span>
-                                ) : null
-                              )}
-                            </div>
-                          )}
-                        </td>
-
-                        <td>
-                          {selectedRole.userId === user.id ? (
-                            <div className="p-3 px-5 flex justify-center items-center gap-3">
-                              <button
-                                type="button"
-                                onClick={updateUserRole}
-                                className="w-[40%] text-sm bg-green-500 hover:bg-green-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline"
-                              >
-                                Save
-                              </button>
-                              <button
-                                type="button"
-                                className="w-[40%] text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline"
-                              >
-                                Delete
-                              </button>
-                              <button
-                                type="button"
-                                className="w-[40%] text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline"
-                                onClick={() =>
-                                  setSelectedRole({ userId: 0, roleId: 0 })
-                                }
-                              >
-                                Cancel
-                              </button>
-                            </div>
-                          ) : (
-                            <div className="p-3 px-5 flex justify-center items-center">
-                              <button
-                                type="button"
-                                className="w-[40%] text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline"
-                                onClick={() => chooseID(user.id)}
-                              >
-                                Edit
-                              </button>
-                            </div>
-                          )}
-                        </td>
-                      </tr>
-                    ))}
-                </tbody>
-              </table>
-            </div>
-            <div className="w-full p-5">
-              {totalItems && (
-                <Pagination
-                  itemsPerPage={itemsPerPage}
-                  totalItems={totalItems}
-                  paginate={paginate}
-                  choseItemPerPage={choseItemPerPage}
-                />
-              )}
-            </div>
+        <div className="text-gray-900">
+          <div className="p-4 flex">
+            <h1 className="text-3xl">Users</h1>
           </div>
-        </>
+          <div className="px-3 py-4 flex justify-center ">
+            <table className="table-auto w-full border-collapse">
+              <thead className="text-white h-10 px-5 py-1 bg-gray-700">
+                <tr className="text-left">
+                  <th className="w-[20%] rounded-tl-lg">
+                    <div className="h-full pl-5 items-center whitespace-nowrap">
+                      <label>Name</label>
+                    </div>
+                  </th>
+                  <th className="w-[20%] ">
+                    <div className="h-full pl-5 whitespace-nowrap">
+                      <label>Email</label>
+                    </div>
+                  </th>
+                  <th className="w-[20%] ">
+                    <div className="h-full pl-5 whitespace-nowrap">
+                      <label>Verify</label>
+                    </div>
+                  </th>
+                  <th className="w-[20%] ">
+                    <div className="h-full text-center whitespace-nowrap">
+                      <label>Role</label>
+                    </div>
+                  </th>
+                  <th className="w-[20%] rounded-tr-lg">
+                    <div className="h-full text-center whitespace-nowrap">
+                      <label>Edit</label>
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {curentPageShowCourse.map((user, index) => (
+                  <tr
+                    className="border-b hover:bg-orange-100 bg-white shadow-lg"
+                    key={index}
+                  >
+                    <td className="p-3 px-5">
+                      <div className="bg-transparent border-gray-300 py-2 w-full">
+                        {user.user.firstName} {user.user.lastName}
+                      </div>
+                    </td>
+                    <td className="p-3 px-5">
+                      <div className="bg-transparent border-gray-300 py-2 w-full">
+                        {user.user.email}
+                      </div>
+                    </td>
+                    <td className="p-3 px-5">
+                      <div className="bg-transparent border-gray-300 py-2 w-full">
+                        {user.user.isVerified ? "verify" : "not verify"}
+                      </div>
+                    </td>
+                    <td className="p-3 px-5 text-center">
+                      <div className="bg-transparent border-gray-300 py-2 w-full text-wrap">
+                        {user.role[0].name ||
+                          user.role[1].name ||
+                          user.role[2].name}
+                      </div>
+                    </td>
+                    <td>
+                      {selectedRole.userId === user.user.id ? (
+                        <div className="p-3 px-5 flex justify-center items-center gap-3">
+                          {!user?.role[0]?.name || !user?.role[1]?.name ? (
+                            <button
+                              type="button"
+                              onClick={() =>
+                                updateUserRole(selectedRole.userId)
+                              }
+                              className="text-sm bg-green-500 hover:bg-green-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline"
+                            >
+                              Update
+                            </button>
+                          ) : (
+                            <button
+                              type="button"
+                              onClick={() =>
+                                removeUserRole(selectedRole.userId)
+                              }
+                              className="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline text-nowrap"
+                            >
+                              Remove Role
+                            </button>
+                          )}
+
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setSelectedRole({ userId: 0, roleId: 0 })
+                            }
+                            className="text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline"
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="p-3 px-5 flex justify-center items-center">
+                          <button
+                            type="button"
+                            onClick={() =>
+                              chooseID(
+                                user.user.id,
+                                user.role[0].id ||
+                                  user.role[1].id ||
+                                  user.role[2].id
+                              )
+                            }
+                            className="text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline"
+                          >
+                            Edit
+                          </button>
+                        </div>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="w-full p-5">
+            {totalItems && (
+              <Pagination
+                itemsPerPage={itemsPerPage}
+                totalItems={totalItems}
+                paginate={paginate}
+                choseItemPerPage={choseItemPerPage}
+              />
+            )}
+          </div>
+        </div>
       )}
     </>
   );

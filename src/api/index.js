@@ -54,3 +54,11 @@ export {
     getProjectById
 }
 from "./project";
+
+//role
+export {
+    assignRoleForUser,
+    getAllRoles,
+    removeRoleForUser
+}
+from "./role"
