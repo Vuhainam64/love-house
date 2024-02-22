@@ -14,7 +14,7 @@ export {
   sendResetPassOTP,
   submitOTPResetPass,
 }
-from "./Account";
+from "./Account.js";
 
 //news
 export {
