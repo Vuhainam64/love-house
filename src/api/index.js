@@ -72,9 +72,9 @@ export {
   importSupplierFromExcelSheet,
   updateSupplier,
 }
-from "./Supplier";
+from ".upplier";
 
-//SupplierQuotatio
+//SupplierQuotat
 export {
   deleteSupplierQuotationById,
   getAllSupplierQuotations,
