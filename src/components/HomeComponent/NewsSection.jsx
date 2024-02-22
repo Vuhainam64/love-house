@@ -83,13 +83,13 @@ export default function NewsSection() {
               <div className="absolute inset-0 bg-cover bg-black opacity-10 group-hover:opacity-50 " />
               <div className="relative flex flex-col gap-3">
                 <h1 className="text-xl lg:text-2xl font-semibold hover:text-white">
-                  <NavLink to={`/newsDetail/${news.id}`}>
+                  <NavLink to={`/news/newsDetail/${news.id}`}>
                     {" "}
                     {news.header}
                   </NavLink>
                 </h1>
               </div>
-              <NavLink to={`/newsDetail/${news.id}`}>
+              <NavLink to={`/news/newsDetail/${news.id}`}>
                 <RxArrowTopRight className="absolute bottom-5 left-5 w-[35px] h-[35px] text-white group-hover:text-blue-500 group-hover:rotate-45 duration-100" />
               </NavLink>
             </div>

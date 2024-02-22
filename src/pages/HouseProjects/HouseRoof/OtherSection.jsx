@@ -70,7 +70,7 @@ export default function OtherSection() {
                     src={project.staticFiles[1]?.url || ""}
                     alt={project.sampleProject.header}
                   />
-                  <div className="p-6 hover:bg-baseOrange hover:text-white transition duration-300 ease-in">
+                  <div className="p-6 hover:bg-baseGreen hover:text-white transition duration-300 ease-in">
                     <h1 className="text-2xl font-semibold mb-3">
                       <NavLink
                         to={`/house-roof-projects/details/${project.sampleProject.id}`}

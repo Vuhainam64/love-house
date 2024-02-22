@@ -17,6 +17,7 @@ export default function TownHouseSection() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     const fetchProject = async () => {
       const data = await getAllProjects();
       if (data && data.result) {

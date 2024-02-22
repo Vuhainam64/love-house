@@ -10,10 +10,10 @@ import {
 } from "../../../api";
 import { setAllUsers } from "../../../context/actions/allUsersAction";
 import { setAllRoles } from "../../../context/actions/allRolesAction";
+import { FaChevronRight, FaRegUser } from "react-icons/fa6";
 
 function UsersList() {
   const allUsers = useSelector((state) => state?.allUsers?.allUsers);
-  const allRoles = useSelector((state) => state?.allRoles?.allRoles);
   const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(true);
@@ -110,9 +110,19 @@ function UsersList() {
           <MutatingDots />
         </div>
       ) : (
-        <div className="text-gray-900">
-          <div className="p-4 flex">
-            <h1 className="text-3xl">Users</h1>
+        <div className="flex flex-col p-8 text-gray-900">
+          {/* title */}
+          <div>
+            <div className="flex items-center space-x-2 text-xl">
+              <FaRegUser />
+              <div>Menu </div>
+              <FaChevronRight />
+              <div>User Managament</div>
+              <FaChevronRight />
+            </div>
+            <div className="text-2xl text-orange-400 font-semibold py-4">
+              User List
+            </div>
           </div>
           <div className="px-3 py-4 flex justify-center ">
             <table className="table-auto w-full border-collapse">

@@ -11,6 +11,7 @@ export { default as DBSidebar } from "./Dashboard/DBSidebar";
 export { default as DBHeader } from "./Dashboard/DBHeader";
 export { default as DBFooter } from "./Dashboard/DBFooter";
 export { default as Pagination } from "./Dashboard/Pagination";
+export { default as DataTable } from "./Dashboard/DataTable";
 export {
   default as TextEditorBar,
   formats,

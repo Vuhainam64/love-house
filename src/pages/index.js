@@ -26,4 +26,16 @@ export { default as ProjectList } from "./Dashboard/HouseProjectPage/ProjectList
 export { default as ProjectDetail } from "./Dashboard/HouseProjectPage/ProjectDetail";
 export { default as EditProject } from "./Dashboard/HouseProjectPage/EditProject";
 
+export { default as ImportInventory } from "./Dashboard/Inventory/ImportInventory";
+
+export { default as CreateMaterial } from "./Dashboard/Material/CreateMaterial";
+export { default as MaterialList } from "./Dashboard/Material/MaterialList";
+
+export { default as ViewSupplier } from "./Dashboard/Supplier/ViewSupplier";
+
+export { default as ViewSupplierPrice } from "./Dashboard/SupplierPriceDetail/ViewSupplierPrice";
+
+export { default as ImportQuotation } from "./Dashboard/SupplierQuotation/ImportQuotation";
+export { default as ListQuotation } from "./Dashboard/SupplierQuotation/ListQuotation";
+
 export { default as AboutUs } from "./AboutUs/AboutUs";

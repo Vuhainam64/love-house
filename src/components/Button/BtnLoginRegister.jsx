@@ -7,8 +7,8 @@ export default function BtnLoginRegister() {
     <>
       {!user ? (
         <NavLink to={"/auth"}>
-          <button className="px-4 uppercase bg-white text-baseDark font-bold rounded-md my-6 mr-6 mx-auto py-3">
-            Sign In
+          <button className="bg-baseGreen text-white px-5 py-2 rounded-full hover:bg-main transition  ease-in-out">
+            Sign in
           </button>
         </NavLink>
       ) : (

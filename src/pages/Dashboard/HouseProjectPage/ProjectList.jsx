@@ -108,13 +108,13 @@ const ProjectList = () => {
       <div>
         <div className="flex items-center space-x-2 text-xl">
           <AiOutlineProject />
-          <div>Project</div>
+          <div>Function</div>
           <FaChevronRight />
-          <div>Project List</div>
+          <div>House Project Page</div>
           <FaChevronRight />
         </div>
         <div className="text-2xl text-orange-400 font-semibold py-4">
-          Project Management
+          Project List
         </div>
       </div>
 

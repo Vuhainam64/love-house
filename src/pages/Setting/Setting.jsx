@@ -51,7 +51,7 @@ function Setting() {
                           : "mr-6 hover:no-underline inline-block py-4 rounded-t-lg border-b-2 text-gray-500 hover:text-gray-600"
                       }
                     >
-                      Delete account
+                      Edit account
                     </NavLink>
                   </div>
                 </div>

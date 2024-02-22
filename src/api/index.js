@@ -3,62 +3,117 @@ export const usertoken = localStorage.accessToken;
 
 //account
 export {
-    createAccount,
-    getAccountById,
-    getAllAccount,
-    getNewToken,
-    activeAccount,
-    googleCallback,
-    loginWithEmailPass,
-    sendOTP,
-    sendResetPassOTP,
-    submitOTPResetPass,
+  createAccount,
+  getAccountById,
+  getAllAccount,
+  getNewToken,
+  activeAccount,
+  googleCallback,
+  loginWithEmailPass,
+  sendOTP,
+  sendResetPassOTP,
+  submitOTPResetPass,
 }
-from "./account";
+from "./Account";
 
 //news
 export {
-    createNews,
-    getNewsById,
-    getAllNews,
-    updateNews,
-    deleteNewsById
+  createNews,
+  getNewsById,
+  getAllNews,
+  updateNews,
+  deleteNewsById,
 }
-from "./news";
+from "./News";
 
 //blog
 export {
-    createBlog,
-    getBlogById,
-    getAllBlog,
-    updateBlog,
-    deleteBlogById
+  createBlog,
+  getBlogById,
+  getAllBlog,
+  updateBlog,
+  deleteBlogById,
 }
-from "./blog";
+from "./Blog";
 
 //project
 export {
-    createSampleProject,
-    deleteSampleProjectById,
-    getAllSampleProjects,
-    getSampleProjectById,
-    updateSampleProject
+  createSampleProject,
+  deleteSampleProjectById,
+  getAllSampleProjects,
+  getSampleProjectById,
+  updateSampleProject,
 }
-from "./sampleproject";
+from "./SampleProject";
 
 //project
 export {
-    configProject,
-    getAllProjects,
-    createProjectByUser,
-    getProjectById
+  configProject,
+  getAllProjects,
+  createProjectByUser,
+  getProjectById,
 }
-from "./project";
+from "./Project";
 
 //role
 export {
-    assignRoleForUser,
-    getAllRoles,
-    removeRoleForUser
+  assignRoleForUser,
+  getAllRoles,
+  removeRoleForUser
 }
-from "./role"
+from "./Role";
+
+//supplier
+export {
+  createSupplier,
+  deleteSupplierById,
+  getAllSuppliers,
+  getSupplierById,
+  importSupplierFromExcelSheet,
+  updateSupplier,
+}
+from "./Supplier";
+
+//SupplierQuotatio
+export {
+  deleteSupplierQuotationById,
+  getAllSupplierQuotations,
+  getAllSupplierQuotationsByMonth,
+  getSupplierQuotationTemplate,
+  uploadSupplierQuotationWithExcelFile,
+}
+from "./SupplierPriceQuotation";
+
+//SupplierPriceDetail
+export {
+  getAllQuotationPrices,
+  getLatestQuotationPriceByMaterialId,
+  getLatestQuotationPriceByMaterialName,
+  getLatestQuotationPriceBySupplierId,
+  getLatestQuotationPriceBySupplierName,
+  getQuotationPriceByMaterialId,
+  getQuotationPriceByMaterialName,
+  getQuotationPriceBySupplierId,
+  getQuotationPriceBySupplierName
+}
+from "./SupplierPriceDetail";
+
+//Material
+export {
+  createMaterial,
+  deleteMaterialById,
+  getAllMaterials,
+  getMaterialById,
+  getMaterialByName,
+  updateMaterial,
+  updateMaterialQuantity
+}
+from "./Material";
+
+export {
+  getAllExportInventory,
+  getAllImportInventory,
+  getAllInventory,
+  getImportMaterialTemplate
+}
+from "./ImportExportInventory";

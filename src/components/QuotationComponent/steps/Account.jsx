@@ -24,12 +24,14 @@ export default function Account() {
           Customer name
         </div>
 
-        <div className="bg-white my-2 p-1 flex border border-gray-200 rounded">
-          <input
+        <div className="bg-white my-2 p-1 flex ">
+          {/* <input
             readOnly
-            value={customerName || ""}           
+            value={customerName || ""} 
+                     
             className="p-1 px-2 appearance-none outline-none w-full text-gray-800"
-          />
+          /> */}
+          <span>{customerName}</span>
         </div>
       </div>
 

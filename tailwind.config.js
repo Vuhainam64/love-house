@@ -9,7 +9,11 @@ module.exports = {
       container: true,
     },
     extend: {
+      fontFamily: {
+        'poppins': ['Poppins', 'sans-serif'],
+      },
       colors: {
+        "main": "#003b29",
         "baseOrange": "#E48824",
         "baseGreen": "#88B844",
         "baseDark": "#333333",

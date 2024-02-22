@@ -139,13 +139,13 @@ const NewsEdit = () => {
       <div>
         <div className="flex items-center space-x-2 text-xl">
           <FaRegNewspaper />
-          <div>News</div>
+          <div>Function</div>
           <FaChevronRight />
-          <div>Edit News</div>
+          <div>News Management</div>
           <FaChevronRight />
         </div>
         <div className="text-2xl text-orange-400 font-semibold py-4">
-          News Management
+          Edit News
         </div>
       </div>
       {/* title  */}

@@ -42,7 +42,7 @@ function Slider2() {
   };
 
   return (
-    <div className="slider-container overflow-hidden relative mt-0">
+    <div className="slider-container overflow-hidden relative mt-0" >
       <div className="flex items-center justify-center flex-col mt-6 w-full ">
         <Swiper
           ref={swiperRef}
@@ -72,7 +72,7 @@ function Slider2() {
               <img
                 src={item.img}
                 alt={item.name}
-                className="flex-none w-full md:h-[510px] object-cover object-left-top rounded-md  transition-all duration-100"
+                className="flex-none w-full md:h-[510px] object-cover object-left-top  rounded-tl-[80px]  transition-all duration-100"
                 
               />
             </SwiperSlide>

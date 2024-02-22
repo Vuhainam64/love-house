@@ -100,13 +100,13 @@ const BlogsList = () => {
       <div>
         <div className="flex items-center space-x-2 text-xl">
           <FaBlog />
-          <div>Blog</div>
+          <div>Function</div>
           <FaChevronRight />
-          <div>Blog List</div>
+          <div>Blog Managament</div>
           <FaChevronRight />
         </div>
         <div className="text-2xl text-orange-400 font-semibold py-4">
-          Blog Management
+          Blog List
         </div>
       </div>
 

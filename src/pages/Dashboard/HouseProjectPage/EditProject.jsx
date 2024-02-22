@@ -227,13 +227,13 @@ function EditProject() {
       <div>
         <div className="flex items-center space-x-2 text-xl">
           <AiOutlineProject />
-          <div>Project</div>
+          <div>Function</div>
           <FaChevronRight />
-          <div>Create Project</div>
+          <div>House Project Page</div>
           <FaChevronRight />
         </div>
         <div className="text-2xl text-orange-400 font-semibold py-4">
-          Project Management
+          Edit Project
         </div>
       </div>
 

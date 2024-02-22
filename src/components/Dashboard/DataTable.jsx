@@ -1,19 +1,16 @@
 import React from "react";
-import MaterialTable from "material-table";
-import { ThemeProvider, createTheme } from "@mui/material";
+import { ReactSpreadsheetImport } from "react-spreadsheet-import";
 
-function DataTable({ columns, data, title, actions }) {
-  const defaultMaterialTheme = createTheme();
-
+function DataTable({ isOpen, onClose, onSubmit, fields }) {
   return (
-    <ThemeProvider theme={defaultMaterialTheme}>
-      <MaterialTable
-        columns={columns}
-        data={data}
-        title={title}
-        actions={actions}
+    <div>
+      <ReactSpreadsheetImport
+        isOpen={isOpen}
+        onClose={onClose}
+        onSubmit={onSubmit}
+        fields={fields}
       />
-    </ThemeProvider>
+    </div>
   );
 }
 
