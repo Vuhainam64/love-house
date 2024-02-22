@@ -112,7 +112,11 @@ export default function Routers() {
     },
     {
       path: "/staff",
-      element: <StaffLayout />,
+      element: isAdminOrStaff ? (
+        <StaffLayout />
+      ) : (
+        <Navigate to="/404" replace />
+      ),
       children: [
         { path: "/staff/all-request", element: <AllRequest /> },
         {
