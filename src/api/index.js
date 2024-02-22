@@ -72,7 +72,7 @@ export {
   importSupplierFromExcelSheet,
   updateSupplier,
 }
-from "./supplier";
+from "./Supplier";
 
 //SupplierQuotatio
 export {
