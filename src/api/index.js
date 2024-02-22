@@ -14,7 +14,7 @@ export {
   sendResetPassOTP,
   submitOTPResetPass,
 }
-from "./Account.js";
+from "./account.js";
 
 //news
 export {
@@ -24,7 +24,7 @@ export {
   updateNews,
   deleteNewsById,
 }
-from "./News";
+from "./news";
 
 //blog
 export {
@@ -34,7 +34,7 @@ export {
   updateBlog,
   deleteBlogById,
 }
-from "./Blog";
+from "./blog";
 
 //project
 export {
@@ -44,7 +44,7 @@ export {
   getSampleProjectById,
   updateSampleProject,
 }
-from "./SampleProject";
+from "./sampleproject";
 
 //project
 export {
@@ -53,7 +53,7 @@ export {
   createProjectByUser,
   getProjectById,
 }
-from "./Project";
+from "./project";
 
 //role
 export {
@@ -61,7 +61,7 @@ export {
   getAllRoles,
   removeRoleForUser
 }
-from "./Role";
+from "./role";
 
 //supplier
 export {
@@ -72,7 +72,7 @@ export {
   importSupplierFromExcelSheet,
   updateSupplier,
 }
-from "./Supplier";
+from "./supplier";
 
 //SupplierQuotatio
 export {
