@@ -5,31 +5,67 @@ import * as Yup from "yup";
 import { Formik, Form, FieldArray, Field, ErrorMessage } from "formik";
 import { Input, Button } from "antd";
 
-import Modal from "../../../components/Modal/Modal";
-import { alert } from "../../../components/Alert/Alert";
-import { createQuotationDealRequest } from "../../../constants/apiQuotationOfCustomer";
+import Modal from "../../../../components/Modal/Modal";
+import { alert } from "../../../../components/Alert/Alert";
+import {
+  createDealByStaff,
+  getProjectById,
+} from "../../../../constants/apiQuotationOfStaff";
 
-export default function DealForm({ onModalClose }) {
+export default function CreateDealByStaff({ onModalClose }) {
   const [showModal, setShowModal] = useState(false);
-
-  const [discount, setDiscount] = useState({});
-
   const { id } = useParams();
   const navigate = useNavigate();
+  const [projectDetail, setProjectDetail] = useState({});
+  //const [loading, setLoading] = useState(true);
+
+  const fetchProjectDetail = async () => {
+    try {
+      const data = await getProjectById(id);
+
+      if (data && data.result) {
+        setProjectDetail(data.result.data);
+        // setLoading(false);
+      }
+    } catch (error) {
+      console.error("Error fetching project detail:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchProjectDetail();
+  }, [id]);
 
   const handleButtonClick = () => {
     setShowModal(true);
   };
 
-  const initialValues = {
-    quotationId: id,
-    materialDiscount: "",
+  // const initialValues = {
+  //   quotationId: projectDetail?.quotations?.[0]?.id,
+  //   rawMaterialDiscount: "",
+  //   furnitureDiscount: "",
+  //   laborDiscount: "",
+  // };
+  useEffect(() => {
+    if (projectDetail.quotations && projectDetail.quotations.length > 0) {
+      setInitialValues({
+        quotationId: projectDetail.quotations[0].id,
+        rawMaterialDiscount: "",
+        furnitureDiscount: "",
+        laborDiscount: "",
+      });
+    }
+  }, [projectDetail]);
+
+  const [initialValues, setInitialValues] = useState({
+    quotationId: "", // Initial value is an empty string, it will be updated in useEffect
+    rawMaterialDiscount: "",
     furnitureDiscount: "",
     laborDiscount: "",
-  };
+  });
 
   const validationSchema = Yup.object().shape({
-    materialDiscount: Yup.number()
+    rawMaterialDiscount: Yup.number()
       .required("Required")
       .positive("Must be positive")
       .integer("Must be an integer"),
@@ -46,24 +82,24 @@ export default function DealForm({ onModalClose }) {
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     try {
       const formattedData = {
-        quotationId: id,
-        materialDiscount: values.materialDiscount,
+        quotationId: values.quotationId,
+        rawMaterialDiscount: values.rawMaterialDiscount,
         furnitureDiscount: values.furnitureDiscount,
         laborDiscount: values.laborDiscount,
       };
 
       console.log("Form data submitted:", formattedData);
 
-      await createQuotationDealRequest(formattedData);
+      await createDealByStaff(formattedData);
       resetForm();
-
       alert.alertSuccessWithTime(
-        "Create Quotation Deal Request Successfully",
+        "Create Quotation Deal Successfully",
         "",
         2000,
         "30",
         () => {}
       );
+
       setShowModal(false);
       onModalClose();
     } catch (error) {
@@ -86,7 +122,7 @@ export default function DealForm({ onModalClose }) {
           onClick={handleButtonClick}
           className="bg-baseOrange text-white rounded-lg p-2 mb-2 font-semibold"
         >
-          Create Deal Request
+          Create Deal Quotation
         </button>
 
         <Modal isVisible={showModal} onClose={() => setShowModal(false)}>
@@ -111,18 +147,19 @@ export default function DealForm({ onModalClose }) {
                     className="mb-3"
                   />
 
-                  <label htmlFor="materialDiscount">Material Discount</label>
+                  <label htmlFor="rawMaterialDiscount">Material Discount</label>
                   <Field
-                    name="materialDiscount"
+                    name="rawMaterialDiscount"
                     as={Input}
                     type="number"
                     className="mb-3"
                   />
-                  {errors.materialDiscount && touched.materialDiscount && (
-                    <div style={{ color: "red", marginBottom: "12px" }}>
-                      {errors.materialDiscount}
-                    </div>
-                  )}
+                  {errors.rawMaterialDiscount &&
+                    touched.rawMaterialDiscount && (
+                      <div style={{ color: "red", marginBottom: "12px" }}>
+                        {errors.rawMaterialDiscount}
+                      </div>
+                    )}
 
                   <label htmlFor="furnitureDiscount">Furniture Discount</label>
                   <Field

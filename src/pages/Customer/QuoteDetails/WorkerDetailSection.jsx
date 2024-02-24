@@ -6,24 +6,24 @@ import { getQuoteDetailForCustomer } from "../../../constants/apiQuotationOfCust
 import CurrencyFormatter from "../../../components/Common/CurrencyFormatter";
 
 export default function WorkerDetailSection() {
-    const { id } = useParams();
-    const [quoteDetail, setQuoteDetail] = useState({});
-  
-    const fetchQuoteDetail = async () => {
-      try {
-        const data = await getQuoteDetailForCustomer(id);
-        if (data && data.result) {
-          setQuoteDetail(data.result.data);
-          //setLoading(false);
-        }
-      } catch (error) {
-        console.error("Error fetching quote detail:", error);
+  const { id } = useParams();
+  const [quoteDetail, setQuoteDetail] = useState({});
+
+  const fetchQuoteDetail = async () => {
+    try {
+      const data = await getQuoteDetailForCustomer(id);
+      if (data && data.result) {
+        setQuoteDetail(data.result.data);
+        //setLoading(false);
       }
-    };
-  
-    useEffect(() => {
-      fetchQuoteDetail();
-    }, [id]);
+    } catch (error) {
+      console.error("Error fetching quote detail:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchQuoteDetail();
+  }, [id]);
 
   return (
     <>
@@ -50,14 +50,11 @@ export default function WorkerDetailSection() {
                   <th className=" p-3 text-sm font-semibold tracking-wide text-right">
                     Total
                   </th>
-                  
-                 
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
                 {quoteDetail.workerForProjects.map((item, index) => {
                   const total = item.quantity * item.exportLaborCost;
-
 
                   return (
                     <tr key={item.id} className="bg-white text-black text-left">
@@ -67,17 +64,16 @@ export default function WorkerDetailSection() {
                       <td className="p-3 text-sm text-gray-700 whitespace-nowrap text-center">
                         {item.workerPrice.positionName}
                       </td>
-                      
                       <td className="p-3 text-sm text-gray-700 whitespace-nowrap text-right">
                         {item.quantity}
-                      </td> <td className="p-3 text-sm text-gray-700 whitespace-nowrap text-right">
-                        
-                        <CurrencyFormatter amount={item.exportLaborCost} />/person
+                      </td>{" "}
+                      <td className="p-3 text-sm text-gray-700 whitespace-nowrap text-right">
+                        <CurrencyFormatter amount={item.exportLaborCost} />
+                        /person
                       </td>
                       <td className="p-3 text-sm text-gray-700 whitespace-nowrap text-right">
                         <CurrencyFormatter amount={total} />
                       </td>
-                     
                     </tr>
                   );
                 })}
@@ -89,5 +85,5 @@ export default function WorkerDetailSection() {
         </div>
       </div>
     </>
-  )
+  );
 }

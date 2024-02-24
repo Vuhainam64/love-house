@@ -2,11 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import CustomerSidebar from "../../components/Sidebar/CustomerSidebar";
-import {
-  getAllRequest,
-} from "../../constants/apiQuotationOfCustomer";
-import ProjectStatusBadge from "../../components/QuotationComponent/Status/ProjectStatusBadge"
-import LoadingOverlay from "../../components/Loading/LoadingOverlay"
+import { getAllRequest } from "../../constants/apiQuotationOfCustomer";
+import ProjectStatusBadge from "../../components/QuotationComponent/Status/ProjectStatusBadge";
+import LoadingOverlay from "../../components/Loading/LoadingOverlay";
 
 export default function QuoteRequest() {
   const [loading, setLoading] = useState(true);
@@ -17,7 +15,6 @@ export default function QuoteRequest() {
   const user = useSelector((state) => state?.user?.user);
 
   const customerId = user.id;
-
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -54,10 +51,9 @@ export default function QuoteRequest() {
     return formattedDate;
   };
 
- 
   return (
     <>
-    <LoadingOverlay loading={loading} />
+      <LoadingOverlay loading={loading} />
       <div className="flex">
         <CustomerSidebar />
 
@@ -102,29 +98,21 @@ export default function QuoteRequest() {
                           Floors: {item.numOfFloor}, Area: {item.area}
                         </td>
                         <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                         {item.constructionType === 0 ? "Rough Construction" : "Completed Construction"}
+                          {item.constructionType === 0
+                            ? "Rough Construction"
+                            : "Completed Construction"}
                         </td>
                         <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
                           {item.createDate}
                         </td>
                         <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                        <ProjectStatusBadge projectStatus={item.projectStatus} />
-                          
+                          <ProjectStatusBadge
+                            projectStatus={item.projectStatus}
+                          />
                         </td>
                         <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
                           {item.projectStatus === 1 && (
-                            // <NavLink to={`/staff/quotation-detail/${item.quotation.id}`}>
-                            //   Quotation Detail
-                            // </NavLink>
                             <>
-                              {/* <button
-                                onClick={() =>
-                                  redirectToQuotationDetail(item.id)
-                                }
-                              >
-                                Quotation Detail
-                              </button> */}
-
                               <NavLink
                                 to={`/customer/project-detail/${item.id}`}
                               >
@@ -154,7 +142,9 @@ export default function QuoteRequest() {
                       Floors: {item.numOfFloor}, Area: {item.area}
                     </div>
                     <div className="text-gray-500">{item.createDate}</div>
-                    <div><ProjectStatusBadge projectStatus={item.projectStatus} /></div>
+                    <div>
+                      <ProjectStatusBadge projectStatus={item.projectStatus} />
+                    </div>
                     <div>Action</div>
                   </div>
                 </div>

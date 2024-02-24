@@ -14,7 +14,7 @@ export {
   sendResetPassOTP,
   submitOTPResetPass,
 }
-from "./account.js";
+from "./Account";
 
 //news
 export {
@@ -24,7 +24,7 @@ export {
   updateNews,
   deleteNewsById,
 }
-from "./news";
+from "./News";
 
 //blog
 export {
@@ -34,7 +34,7 @@ export {
   updateBlog,
   deleteBlogById,
 }
-from "./blog";
+from "./Blog";
 
 //project
 export {
@@ -44,7 +44,7 @@ export {
   getSampleProjectById,
   updateSampleProject,
 }
-from "./sampleproject";
+from "./SampleProject";
 
 //project
 export {
@@ -53,7 +53,7 @@ export {
   createProjectByUser,
   getProjectById,
 }
-from "./project";
+from "./Project";
 
 //role
 export {
@@ -61,7 +61,7 @@ export {
   getAllRoles,
   removeRoleForUser
 }
-from "./role";
+from "./Role";
 
 //supplier
 export {
@@ -72,15 +72,16 @@ export {
   importSupplierFromExcelSheet,
   updateSupplier,
 }
-from ".upplier";
+from "./Supplier";
 
-//SupplierQuotat
+//SupplierQuotatio
 export {
   deleteSupplierQuotationById,
   getAllSupplierQuotations,
   getAllSupplierQuotationsByMonth,
   getSupplierQuotationTemplate,
   uploadSupplierQuotationWithExcelFile,
+  getUploadSupplierQuotationWithExcelFileError
 }
 from "./SupplierPriceQuotation";
 
@@ -114,6 +115,8 @@ export {
   getAllExportInventory,
   getAllImportInventory,
   getAllInventory,
-  getImportMaterialTemplate
+  getImportMaterialTemplate,
+  importMaterialWithExcel,
+  getImportMaterialWithExcelError
 }
 from "./ImportExportInventory";

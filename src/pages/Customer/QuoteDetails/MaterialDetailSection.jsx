@@ -4,17 +4,19 @@ import { useParams } from "react-router-dom";
 import { getQuoteDetailForCustomer } from "../../../constants/apiQuotationOfCustomer";
 
 import CurrencyFormatter from "../../../components/Common/CurrencyFormatter";
+import LoadingOverlay from "../../../components/Loading/LoadingOverlay"
 
 export default function MaterialDetailSection() {
   const { id } = useParams();
   const [quoteDetail, setQuoteDetail] = useState({});
+  const [loading, setLoading] = useState(true);
 
   const fetchQuoteDetail = async () => {
     try {
       const data = await getQuoteDetailForCustomer(id);
       if (data && data.result) {
         setQuoteDetail(data.result.data);
-        //setLoading(false);
+        setLoading(false);
       }
     } catch (error) {
       console.error("Error fetching quote detail:", error);
@@ -27,6 +29,7 @@ export default function MaterialDetailSection() {
 
   return (
     <>
+    <LoadingOverlay loading={loading} />
       <h1 className="text-2xl font-semibold pb-5 pt-12">Details of materials</h1>
       <div className="px-5 pb-5 h-auto ">
         <div className="overflow-auto rounded-lg shadow hidden md:block">

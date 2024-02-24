@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import { getQuoteDetailForCustomer } from "../../../constants/apiQuotationOfCustomer";
+import { getQuoteDetailForCustomer, dealQuotation } from "../../../constants/apiQuotationOfCustomer";
 
-import {alert} from "../../../components/Alert/Alert"
+import { alert } from "../../../components/Alert/Alert";
 
 import QuotationStatusBadge from "../../../components/QuotationComponent/Status/QuotationStatusBadge";
 import CurrencyFormatter from "../../../components/Common/CurrencyFormatter";
 import DealForm from "../DealQuotation/DealForm";
+import LoadingOverlay from "../../../components/Loading/LoadingOverlay"
 
 export default function OverviewSection() {
   const { id } = useParams();
   const [quoteDetail, setQuoteDetail] = useState([]);
+  const [reloadContent, setReloadContent] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const fetchQuoteDetail = async () => {
     try {
@@ -19,7 +22,7 @@ export default function OverviewSection() {
 
       if (data && data.result) {
         setQuoteDetail(data.result.data);
-        //setLoading(false);
+        setLoading(false);
       }
     } catch (error) {
       console.error("Error fetching quote detail:", error);
@@ -28,12 +31,21 @@ export default function OverviewSection() {
 
   useEffect(() => {
     fetchQuoteDetail();
-  }, [id]);
+  }, [id, reloadContent]);
+
+  const handleReloadContent = () => {
+    setReloadContent((prev) => !prev);
+  };
 
   const calculateOriginalPrice = (price, discount) => {
     const discountPercentage = Math.abs(discount);
     const originalPrice = price / (1 - discountPercentage / 100);
     return originalPrice;
+  };
+
+  const onDelete = () => {
+    // Logic for deleting or handling something
+    console.log('onDelete function called');
   };
 
   const handleConfirmQuotation = async () => {
@@ -60,7 +72,9 @@ export default function OverviewSection() {
       });
 
       if (result.isConfirmed) {
-        await dealQuotation(id);
+        console.log("Confirming quotation with id:", id);
+        await dealQuotation({ quotationId: id, status: true });
+        console.log("Confirmation successful!");
         setReloadContent(true);
         alert.alertSuccessWithTime(
           "Confirm quotation successfully!",
@@ -71,9 +85,16 @@ export default function OverviewSection() {
         );
         onDelete();
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-        alert.alertFailedWithTime("Failed to confirm", "", 2000, "25", () => {});
+        alert.alertFailedWithTime(
+          "Failed to confirm",
+          "",
+          2000,
+          "25",
+          () => {}
+        );
       }
     } catch (error) {
+      console.error("Error confirming quotation:", error);
       alert.alertFailedWithTime(
         "Failed to delete quote detail. Please try again.",
         "",
@@ -86,6 +107,7 @@ export default function OverviewSection() {
 
   return (
     <>
+     <LoadingOverlay loading={loading} />
       <h1 className="text-2xl font-semibold pb-5">Overview</h1>
       <div className="px-5 pb-5 h-auto ">
         <div className="overflow-auto rounded-lg shadow hidden md:block">
@@ -142,46 +164,60 @@ export default function OverviewSection() {
                 </td>
 
                 <td className="p-3 text-sm text-gray-700 whitespace-nowrap text-center">
-                  <div className="flex items-center justify-center">
-                    <span className="mr-2">
-                      <CurrencyFormatter
-                        amount={quoteDetail?.quotation?.furniturePrice}
-                      />
-                    </span>
-                    {quoteDetail?.quotation?.furniturePrice !== 0 && (
-                      <span className="line-through text-gray-500">
+                  {quoteDetail?.quotation?.laborPrice ? (
+                    <div className="flex items-center justify-center">
+                      <span className="mr-2">
                         <CurrencyFormatter
-                          amount={calculateOriginalPrice(
-                            quoteDetail?.quotation?.furniturePrice,
-                            quoteDetail?.quotation?.furnitureDiscount
-                          )}
+                          amount={quoteDetail?.quotation?.furniturePrice}
                         />
                       </span>
+                      {quoteDetail?.quotation?.furniturePrice !== 0 && (
+                        <span className="line-through text-gray-500">
+                          <CurrencyFormatter
+                            amount={calculateOriginalPrice(
+                              quoteDetail?.quotation?.furniturePrice,
+                              quoteDetail?.quotation?.furnitureDiscount
+                            )}
+                          />
+                        </span>
+                      )}
+                    </div>
+                  ) : (
+                    "N/A"
+                  )}
+
+                  {quoteDetail?.quotation?.furnitureDiscount &&
+                    quoteDetail?.quotation?.furniturePrice > 0 && (
+                      <div className="text-red-500">
+                        {`(-${Math.abs(
+                          quoteDetail?.quotation?.furnitureDiscount
+                        )}%)`}
+                      </div>
                     )}
-                  </div>
-                  <div className="text-red-500">
-                    {`(-${Math.abs(
-                      quoteDetail?.quotation?.furnitureDiscount
-                    )}%)`}
-                  </div>
                 </td>
 
                 <td className="p-3 text-sm text-gray-700 whitespace-nowrap text-center">
-                  <div className="flex items-center justify-center">
-                    <span className="mr-2">
-                      <CurrencyFormatter
-                        amount={quoteDetail?.quotation?.laborPrice}
-                      />
-                    </span>
-                    <span className=" line-through text-gray-500">
-                      <CurrencyFormatter
-                        amount={calculateOriginalPrice(
-                          quoteDetail?.quotation?.laborPrice,
-                          quoteDetail?.quotation?.laborDiscount
-                        )}
-                      />
-                    </span>
-                  </div>
+                  {quoteDetail?.quotation?.laborPrice ? (
+                    <div className="flex items-center justify-center">
+                      <span className="mr-2">
+                        <CurrencyFormatter
+                          amount={quoteDetail?.quotation?.laborPrice}
+                        />
+                      </span>
+                      <span className=" line-through text-gray-500">
+                        {}
+                        <CurrencyFormatter
+                          amount={calculateOriginalPrice(
+                            quoteDetail?.quotation?.laborPrice,
+                            quoteDetail?.quotation?.laborDiscount
+                          )}
+                        />
+                      </span>
+                    </div>
+                  ) : (
+                    "N/A"
+                  )}
+
                   <div className="text-red-500">
                     {`(-${Math.abs(quoteDetail?.quotation?.laborDiscount)}%)`}
                   </div>
@@ -197,17 +233,23 @@ export default function OverviewSection() {
                   />
                 </td>
                 <td className="flex flex-col p-3 text-sm text-gray-700 text-center">
-                {quoteDetail?.quotation?.quotationStatus === 1 && (
-                    <>
-                      <button
-                        className="bg-baseGreen text-white rounded-lg p-2 mb-2 font-semibold"
-                        onClick={handleConfirmQuotation}
-                      >
-                        Confirm Quotation
-                      </button>
-                      <DealForm />
-                    </>
-                  )}
+                  {quoteDetail?.quotationDealings &&
+                    quoteDetail.quotationDealings.length === 0 && (
+                      <>
+                        {quoteDetail?.quotation?.quotationStatus === 1 && (
+                          <>
+                            <button
+                              className="bg-baseGreen text-white rounded-lg p-2 mb-2 font-semibold"
+                              onClick={handleConfirmQuotation}
+                            >
+                              Confirm Quotation
+                            </button>
+                            <DealForm onModalClose={handleReloadContent} />
+                          </>
+                        )}
+                      </>
+                    )}
+
                   {quoteDetail?.quotation?.quotationStatus === 3 && (
                     <button>Sign Contract</button>
                   )}

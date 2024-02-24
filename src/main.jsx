@@ -8,6 +8,7 @@ import Store from "./context/store";
 import "./index.css";
 import "react-quill/dist/quill.snow.css";
 import "react-toastify/dist/ReactToastify.css";
+import "react-datepicker/dist/react-datepicker.css";
 import HouseContextProvider from "./components/HouseProjectsComponent/Filter/HouseContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));

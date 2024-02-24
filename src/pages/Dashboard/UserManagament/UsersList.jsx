@@ -194,7 +194,7 @@ function UsersList() {
                               }
                               className="text-sm bg-green-500 hover:bg-green-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline"
                             >
-                              Update
+                              Update Permission
                             </button>
                           ) : (
                             <button

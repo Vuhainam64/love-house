@@ -5,11 +5,13 @@ import { getProjectByIdForCustomer } from "../../../constants/apiQuotationOfCust
 
 import QuotationStatusBadge from "../../../components/QuotationComponent/Status/QuotationStatusBadge";
 import CurrencyFormatter from "../../../components/Common/CurrencyFormatter";
+import LoadingOverlay from "../../../components/Loading/LoadingOverlay"
 
 export default function QuotationOverviewSection() {
   const { id } = useParams();
   const [projectDetail, setProjectDetail] = useState({});
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
 
   const fetchProjectDetail = async () => {
     try {
@@ -17,7 +19,7 @@ export default function QuotationOverviewSection() {
       console.log("API Data:", data);
       if (data && data.result) {
         setProjectDetail(data.result.data);
-        //setLoading(false);
+        setLoading(false);
       }
     } catch (error) {
       console.error("Error fetching project detail:", error);
@@ -36,6 +38,7 @@ export default function QuotationOverviewSection() {
 
   return (
     <>
+    <LoadingOverlay loading={loading} />
       <h1 className="text-2xl font-semibold pb-5">Quotation Overview</h1>
 
       <div className="p-5 h-auto ">
@@ -121,7 +124,7 @@ export default function QuotationOverviewSection() {
                   ) : (
                     "N/A"
                   )}
-                  {projectDetail?.quotations?.[0]?.furnitureDiscount && (
+                  {projectDetail?.quotations?.[0]?.furnitureDiscount &&  projectDetail?.quotations?.[0]?.furniturePrice > 0 && (
                     <div className="text-red-500">
                       {`(-${Math.abs(
                         projectDetail?.quotations?.[0]?.furnitureDiscount
@@ -189,7 +192,7 @@ export default function QuotationOverviewSection() {
                       View Quotation Detail
                     </NavLink>
                   ) : (
-                    "N/A"
+                    "Sign contract"
                   )}
                 </td>
               </tr>

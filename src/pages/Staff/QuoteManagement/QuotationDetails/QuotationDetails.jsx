@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate, NavLink } from "react-router-dom";
 
 import {
   getQuoteDetailByQuoteId,
   publicQuotationForCustomer,
   getQuotationById,
+  getProjectById
 } from "../../../../constants/apiQuotationOfStaff";
 import { alert } from "../../../../components/Alert/Alert";
 
@@ -21,7 +22,19 @@ export default function QuotationDetails() {
   const [quoteDetail, setQuoteDetail] = useState([]);
   const [loading, setLoading] = useState(true);
   const [reloadContent, setReloadContent] = useState(false);
+  const navigate = useNavigate();
+  const [projectDetail, setProjectDetail] = useState({});
+
+  const handleBack = () => {
+    const projectDetailId = projectDetail?.project?.id;
   
+    if (projectDetailId) {
+      navigate(`/staff/project-detail/${projectDetailId}`);
+    } else {
+      // Handle the case when projectDetail or its 'project' property is undefined
+      console.error("Cannot navigate to project detail: projectDetail or 'project' is undefined");
+    }
+  };
 
   const fetchQuotation = async () => {
     try {
@@ -53,6 +66,25 @@ export default function QuotationDetails() {
     fetchQuotation();
     fetchQuoteDetail();
   }, [id, reloadContent]);
+
+  const fetchProjectDetail = async () => {
+    try {
+      const data = await getProjectById(id);
+  
+      if (data && data.result && data.result.data && data.result.data.project) {
+        setProjectDetail(data.result.data);
+      } else {
+        // Handle the case when the expected structure is not present
+        console.error("Invalid API response structure for project detail");
+      }
+    } catch (error) {
+      console.error("Error fetching project detail:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchProjectDetail();
+  }, [id]);
 
   const handleReloadContent = () => {
     setReloadContent((prev) => !prev);
@@ -92,6 +124,7 @@ export default function QuotationDetails() {
           "25",
           () => {}
         );
+        //navigate("")
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         alert.alertFailedWithTime("Failed to public", "", 2000, "25", () => {});
       }
@@ -128,6 +161,12 @@ export default function QuotationDetails() {
               </button>
             </div>
           )}
+
+
+        {/* <button className="flex items-center" onClick={handleBack}>
+          Back
+        </button>
+       */}
 
           <div className="p-5 h-screen bg-gray-100 ">
             <div className="overflow-auto rounded-lg shadow hidden md:block">

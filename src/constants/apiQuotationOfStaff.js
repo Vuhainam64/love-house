@@ -162,3 +162,23 @@ export const publicQuotationForCustomer = async (quotationId) => {
     throw err;
   }
 };
+
+export const createDealByStaff = async (createData) => {
+  try {
+    const res = await axios.post(
+      `${baseURL}/quotation/create-quotation-dealing-by-staff`,
+      createData,
+      {
+        headers: {
+          Authorization: `Bearer ${usertoken}`,
+        },
+        withCredentials: true,
+      }
+    );
+
+    return res.data;
+  } catch (err) {
+    console.error("Error create quotation detail:", err);
+    throw err;
+  }
+};

@@ -112,23 +112,14 @@ export const createQuotationDealRequest = async (createData) => {
   }
 };
 
-export const dealQuotation = async (createData) => {
+export const dealQuotation = async ({ quotationId, status }) => {
   try {
-    const { status, stringValue } = createData;
-
-    if (status === undefined || stringValue === undefined) {
-      throw new Error("Both 'status' and 'stringValue' are required in createData");
-    }
-
     const res = await axios.post(
-      `${baseURL}/quotation/deal-quotation`,
-      {
-        status,
-        stringValue,
-      },
+      `${baseURL}/quotation/deal-quotation?status=${status}`, `${quotationId}`,
       {
         headers: {
           Authorization: `Bearer ${usertoken}`,
+          "Content-Type": "application/json",
         },
         withCredentials: true,
       }

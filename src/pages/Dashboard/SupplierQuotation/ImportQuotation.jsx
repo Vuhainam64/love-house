@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import { toast } from "react-toastify";
 import * as XLSX from "xlsx";
 
 import { IoPricetagsSharp } from "react-icons/io5";
@@ -10,9 +11,9 @@ import { buttonClick } from "../../../assets/animations";
 import { ImportExcel } from "../../../assets";
 import {
   getSupplierQuotationTemplate,
+  getUploadSupplierQuotationWithExcelFileError,
   uploadSupplierQuotationWithExcelFile,
 } from "../../../api";
-import { toast } from "react-toastify";
 
 const ImportQuotation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -69,11 +70,8 @@ const ImportQuotation = () => {
       if (uploadResponse.date) {
         toast.success("Upload successful: " + uploadResponse.date);
       } else {
-        // Create a download link
-        const downloadLink = document.createElement("a");
-        downloadLink.href = URL.createObjectURL(uploadResponse);
-        downloadLink.download = "SauChien_20122023_error.xlsx";
-        downloadLink.click();
+        toast.error("Upload Fail: Please check file error " );
+        getUploadSupplierQuotationWithExcelFileError(formData);
       }
     } catch (error) {
       toast.error("Error during upload:", error);

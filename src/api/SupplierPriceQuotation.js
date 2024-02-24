@@ -20,6 +20,32 @@ export const uploadSupplierQuotationWithExcelFile = async (excelData) => {
     }
 };
 
+export const getUploadSupplierQuotationWithExcelFileError = async (excelData) => {
+    try {
+        const res = await axios.post(`${baseURL}/supplier-price-quotation/Upload-supplier-quotation-with-excel-file`, excelData, {
+            headers: {
+                Authorization: `Bearer ${usertoken}`,
+                "Content-Type": "multipart/form-data",
+            },
+            withCredentials: true,
+            responseType: "blob",
+        });
+
+        // Create a Blob from the response data
+        const blob = new Blob([res.data], {
+            type: res.headers["content-type"]
+        });
+
+        // Create a link element and trigger a download
+        const link = document.createElement("a");
+        link.href = window.URL.createObjectURL(blob);
+        link.download = "SupplierPriceQuotationTemplate.xlsx";
+        link.click();
+    } catch (err) {
+        return null;
+    }
+};
+
 export const deleteSupplierQuotationById = async (quotationId) => {
     try {
         const res = await axios.delete(`${baseURL}/supplier-price-quotation/delete-supplier-quotation-by-id`, {

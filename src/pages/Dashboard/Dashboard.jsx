@@ -19,7 +19,7 @@ function Dashboard() {
           <div className="py-20"></div>
           <div
             className="fixed bottom-0 z-50"
-            style={{ width: isOpen ? "80%" : "100%" }}
+            style={{ width: isOpen ? "90%" : "100%" }}
           >
             <DBFooter />
           </div>

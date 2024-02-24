@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { getProjectByIdForCustomer } from "../../../constants/apiQuotationOfCustomer";
+import LoadingOverlay from "../../../components/Loading/LoadingOverlay"
 
 export default function ProjectDetailsForCustomer() {
   const { id } = useParams();
   const [projectDetail, setProjectDetail] = useState({});
+  const [loading, setLoading] = useState(true);
 
   const fetchProjectDetail = async () => {
     try {
@@ -13,7 +15,7 @@ export default function ProjectDetailsForCustomer() {
      
       if (data && data.result) {
         setProjectDetail(data.result.data);
-        //setLoading(false);
+        setLoading(false);
       }
     } catch (error) {
       console.error("Error fetching project detail:", error);
@@ -26,6 +28,7 @@ export default function ProjectDetailsForCustomer() {
  
   return (
     <>
+    <LoadingOverlay loading={loading} />
       <h1 className="text-2xl font-semibold pb-5">Project Detail</h1>
 
       <div className="p-5 h-225">

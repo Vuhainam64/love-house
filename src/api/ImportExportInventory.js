@@ -83,3 +83,44 @@ export const getImportMaterialTemplate = async () => {
     return null;
   }
 };
+
+export const importMaterialWithExcel = async (excelData) => {
+  try {
+    const res = await axios.post(`${baseURL}/import-export-inventory/import-material-with-excel`, excelData, {
+      headers: {
+        Authorization: `Bearer ${usertoken}`,
+        "Content-Type": "multipart/form-data",
+      },
+      withCredentials: true,
+    });
+
+    return res.data;
+  } catch (err) {
+    return null;
+  }
+};
+
+export const getImportMaterialWithExcelError = async (excelData) => {
+  try {
+    const res = await axios.post(`${baseURL}/import-export-inventory/import-material-with-excel`, excelData, {
+      headers: {
+        Authorization: `Bearer ${usertoken}`,
+        "Content-Type": "multipart/form-data",
+      },
+      responseType: "blob",
+    });
+
+    // Create a Blob from the response data
+    const blob = new Blob([res.data], {
+      type: res.headers["content-type"]
+    });
+
+    // Create a link element and trigger a download
+    const link = document.createElement("a");
+    link.href = window.URL.createObjectURL(blob);
+    link.download = "SupplierPriceQuotationTemplate.xlsx";
+    link.click();
+  } catch (err) {
+    return null;
+  }
+};

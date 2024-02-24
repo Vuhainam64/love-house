@@ -110,7 +110,7 @@ export default function ContractSection2() {
                         View
                       </NavLink>
                     ) : (
-                      <span className="text-gray-400">Not Available</span>
+                      <span className="text-gray-400">Create progress payment</span>
                     )}
                   </td>
                 </tr>
