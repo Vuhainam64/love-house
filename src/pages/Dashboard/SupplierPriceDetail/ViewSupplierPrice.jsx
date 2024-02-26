@@ -111,6 +111,11 @@ const ViewSupplierPrice = () => {
       key: "moq",
     },
     {
+      title: "Material",
+      dataIndex: "materialName",
+      key: "materialName",
+    },
+    {
       title: "Price",
       dataIndex: "price",
       key: "price",
@@ -139,7 +144,8 @@ const ViewSupplierPrice = () => {
     date: new Date(item.supplierPriceQuotation.date).toLocaleDateString(),
     moq: item.moq,
     price: item.price,
-    material: item.material, // Add material to the data for View Detail
+    material: item.material,
+    materialName: item.material.name,
   }));
 
   const handleViewDetail = (material) => {
