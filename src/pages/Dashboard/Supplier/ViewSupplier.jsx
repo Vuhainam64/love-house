@@ -257,7 +257,9 @@ const ViewSupplier = () => {
                     {supplier.supplierName}
                   </td>
                   <td className="py-2 px-4 border-b border-gray-300 text-center">
-                    {supplier.type === 0 ? "Type 0" : "Other Type"}
+                    {supplier.type === 0
+                      ? "Contruction Material"
+                      : (supplier.type = 1 ? "Furniture Supplier" : "Both")}
                   </td>
                   <td className="py-2 px-4 border-b border-gray-300 text-center">
                     <div className="flex items-center justify-center space-x-4">
