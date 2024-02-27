@@ -5,10 +5,9 @@ import { getBlogDetail } from "../../constants/apiBlog";
 import { FaRegCalendarAlt } from "react-icons/fa";
 
 import OtherBlogs from "../../components/BlogsComponent/OtherBlogs";
-import Navbar from "../../components/Navbar/Navbar"
+import { Navbar, Footer, LoadingOverlay } from "../../components";
 import Breadcrumb from "../../components/Breadcrumb/Breadcrumb";
-import Footer from "../../components/Footer/Footer"
-import LoadingOverlay from "../../components/Loading/LoadingOverlay";
+
 
 export default function BlogDetail() {
   const [blogDetail, setBlogDetail] = useState({});

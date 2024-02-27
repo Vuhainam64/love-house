@@ -2,10 +2,9 @@ import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { getAllBlogs } from "../../constants/apiBlog";
 
-import Navbar from "../../components/Navbar/Navbar";
+import { Navbar, Footer, LoadingOverlay } from "../../components";
 import Breadcrumb from "../../components/Breadcrumb/Breadcrumb";
-import Footer from "../../components/Footer/Footer";
-import LoadingOverlay from "../../components/Loading/LoadingOverlay";
+
 
 export default function Blog() {
   const [blogData, setBlogData] = useState([]);

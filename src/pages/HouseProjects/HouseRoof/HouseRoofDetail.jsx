@@ -4,8 +4,8 @@ import OtherSection from "./OtherSection";
 import ImageDetailSection from "../ImageDetailSection";
 import OverviewProjectSection from "../OverviewProjectSection";
 import HeaderComponent from "../HeaderComponent";
-import Navbar from "../../../components/Navbar/Navbar";
-import Footer from "../../../components/Footer/Footer";
+import { Navbar, Footer} from "../../../components";
+
 
 export default function HouseRoofDetail() {
   return (

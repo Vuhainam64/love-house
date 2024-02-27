@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { getProjectById } from "../../../../constants/apiQuotationOfStaff";
-import LoadingOverlay from "../../../../components/Loading/LoadingOverlay"
+import { LoadingOverlay } from "../../../../components";
 
 export default function ProjectSection() {
   const { id } = useParams();
@@ -31,7 +31,7 @@ export default function ProjectSection() {
   return (
     <>
     <LoadingOverlay loading={loading} />
-      <h1 className="text-2xl font-semibold pb-5">Project</h1>
+      <h1 className="text-xl font-semibold pb-5 uppercase">Project</h1>
 
       <div className="p-5 h-225">
         <div className="overflow-auto rounded-lg shadow hidden md:block">

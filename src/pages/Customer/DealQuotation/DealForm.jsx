@@ -5,7 +5,7 @@ import * as Yup from "yup";
 import { Formik, Form, FieldArray, Field, ErrorMessage } from "formik";
 import { Input, Button } from "antd";
 
-import Modal from "../../../components/Modal/Modal";
+import { Modal } from "../../../components";
 import { alert } from "../../../components/Alert/Alert";
 import { createQuotationDealRequest } from "../../../constants/apiQuotationOfCustomer";
 

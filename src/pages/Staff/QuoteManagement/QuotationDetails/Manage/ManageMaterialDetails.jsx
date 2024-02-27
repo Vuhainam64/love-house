@@ -5,18 +5,17 @@ import {
   getQuoteDetailByQuoteId,
   publicQuotationForCustomer,
   getQuotationById,
-  getProjectById
-} from "../../../../constants/apiQuotationOfStaff";
-import { alert } from "../../../../components/Alert/Alert";
+  getProjectById,
+} from "../../../../../constants/apiQuotationOfStaff";
+import { alert } from "../../../../../components/Alert/Alert";
 
-import StaffSidebar from "../../../../components/Sidebar/StaffSidebar";
-import FormCreateMaterialDetail from "./Manage/FormCreateMaterialDetail";
-import FormUpdateMaterialDetail from "./Manage/FormUpdateMaterialDetail";
-import DeleteMaterialDetail from "./Manage/DeleteMaterialDetail";
-import CurrencyFormatter from "../../../../components/Common/CurrencyFormatter";
-import LoadingOverlay from "../../../../components/Loading/LoadingOverlay";
+import { StaffSidebar, CurrencyFormatter, LoadingOverlay } from "../../../../../components";
+import FormCreateMaterialDetail from "./FormCreateMaterialDetail";
+import FormUpdateMaterialDetail from "./FormUpdateMaterialDetail";
+import DeleteMaterialDetail from "./DeleteMaterialDetail";
 
-export default function QuotationDetails() {
+
+export default function ManageMaterialDetails() {
   const { id } = useParams();
   const [quote, setQuote] = useState({});
   const [quoteDetail, setQuoteDetail] = useState([]);
@@ -27,12 +26,14 @@ export default function QuotationDetails() {
 
   const handleBack = () => {
     const projectDetailId = projectDetail?.project?.id;
-  
+
     if (projectDetailId) {
       navigate(`/staff/project-detail/${projectDetailId}`);
     } else {
       // Handle the case when projectDetail or its 'project' property is undefined
-      console.error("Cannot navigate to project detail: projectDetail or 'project' is undefined");
+      console.error(
+        "Cannot navigate to project detail: projectDetail or 'project' is undefined"
+      );
     }
   };
 
@@ -67,24 +68,7 @@ export default function QuotationDetails() {
     fetchQuoteDetail();
   }, [id, reloadContent]);
 
-  const fetchProjectDetail = async () => {
-    try {
-      const data = await getProjectById(id);
-  
-      if (data && data.result && data.result.data && data.result.data.project) {
-        setProjectDetail(data.result.data);
-      } else {
-        // Handle the case when the expected structure is not present
-        console.error("Invalid API response structure for project detail");
-      }
-    } catch (error) {
-      console.error("Error fetching project detail:", error);
-    }
-  };
 
-  useEffect(() => {
-    fetchProjectDetail();
-  }, [id]);
 
   const handleReloadContent = () => {
     setReloadContent((prev) => !prev);
@@ -162,8 +146,7 @@ export default function QuotationDetails() {
             </div>
           )}
 
-
-        {/* <button className="flex items-center" onClick={handleBack}>
+          {/* <button className="flex items-center" onClick={handleBack}>
           Back
         </button>
        */}
@@ -191,9 +174,11 @@ export default function QuotationDetails() {
                     <th className=" p-3 text-sm font-semibold tracking-wide text-right">
                       Total
                     </th>
-                    <th className=" p-3 text-sm font-semibold tracking-wide">
-                      Action
-                    </th>
+                    {quote?.quotation?.quotationStatus === 0 && (
+                      <th className=" p-3 text-sm font-semibold tracking-wide">
+                        Action
+                      </th>
+                    )}
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
@@ -237,23 +222,26 @@ export default function QuotationDetails() {
                           <td className="p-3 text-sm text-gray-700 whitespace-nowrap text-right">
                             <CurrencyFormatter amount={item.total} />
                           </td>
-                          <td className="p-3 text-sm text-gray-700 text-center">
-                            <div className="flex justify-center">
-                              <div>
-                                <FormUpdateMaterialDetail
-                                  quoteDetail={item}
-                                  onModalClose={handleReloadContent}
-                                />
-                              </div>
 
-                              <div>
-                                <DeleteMaterialDetail
-                                  quoteDetail={item}
-                                  onDelete={handleReloadContent}
-                                />
+                          {quote?.quotation?.quotationStatus === 0 && (
+                            <td className="p-3 text-sm text-gray-700 text-center">
+                              <div className="flex justify-center">
+                                <div>
+                                  <FormUpdateMaterialDetail
+                                    quoteDetail={item}
+                                    onModalClose={handleReloadContent}
+                                  />
+                                </div>
+
+                                <div>
+                                  <DeleteMaterialDetail
+                                    quoteDetail={item}
+                                    onDelete={handleReloadContent}
+                                  />
+                                </div>
                               </div>
-                            </div>
-                          </td>
+                            </td>
+                          )}
                         </tr>
                       );
                     })}

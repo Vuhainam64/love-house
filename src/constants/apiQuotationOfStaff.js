@@ -35,8 +35,7 @@ export const updateProjectConfig = async (updateData) => {
   try {
     const res = await axios.put(
       `${baseURL}/project/config-project`,
-      updateData,
-      {
+      updateData, {
         headers: {
           Authorization: `Bearer ${usertoken}`,
         },
@@ -54,8 +53,7 @@ export const updateProjectConfig = async (updateData) => {
 export const getQuotationById = async (quotationId) => {
   try {
     const res = await axios.get(
-      `${baseURL}/quotation/get-quotation-by-id/${quotationId}`,
-      {
+      `${baseURL}/quotation/get-quotation-by-id/${quotationId}`, {
         headers: {
           Authorization: `Bearer ${usertoken}`,
         },
@@ -68,11 +66,11 @@ export const getQuotationById = async (quotationId) => {
   }
 };
 
+
 export const getQuoteDetailByQuoteId = async (id) => {
   try {
     const res = await axios.get(
-      `${baseURL}/quotation-detail/get-quotation-detail-by-quotation-id/${id}`,
-      {
+      `${baseURL}/quotation-detail/get-quotation-detail-by-quotation-id/${id}`, {
         headers: {
           Authorization: `Bearer ${usertoken}`,
         },
@@ -89,8 +87,7 @@ export const createListQuotationDetail = async (createData) => {
   try {
     const res = await axios.post(
       `${baseURL}/quotation-detail/create-list-quotation-detail`,
-      createData,
-      {
+      createData, {
         headers: {
           Authorization: `Bearer ${usertoken}`,
         },
@@ -109,8 +106,7 @@ export const updateQuotationDetail = async (updateData) => {
   try {
     const res = await axios.put(
       `${baseURL}/quotation-detail/update-quotation-detail`,
-      updateData,
-      {
+      updateData, {
         headers: {
           Authorization: `Bearer ${usertoken}`,
         },
@@ -128,8 +124,7 @@ export const updateQuotationDetail = async (updateData) => {
 export const deleteQuotationDetailById = async (id) => {
   try {
     const res = await axios.delete(
-      `${baseURL}/quotation-detail/delete-quotation-detail-by-id/${id}`,
-      {
+      `${baseURL}/quotation-detail/delete-quotation-detail-by-id/${id}`, {
         headers: {
           Authorization: `Bearer ${usertoken}`,
         },
@@ -147,8 +142,7 @@ export const publicQuotationForCustomer = async (quotationId) => {
   try {
     const res = await axios.put(
       `${baseURL}/quotation/public-quotation-for-customer/${quotationId}`,
-      null, 
-      {
+      null, {
         headers: {
           Authorization: `Bearer ${usertoken}`,
         },
@@ -167,8 +161,7 @@ export const createDealByStaff = async (createData) => {
   try {
     const res = await axios.post(
       `${baseURL}/quotation/create-quotation-dealing-by-staff`,
-      createData,
-      {
+      createData, {
         headers: {
           Authorization: `Bearer ${usertoken}`,
         },

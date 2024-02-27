@@ -1,9 +1,10 @@
 import React from "react";
 
-import CustomerSidebar from "../../../components/Sidebar/CustomerSidebar";
+import { CustomerSidebar } from "../../../components";
 import ProjecDetailsSection from "./ProjectDetailsSection";
 import QuotationOverviewSection from "./QuotationOverviewSection";
 import DealingSection from "./DealingSection";
+import Contract from "./Contract";
 
 
 export default function ProjectDetailsForCustomer() {
@@ -16,6 +17,7 @@ export default function ProjectDetailsForCustomer() {
           <ProjecDetailsSection />
           <QuotationOverviewSection />
           <DealingSection/>
+          <Contract/>
         </div>
       </div>
     </>

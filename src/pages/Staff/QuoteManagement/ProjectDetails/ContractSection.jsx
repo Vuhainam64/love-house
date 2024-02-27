@@ -3,9 +3,8 @@ import { useParams } from "react-router-dom";
 
 import { getProjectById } from "../../../../constants/apiQuotationOfStaff";
 
-import CurrencyFormatter from "../../../../components/Common/CurrencyFormatter";
-import ContractStatusBadge from "../../../../components/QuotationComponent/Status/ContractStatusBadge";
-import LoadingOverlay from "../../../../components/Loading/LoadingOverlay";
+import { CurrencyFormatter, ContractStatusBadge, LoadingOverlay } from "../../../../components";
+
 
 export default function ContractSection() {
   const { id } = useParams();

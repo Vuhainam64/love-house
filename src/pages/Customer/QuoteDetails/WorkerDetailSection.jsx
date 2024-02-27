@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 
 import { getQuoteDetailForCustomer } from "../../../constants/apiQuotationOfCustomer";
 
-import CurrencyFormatter from "../../../components/Common/CurrencyFormatter";
+import { CurrencyFormatter } from "../../../components";
 
 export default function WorkerDetailSection() {
   const { id } = useParams();
@@ -27,7 +27,7 @@ export default function WorkerDetailSection() {
 
   return (
     <>
-      <h1 className="text-2xl font-semibold pb-5 pt-12">Workers for project</h1>
+      <h1 className="text-xl font-semibold pb-5 pt-12 uppercase">Workers for project</h1>
       <div className="px-5 pb-5 h-auto ">
         <div className="overflow-auto rounded-lg shadow hidden md:block">
           {quoteDetail.workerForProjects &&
@@ -55,7 +55,6 @@ export default function WorkerDetailSection() {
               <tbody className="divide-y divide-gray-100">
                 {quoteDetail.workerForProjects.map((item, index) => {
                   const total = item.quantity * item.exportLaborCost;
-
                   return (
                     <tr key={item.id} className="bg-white text-black text-left">
                       <td className="p-3 text-sm text-gray-700 whitespace-nowrap text-center">
@@ -66,7 +65,7 @@ export default function WorkerDetailSection() {
                       </td>
                       <td className="p-3 text-sm text-gray-700 whitespace-nowrap text-right">
                         {item.quantity}
-                      </td>{" "}
+                      </td>
                       <td className="p-3 text-sm text-gray-700 whitespace-nowrap text-right">
                         <CurrencyFormatter amount={item.exportLaborCost} />
                         /person

@@ -1,33 +1,31 @@
 import React, { useEffect, useState } from "react";
 import { NavLink, useParams } from "react-router-dom";
 
-import { getProjectById } from "../../../../constants/apiQuotationOfStaff";
+import {getProjectByIdForCustomer} from "../../../constants/apiQuotationOfCustomer"
 
-import { CurrencyFormatter, ContractStatusBadge, LoadingOverlay, DateFormatter } from "../../../../components";
+import { CurrencyFormatter, ContractStatusBadge, LoadingOverlay, DateFormatter } from "../../../components"
 
-
-export default function ContractSection2() {
-  const { id } = useParams();
-  const [projectDetail, setProjectDetail] = useState({});
-  const [loading, setLoading] = useState(true);
-
-  const fetchProjectDetail = async () => {
-    try {
-      const data = await getProjectById(id);
-
-      if (data && data.result) {
-        setProjectDetail(data.result.data);
-        setLoading(false);
-      }
-    } catch (error) {
-      console.error("Error fetching project detail:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchProjectDetail();
-  }, [id]);
-
+export default function Contract() {
+    const { id } = useParams();
+    const [projectDetail, setProjectDetail] = useState({});
+    const [loading, setLoading] = useState(true);
+  
+    const fetchProjectDetail = async () => {
+        try {
+          const data = await getProjectByIdForCustomer(id);
+    
+          if (data && data.result) {
+            setProjectDetail(data.result.data);
+            setLoading(false);
+          }
+        } catch (error) {
+          console.error("Error fetching project detail:", error);
+        }
+      };
+    
+      useEffect(() => {
+        fetchProjectDetail();
+      }, [id]);
   return (
     <>
       {projectDetail?.contract !== null && (
@@ -40,7 +38,7 @@ export default function ContractSection2() {
               <table className="w-full">
                 <thead className="bg-gray-50 border-b-2 border-gray-200">
                   <tr>
-                    <th className=" p-3 text-sm font-semibold tracking-wide text-left">
+                    <th className=" p-3 text-sm font-semibold tracking-wide text-center">
                       Total
                     </th>
                     <th className=" p-3 text-sm font-semibold tracking-wide ">
@@ -68,9 +66,9 @@ export default function ContractSection2() {
                 <tbody className="divide-y divide-gray-100">
                   <tr
                     key={projectDetail.id}
-                    className="bg-white text-black text-left"
+                    className="bg-white text-black "
                   >
-                    <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                    <td className="p-3 text-sm text-red-500 font-semibold whitespace-nowrap text-center">
                       <CurrencyFormatter
                         amount={projectDetail?.contract?.total}
                       />
@@ -100,29 +98,24 @@ export default function ContractSection2() {
                         contractStatus={projectDetail?.contract?.contractStatus}
                       />
                     </td>
-                    <td className="p-3 text-sm text-gray-700 whitespace-nowrap text-center">
-                      {projectDetail?.contract?.contractUrl ? (
-                        // <NavLink
-                        //   to={projectDetail?.contract?.contractUrl}
-                        //   className="text-blue-500 hover:underline"
-                        // >
-                        //   View contract
-                        // </NavLink>
+                    <td className="p-3 text-sm text-gray-700 whitespace-nowrap text-center flex-col">
+                      {projectDetail?.contract?.contractStatus === 2 ? (
                         <NavLink
-                        to={`/staff/contract-payment-progress/${projectDetail?.contract?.id}`}
+                          to={projectDetail?.contract?.contractUrl}
+                          className="text-blue-500 hover:underline"
+                        >
+                          View contract
+                        </NavLink>
+                      ) : null }
+                      <div>
+                      <NavLink
+                        to={`/customer/payment-progress/${projectDetail?.contract?.id}`}
                         className="text-blue-500 hover:underline"
                       >
                         View payment progress
                       </NavLink>
-                      ) : (
-                        
-                         <NavLink
-                         to={`/staff/contract-payment-progress/${projectDetail?.contract?.id}`}
-                         className="text-blue-500 hover:underline"
-                       >
-                         Create payment progress
-                       </NavLink>
-                      )}
+                      </div>
+                       
                     </td>
                   </tr>
                 </tbody>
@@ -132,5 +125,5 @@ export default function ContractSection2() {
         </>
       )}
     </>
-  );
+  )
 }

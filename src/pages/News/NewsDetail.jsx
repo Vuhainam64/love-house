@@ -5,10 +5,9 @@ import OtherNews from "../../components/NewsComponent/OtherNews";
 
 import { FaRegCalendarAlt } from "react-icons/fa";
 
-import Navbar from "../../components/Navbar/Navbar";
+import { Navbar , Footer, LoadingOverlay} from "../../components";
 import Breadcrumb from "../../components/Breadcrumb/Breadcrumb";
-import Footer from "../../components/Footer/Footer";
-import LoadingOverlay from "../../components/Loading/LoadingOverlay";
+
 
 export default function NewsDetail() {
   const [newsDetail, setNewsDetail] = useState({});

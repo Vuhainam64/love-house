@@ -1,9 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import React from "react";
 
-import { getQuoteDetailForCustomer } from "../../../constants/apiQuotationOfCustomer";
-
-import CustomerSidebar from "../../../components/Sidebar/CustomerSidebar";
+import { CustomerSidebar } from "../../../components";
 import OverviewSection from "./OverviewSection";
 import MaterialDetailSection from "./MaterialDetailSection";
 import WorkerDetailSection from "./WorkerDetailSection";
@@ -15,10 +12,10 @@ export default function QuoteDetailsForCustomer() {
       <div className="flex">
         <CustomerSidebar />
         <div className="h-screen flex-1 p-7">
-          <OverviewSection/>
-          <DealingSection/>
-          <MaterialDetailSection/>
-          <WorkerDetailSection/>
+          <OverviewSection />
+          <DealingSection />
+          <MaterialDetailSection />
+          <WorkerDetailSection />
         </div>
       </div>
     </>

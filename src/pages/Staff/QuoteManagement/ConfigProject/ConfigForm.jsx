@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { useParams,useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { Formik, Form, FieldArray, Field, ErrorMessage } from "formik";
 import { Input, Button, Space, message } from "antd";
 import axios from "axios";
 import * as Yup from "yup";
-import { getAllWorker } from "../../../constants/apiWorker";
+import { getAllWorker } from "../../../../constants/apiWorker";
 import {
   updateProjectConfig,
   getProjectById,
-} from "../../../constants/apiQuotationOfStaff";
+} from "../../../../constants/apiQuotationOfStaff";
+
+import { alert } from "../../../../components/Alert/Alert"
 
 import { projectConfigValidationSchema } from "./validationSchema";
-import InputField from "../../../components/StaffComponent/QuoteComponent/InputField";
+import { InputField, CurrencyFormatter } from "../../../../components";
 
 const ConfigForm = () => {
   const [workers, setWorkers] = useState([]);
@@ -22,7 +24,6 @@ const ConfigForm = () => {
 
   const { id } = useParams();
   const navigate = useNavigate();
-
 
   const errorStyle = { color: "red", marginBottom: "20px" };
 
@@ -107,11 +108,23 @@ const ConfigForm = () => {
           await updateProjectConfig(formattedData);
           console.log(values);
 
-          message.success("Form submitted successfully!");
+          alert.alertSuccessWithTime(
+            "Create Config Successfully",
+            "",
+            2000,
+            "30",
+            () => {}
+          );
           navigate("/staff/all-request");
         } catch (error) {
-          console.error("Error updating project config:", error);
-          message.error("Failed to submit form. Please try again.");
+          console.error("Error updating project config:", error);         
+          alert.alertFailedWithTime(
+            "Failed To Create",
+            "Please try again",
+            2500,
+            "25",
+            () => {}
+          );
         } finally {
           setSubmitting(false);
         }
@@ -126,69 +139,76 @@ const ConfigForm = () => {
             value={projectId}
             readOnly
           />
+          <p className="font-semibold text-l mx-4 border-t-2 border-gray-300 pt-6">Properties</p>
+          <div className="flex flex-col md:flex-row justify-between mt-6 gap-x-10">
+            <InputField
+              label="Wall Length (m)"
+              name="wallLength"
+              type="number"
+              error={errors.wallLength && touched.wallLength}
+            />
 
-          <InputField
-            label="Sand Mixing Ratio (%)"
-            name="sandMixingRatio"
-            type="number"
-            error={errors.sandMixingRatio && touched.sandMixingRatio}
-          />
+            <InputField
+              label="Wall Height (m)"
+              name="wallHeight"
+              type="number"
+              error={errors.wallHeight && touched.wallHeight}
+            />
+            <InputField
+              label="Tiled Area (m²)"
+              name="tiledArea"
+              type="number"
+              error={errors.tiledArea && touched.tiledArea}
+            />
+          </div>
 
-          <InputField
-            label="Cement Mixing Ratio (%)"
-            name="cementMixingRatio"
-            type="number"
-            error={errors.cementMixingRatio && touched.cementMixingRatio}
-          />
+          <p className="font-semibold text-l mx-4 border-t-2 border-gray-300 pt-6">Mixing Ratio (%)</p>
+          <div className="flex flex-col md:flex-row justify-between mt-6 gap-x-10 ">
+            <InputField
+              label="Sand "
+              name="sandMixingRatio"
+              type="number"
+              error={errors.sandMixingRatio && touched.sandMixingRatio}
+            />
 
-          <InputField
-            label="Stone Mixing Ratio (%)"
-            name="stoneMixingRatio"
-            type="number"
-            error={errors.stoneMixingRatio && touched.stoneMixingRatio}
-          />
+            <InputField
+              label="Cement"
+              name="cementMixingRatio"
+              type="number"
+              error={errors.cementMixingRatio && touched.cementMixingRatio}
+            />
 
-          <InputField
-            label="Raw Material Discount (%)"
-            name="rawMaterialDiscount"
-            type="number"
-            error={errors.rawMaterialDiscount && touched.rawMaterialDiscount}
-          />
+            <InputField
+              label="Stone "
+              name="stoneMixingRatio"
+              type="number"
+              error={errors.stoneMixingRatio && touched.stoneMixingRatio}
+            />
+          </div>
 
-          <InputField
-            label="Furniture Discount (%)"
-            name="furnitureDiscount"
-            type="number"
-            error={errors.furnitureDiscount && touched.furnitureDiscount}
-          />
+          <p className="font-semibold text-l mx-4 border-t-2 border-gray-300 pt-6">Discount (Optional)</p>
+          <div className="flex flex-col md:flex-row justify-between mt-6 gap-x-10">
+            <InputField
+              label="Raw Material"
+              name="rawMaterialDiscount"
+              type="number"
+              error={errors.rawMaterialDiscount && touched.rawMaterialDiscount}
+            />
 
-          <InputField
-            label="Label Discount (%)"
-            name="laborDiscount"
-            type="number"
-            error={errors.laborDiscount && touched.laborDiscount}
-          />
+            <InputField
+              label="Furniture"
+              name="furnitureDiscount"
+              type="number"
+              error={errors.furnitureDiscount && touched.furnitureDiscount}
+            />
 
-          <InputField
-            label="Tiled Area (m²)"
-            name="tiledArea"
-            type="number"
-            error={errors.tiledArea && touched.tiledArea}
-          />
-
-          <InputField
-            label="Wall Length (m)"
-            name="wallLength"
-            type="number"
-            error={errors.wallLength && touched.wallLength}
-          />
-
-          <InputField
-            label="Wall Height (m)"
-            name="wallHeight"
-            type="number"
-            error={errors.wallHeight && touched.wallHeight}
-          />
+            <InputField
+              label="Labor"
+              name="laborDiscount"
+              type="number"
+              error={errors.laborDiscount && touched.laborDiscount}
+            />
+          </div>
 
           <InputField
             label="Estimated Time Of Completion (days)"
@@ -200,12 +220,18 @@ const ConfigForm = () => {
             }
           />
 
+          <p className="font-semibold text-l mx-4 border-t-2 border-gray-300 pt-6 mb-6">
+            Worker for project
+          </p>
           <FieldArray name="laborRequests">
             {({ push, remove }) => (
               <div>
                 {values.laborRequests.map((_, index) => (
                   <div key={index}>
-                    <label htmlFor={`laborRequests[${index}].workerPriceId`}>
+                    <label
+                      htmlFor={`laborRequests[${index}].workerPriceId`}
+                      className="mr-2 ml-4"
+                    >
                       Worker
                     </label>
                     <Field
@@ -237,8 +263,9 @@ const ConfigForm = () => {
                     <div>
                       {selectedWorkerCost > 0 && (
                         <div>
-                          <label className="text-blue-400">
-                            Worker's Labor Cost: {selectedWorkerCost} VND
+                          <label className="text-blue-400 ml-4">
+                            Worker's Labor Cost:{" "}
+                            <CurrencyFormatter amount={selectedWorkerCost} />
                           </label>
                         </div>
                       )}
@@ -250,53 +277,38 @@ const ConfigForm = () => {
                         </div>
                       )}
                     <br />
-                    <label htmlFor={`laborRequests[${index}].exportLaborCost`}>
-                      Export Labor Cost (must be greater than Worker's Labor Cost)
-                    </label>
-                    <Field
-                      name={`laborRequests[${index}].exportLaborCost`}
-                      as={Input}
-                      type="number"
-                      style={{
-                        borderColor:
-                          errors?.laborRequests?.[index]?.exportLaborCost &&
-                          touched?.laborRequests?.[index]?.exportLaborCost
-                            ? "red"
-                            : "",
-                        marginBottom: "16px",
-                      }}
-                    />
-                    {errors?.laborRequests?.[index]?.exportLaborCost &&
-                      touched?.laborRequests?.[index]?.exportLaborCost && (
-                        <div style={errorStyle}>
-                          {errors.laborRequests[index].exportLaborCost}
-                        </div>
-                      )}
 
-                    <label htmlFor={`laborRequests[${index}].quantity`}>
-                      Quantity
-                    </label>
-                    <Field
-                      name={`laborRequests[${index}].quantity`}
-                      as={Input}
-                      type="number"
-                      style={{
-                        borderColor:
-                          errors?.laborRequests?.[index]?.quantity &&
-                          touched?.laborRequests?.[index]?.quantity
-                            ? "red"
-                            : "",
-                        marginBottom: "16px",
-                      }}
-                    />
-                    {errors?.laborRequests?.[index]?.quantity &&
-                      touched?.laborRequests?.[index]?.quantity && (
-                        <div style={errorStyle}>
-                          {errors.laborRequests[index].quantity}
-                        </div>
-                      )}
+                    <div className="flex flex-col md:flex-row justify-between">
+                      <InputField
+                        label="Export Labor Cost"
+                        name={`laborRequests[${index}].exportLaborCost`}
+                        type="number"
+                        error={
+                          errors.laborRequests?.[index]?.exportLaborCost &&
+                          touched.laborRequests?.[index]?.exportLaborCost
+                        }
+                      />
 
-                    <Button  type="primary" className="mb-6 bg-red-700 hover:text-black" onClick={() => remove(index)}>Remove Worker</Button>
+                      <InputField
+                        label="Quantity"
+                        name={`laborRequests[${index}].quantity`}
+                        type="number"
+                        error={
+                          errors.laborRequests?.[index]?.quantity &&
+                          touched.laborRequests?.[index]?.quantity
+                        }
+                      />
+                    </div>
+
+                    {index > 0 && (
+                      <Button
+                        type="primary"
+                        className="mb-6 bg-red-700 hover:text-black"
+                        onClick={() => remove(index)}
+                      >
+                        Remove Worker
+                      </Button>
+                    )}
                   </div>
                 ))}
                 <Button
@@ -306,13 +318,17 @@ const ConfigForm = () => {
                     push({ exportLaborCost: 0, quantity: 0, workerPriceId: "" })
                   }
                 >
-                 + Add Worker
+                  + Add Worker
                 </Button>
               </div>
             )}
           </FieldArray>
 
-          <Button type="primary" htmlType="submit" className="text-white bg-baseGreen font-semibold mx-auto">
+          <Button
+            type="primary"
+            htmlType="submit"
+            className="text-white bg-baseGreen font-semibold mx-auto"
+          >
             Submit
           </Button>
         </Form>

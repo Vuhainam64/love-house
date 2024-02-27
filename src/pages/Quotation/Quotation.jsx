@@ -1,7 +1,7 @@
 import React from 'react'
-import Navbar from '../../components/Navbar/Navbar'
+import { Navbar,Footer } from '../../components'
 import QuotationForm from './QuotationForm/QuotationForm'
-import Footer from '../../components/Footer/Footer'
+
 
 function Quotation() {
   return (

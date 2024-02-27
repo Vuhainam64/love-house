@@ -5,7 +5,7 @@ import * as Yup from "yup";
 import { Formik, Form, FieldArray, Field, ErrorMessage } from "formik";
 import { Input, Button } from "antd";
 
-import Modal from "../../../../components/Modal/Modal";
+import { Modal } from "../../../../components";
 import { alert } from "../../../../components/Alert/Alert";
 import {
   createDealByStaff,
@@ -40,12 +40,6 @@ export default function CreateDealByStaff({ onModalClose }) {
     setShowModal(true);
   };
 
-  // const initialValues = {
-  //   quotationId: projectDetail?.quotations?.[0]?.id,
-  //   rawMaterialDiscount: "",
-  //   furnitureDiscount: "",
-  //   laborDiscount: "",
-  // };
   useEffect(() => {
     if (projectDetail.quotations && projectDetail.quotations.length > 0) {
       setInitialValues({
@@ -58,7 +52,7 @@ export default function CreateDealByStaff({ onModalClose }) {
   }, [projectDetail]);
 
   const [initialValues, setInitialValues] = useState({
-    quotationId: "", // Initial value is an empty string, it will be updated in useEffect
+    quotationId: "", 
     rawMaterialDiscount: "",
     furnitureDiscount: "",
     laborDiscount: "",

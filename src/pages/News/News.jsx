@@ -3,9 +3,8 @@ import { NavLink } from "react-router-dom";
 import { getAllNews } from "../../constants/apiNews";
 import NewsBanner from "../../components/Banner/NewsBanner";
 import Breadcrumb from "../../components/Breadcrumb/Breadcrumb";
-import Navbar from "../../components/Navbar/Navbar";
-import Footer from "../../components/Footer/Footer";
-import LoadingOverlay from "../../components/Loading/LoadingOverlay";
+import { Navbar, Footer, LoadingOverlay } from "../../components";
+
 
 export default function News() {
   const [newsData, setNewsData] = useState([]);

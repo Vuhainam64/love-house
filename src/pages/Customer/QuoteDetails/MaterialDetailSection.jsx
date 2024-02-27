@@ -3,8 +3,8 @@ import { useParams } from "react-router-dom";
 
 import { getQuoteDetailForCustomer } from "../../../constants/apiQuotationOfCustomer";
 
-import CurrencyFormatter from "../../../components/Common/CurrencyFormatter";
-import LoadingOverlay from "../../../components/Loading/LoadingOverlay"
+import { CurrencyFormatter, LoadingOverlay } from "../../../components";
+
 
 export default function MaterialDetailSection() {
   const { id } = useParams();
@@ -30,7 +30,7 @@ export default function MaterialDetailSection() {
   return (
     <>
     <LoadingOverlay loading={loading} />
-      <h1 className="text-2xl font-semibold pb-5 pt-12">Details of materials</h1>
+      <h1 className="text-xl font-semibold pb-5 pt-12 uppercase">Details of materials</h1>
       <div className="px-5 pb-5 h-auto ">
         <div className="overflow-auto rounded-lg shadow hidden md:block">
           {quoteDetail.quotationDetails &&

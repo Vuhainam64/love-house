@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { NavLink, useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import StaffSidebar from "../../../components/Sidebar/StaffSidebar";
+import {
+  StaffSidebar,
+  ProjectStatusBadge,
+  LoadingOverlay,
+  TabsComponent,
+  DateFormatter,
+} from "../../../components";
 import { getAllRequestForStaff } from "../../../constants/apiQuotationOfStaff";
-import ProjectStatusBadge from "../../../components/QuotationComponent/Status/ProjectStatusBadge";
-import LoadingOverlay from "../../../components/Loading/LoadingOverlay";
-import TabsComponent from "../../../components/Tabs/TabsComponent";
-import DateFormatter from "../../../components/Common/DateFormatter";
 
 export default function AllRequest() {
   const [allRequest, setAllRequest] = useState([]);
@@ -26,13 +28,13 @@ export default function AllRequest() {
       try {
         const data = await getAllRequestForStaff();
         if (data && data.result) {
-          const formattedData = data.result.data.map((item) => ({
-            ...item,
-            createDate: formatDate(item.createDate),
-          }));
-          setAllRequest(formattedData);
+          // const formattedData = data.result.data.map((item) => ({
+          //   ...item,
+          //   createDate: formatDate(item.createDate),
+          // }));
+          setAllRequest(data.result.data);
 
-          filterProjectsByTab(selectedTab);
+          // filterProjectsByTab(selectedTab);
           setLoading(false);
         }
       } catch (error) {
@@ -43,24 +45,11 @@ export default function AllRequest() {
     fetchAllRequestForStaff();
   }, []);
 
-  const filterProjectsByTab = (index) => {
-    const filterFunction = tabs[index].filter;
-    const filtered = allRequest.filter(filterFunction);
-    setFilteredProjects(filtered);
-  };
-
-  const formatDate = (dateString) => {
-    const options = {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-    };
-    const formattedDate = new Date(dateString).toLocaleString("en-US", options);
-    return formattedDate;
-  };
+  // const filterProjectsByTab = (index) => {
+  //   const filterFunction = tabs[index].filter;
+  //   const filtered = allRequest.filter(filterFunction);
+  //   setFilteredProjects(filtered);
+  // };
 
   const handleTabChange = (index) => {
     setSelectedTab(index);
@@ -73,14 +62,16 @@ export default function AllRequest() {
       <div className="flex">
         <StaffSidebar />
 
-        <div className="h-screen flex-1 p-7">
-          <h1 className="text-2xl font-semibold pb-5">Quote Request</h1>
-          <TabsComponent
+        <div className="h-screen flex-1 p-7 bg-gray-100 ">
+          <h1 className="text-2xl font-semibold pb-5 uppercase text-center">
+            Quote Request
+          </h1>
+          {/* <TabsComponent
             items={tabs}
             initialTabTitle={currentContent}
             onTabChange={handleTabChange}
             defaultTabIndex={0}
-          />
+          /> */}
 
           <div className="p-5 h-screen bg-gray-100 ">
             <div className="overflow-auto rounded-lg shadow  md:block">
@@ -99,6 +90,12 @@ export default function AllRequest() {
                     <th className="p-3 text-sm font-semibold tracking-wide text-left">
                       Date
                     </th>
+                    <th className="p-3 text-sm font-semibold tracking-wide text-left">
+                      Customer
+                    </th>
+                    {/* <th className="p-3 text-sm font-semibold tracking-wide text-left">
+                      Phone
+                    </th> */}
                     <th className=" p-3 text-sm font-semibold tracking-wide text-left">
                       Status
                     </th>
@@ -108,7 +105,7 @@ export default function AllRequest() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
-                  {filteredProjects.map((item, index) => {
+                  {allRequest.map((item, index) => {
                     return (
                       <tr
                         key={item.id}
@@ -126,6 +123,12 @@ export default function AllRequest() {
                         <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
                           <DateFormatter dateString={item.createDate} />
                         </td>
+                        <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                          {item.account.firstName} {item.account.lastName}
+                        </td>
+                        {/* <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                        {item.account.phoneNumber} 
+                        </td> */}
                         <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
                           <ProjectStatusBadge
                             projectStatus={item.projectStatus}

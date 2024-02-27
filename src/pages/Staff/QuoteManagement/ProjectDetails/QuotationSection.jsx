@@ -3,9 +3,11 @@ import { useNavigate, useParams, NavLink } from "react-router-dom";
 
 import { getProjectById } from "../../../../constants/apiQuotationOfStaff";
 
-import QuotationStatusBadge from "../../../../components/QuotationComponent/Status/QuotationStatusBadge";
-import CurrencyFormatter from "../../../../components/Common/CurrencyFormatter";
-import LoadingOverlay from "../../../../components/Loading/LoadingOverlay";
+import {
+  QuotationStatusBadge,
+  CurrencyFormatter,
+  LoadingOverlay,
+} from "../../../../components";
 
 export default function QuotationSection() {
   const { id } = useParams();
@@ -17,7 +19,7 @@ export default function QuotationSection() {
   const fetchProjectDetail = async () => {
     try {
       const data = await getProjectById(id);
-      console.log('Fetched data:', data);
+
       if (data && data.result) {
         setProjectDetail(data.result.data);
         setLoading(false);
@@ -43,7 +45,7 @@ export default function QuotationSection() {
   return (
     <>
       <LoadingOverlay loading={loading} />
-      <h1 className="text-2xl font-semibold pb-5">Quotation Overview</h1>
+      <h1 className="text-xl font-semibold pb-5 uppercase">Quotation Overview</h1>
 
       <div className="p-5 h-auto ">
         <div className="overflow-auto rounded-lg shadow hidden md:block">
@@ -71,14 +73,19 @@ export default function QuotationSection() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
-            {projectDetail.quotations &&
+              {projectDetail.quotations &&
                 projectDetail.quotations.map((quotation, index) => (
-                  <tr key={quotation.id} className="bg-white text-black text-left">
+                  <tr
+                    key={quotation.id}
+                    className="bg-white text-black text-left"
+                  >
                     <td className="w-40 p-3 text-sm text-gray-700 whitespace-nowrap text-center">
                       {quotation.rawMaterialPrice ? (
                         <div className="flex items-center justify-center">
                           <span className="mr-2">
-                            <CurrencyFormatter amount={quotation.rawMaterialPrice} />
+                            <CurrencyFormatter
+                              amount={quotation.rawMaterialPrice}
+                            />
                           </span>
                           <span className="line-through text-gray-500">
                             <CurrencyFormatter
@@ -103,7 +110,9 @@ export default function QuotationSection() {
                       {quotation.furniturePrice ? (
                         <div className="flex items-center justify-center">
                           <span className="mr-2">
-                            <CurrencyFormatter amount={quotation.furniturePrice} />
+                            <CurrencyFormatter
+                              amount={quotation.furniturePrice}
+                            />
                           </span>
                           <span className="line-through text-gray-500">
                             <CurrencyFormatter
@@ -117,15 +126,16 @@ export default function QuotationSection() {
                       ) : (
                         "N/A"
                       )}
-                      {quotation.furnitureDiscount && quotation.furniturePrice > 0 && (
-                        <div className="text-red-500">
-                          {`(-${Math.abs(quotation.furnitureDiscount)}%)`}
-                        </div>
-                      )}
+                      {quotation.furnitureDiscount &&
+                        quotation.furniturePrice > 0 && (
+                          <div className="text-red-500">
+                            {`(-${Math.abs(quotation.furnitureDiscount)}%)`}
+                          </div>
+                        )}
                     </td>
 
                     <td className="w-40 p-3 text-sm text-gray-700 whitespace-nowrap text-center">
-                      {quotation.laborPrice >0  ? (
+                      {quotation.laborPrice > 0 ? (
                         <div className="flex items-center justify-center">
                           <span className="mr-2">
                             <CurrencyFormatter amount={quotation.laborPrice} />
@@ -158,15 +168,25 @@ export default function QuotationSection() {
                     </td>
                     <td className="p-3 text-sm text-gray-700 whitespace-nowrap text-center">
                       <span>
-                        <QuotationStatusBadge quotationStatus={quotation.quotationStatus} />
+                        <QuotationStatusBadge
+                          quotationStatus={quotation.quotationStatus}
+                        />
                       </span>
                     </td>
                     <td className="p-3 text-sm text-gray-700 text-center">
-                      <NavLink to={`/staff/quotation-detail/${quotation.id}`}>
-                        {quotation.quotationStatus === 0
-                          ? "Create Quotation Detail"
-                          : "View Quotation Detail"}
-                      </NavLink>
+                      {quotation.quotationStatus === 0 && (
+                        <NavLink
+                          to={`/staff/manage-material-detail/${quotation.id}`}
+                        >
+                          Create Quotation Detail
+                        </NavLink>
+                      )}
+
+                      {quotation.quotationStatus !== 0 && (
+                        <NavLink to={`/staff/quotation-detail/${quotation.id}`}>
+                          View Quotation Detail
+                        </NavLink>
+                      )}
                     </td>
                   </tr>
                 ))}

@@ -1,15 +1,15 @@
 import React from "react";
 import ConfigForm from "./ConfigForm";
-import StaffSidebar from "../../../components/Sidebar/StaffSidebar";
+import { StaffSidebar } from "../../../../components";
 
 const ConfigProject2 = () => {
   return (
     <>
       <div className="flex">
         <StaffSidebar />
-        <div className="flex flex-col items-center justify-center mx-auto">
+        <div className="flex flex-col items-center justify-center mx-auto px-24 w-full">
           <h1 className="my-6 text-4xl">Config Form</h1>
-          <div className="">
+          <div className="w-full mx-auto">
             <ConfigForm />
           </div>
         </div>

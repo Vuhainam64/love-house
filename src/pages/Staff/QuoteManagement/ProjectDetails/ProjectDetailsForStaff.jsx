@@ -1,6 +1,6 @@
 import React from "react";
 
-import StaffSidebar from "../../../../components/Sidebar/StaffSidebar";
+import { StaffSidebar } from "../../../../components";
 import ProjectSection from "./ProjectSection";
 import QuotationSection from "./QuotationSection";
 import ContractSection from "./ContractSection";

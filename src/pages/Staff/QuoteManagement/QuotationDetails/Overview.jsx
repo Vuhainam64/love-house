@@ -1,122 +1,50 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import {
-  getQuoteDetailForCustomer,
-  dealQuotation,
-} from "../../../constants/apiQuotationOfCustomer";
+import {getQuotationById} from "../../../../constants/apiQuotationOfStaff"
 
-import { alert } from "../../../components/Alert/Alert";
+import { QuotationStatusBadge, CurrencyFormatter, LoadingOverlay } from "../../../../components"
 
-import {
-  QuotationStatusBadge,
-  CurrencyFormatter,
-  LoadingOverlay,
-} from "../../../components";
 
-import DealForm from "../DealQuotation/DealForm";
-import SignContractForm from "../Contract/SignContractForm";
-import { toast } from "react-toastify";
+export default function Overview() {
+    const { id } = useParams();
+    const [quoteDetail, setQuoteDetail] = useState([]);
+    const [reloadContent, setReloadContent] = useState(false);
+    const [loading, setLoading] = useState(true);
 
-export default function OverviewSection() {
-  const { id } = useParams();
-  const [quoteDetail, setQuoteDetail] = useState([]);
-  const [reloadContent, setReloadContent] = useState(false);
-  const [loading, setLoading] = useState(true);
-
-  const fetchQuoteDetail = async () => {
-    try {
-      const data = await getQuoteDetailForCustomer(id);
-
-      if (data && data.result) {
-        setQuoteDetail(data.result.data);
-        setLoading(false);
-      }
-    } catch (error) {
-      console.error("Error fetching quote detail:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchQuoteDetail();
-  }, [id, reloadContent]);
-
-  const handleReloadContent = () => {
-    setReloadContent((prev) => !prev);
-  };
-
-  const calculateOriginalPrice = (price, discount) => {
-    const discountPercentage = Math.abs(discount);
-    const originalPrice = price / (1 - discountPercentage / 100);
-    return originalPrice;
-  };
-
-  const onDelete = () => {
-    // Logic for deleting or handling something
-    console.log("onDelete function called");
-  };
-
-  const handleConfirmQuotation = async () => {
-    try {
-      const swalWithBootstrapButtons = Swal.mixin({
-        customClass: {
-          confirmButton:
-            "bg-green-500 hover:bg-green-600 text-white mx-3 px-4 py-2 rounded",
-          cancelButton:
-            "bg-red-500 hover:bg-red-600 text-white mx-3 px-4 py-2 rounded",
-        },
-        buttonsStyling: false,
-      });
-
-      const result = await swalWithBootstrapButtons.fire({
-        title: "Are you sure?",
-        text: "Do you want to confirm this quote?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Yes, I agree",
-        cancelButtonText: "No, cancel",
-        reverseButtons: true,
-        focusConfirm: false,
-      });
-
-      if (result.isConfirmed) {
-        console.log("Confirming quotation with id:", id);
-        const result = await dealQuotation({ quotationId: id, status: true });
-        if (result.isSuccess) {
-          console.log("Confirmation successful!");
-          alert.alertSuccessWithTime(
-            "Confirm quotation successfully!",
-            "",
-            2000,
-            "25",
-            () => {}
-          );
-        } else {
-          for (var i = 0; i < result.messages.length; i++) {
-            toast.error(result.messages[i])
-          }
-          
+    const fetchQuoteDetail = async () => {
+      try {
+        const data = await getQuotationById(id);
+  
+        if (data && data.result) {
+          setQuoteDetail(data.result.data);
+          setLoading(false);
         }
-        setReloadContent(true);
-       
-      } 
-    } catch (error) {
-      console.error("Error confirming quotation:", error);
-      alert.alertFailedWithTime(
-        "Failed to delete quote detail. Please try again.",
-        "",
-        2000,
-        "25",
-        () => {}
-      );
-    }
-  };
-
+      } catch (error) {
+        console.error("Error fetching quote detail:", error);
+      }
+    };
+  
+    useEffect(() => {
+      fetchQuoteDetail();
+    }, [id, reloadContent]);
+    
+    const handleReloadContent = () => {
+        setReloadContent((prev) => !prev);
+      };
+    
+      const calculateOriginalPrice = (price, discount) => {
+        const discountPercentage = Math.abs(discount);
+        const originalPrice = price / (1 - discountPercentage / 100);
+        return originalPrice;
+      };
+    
   return (
     <>
-      <LoadingOverlay loading={loading} />
-      <h1 className="text-xl font-semibold pb-5 uppercase">Overview</h1>
-      <div className="px-5 pb-5 h-auto ">
+     <LoadingOverlay loading={loading} />
+     <div id="overview" className="">
+     <h1 className="text-xl font-semibold pb-5 uppercase">Overview</h1>
+      <div className="px-5 pb-5 h-auto " >
         <div className="overflow-auto rounded-lg shadow hidden md:block">
           <table className="w-full">
             <thead className="bg-gray-50 border-b-2 border-gray-200">
@@ -240,26 +168,10 @@ export default function OverviewSection() {
                   />
                 </td>
                 <td className="flex flex-col p-3 text-sm text-gray-700 text-center">
-                  {quoteDetail?.quotationDealings &&
-                    quoteDetail.quotationDealings.length === 0 && (
-                      <>
-                        {quoteDetail?.quotation?.quotationStatus === 1 && (
-                          <>
-                            <button
-                              className="bg-baseGreen text-white rounded-lg p-2 mb-2 font-semibold"
-                              onClick={handleConfirmQuotation}
-                            >
-                              Confirm Quotation
-                            </button>
-                            <DealForm onModalClose={handleReloadContent} />
-                          </>
-                        )}
-                      </>
-                    )}
+               
 
                   {quoteDetail?.quotation?.quotationStatus === 3 && (
-                    // <button>Sign Contract</button>
-                    <SignContractForm onModalClose={handleReloadContent} />
+                    <button>Sign Contract</button>
                   )}
                 </td>
               </tr>
@@ -267,6 +179,8 @@ export default function OverviewSection() {
           </table>
         </div>
       </div>
+     </div>
+      
     </>
-  );
+  )
 }
