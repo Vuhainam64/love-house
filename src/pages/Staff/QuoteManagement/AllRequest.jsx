@@ -59,10 +59,10 @@ export default function AllRequest() {
   return (
     <>
       <LoadingOverlay loading={loading} />
-      <div className="flex">
+      <div className="flex ">
         <StaffSidebar />
 
-        <div className="h-screen flex-1 p-7 bg-gray-100 ">
+        <div className="h-screen flex-1 p-7">
           <h1 className="text-2xl font-semibold pb-5 uppercase text-center">
             Quote Request
           </h1>

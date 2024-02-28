@@ -46,6 +46,12 @@ import {
   ConfigProject2,
   ProjectDetailsForStaff,
   ManageMaterialDetails,
+  ListQuotation,
+  ImportQuotation,
+  ViewSupplierPrice,
+  ViewSupplier,
+  MaterialList,
+  ImportInventory,
 } from "../pages";
 
 import { PageNotfound } from "../components";
@@ -160,6 +166,17 @@ export default function Routers() {
         { path: "list-project", element: <ProjectList /> },
         { path: "detail-project/:id", element: <ProjectDetail /> },
         { path: "edit-project/:id", element: <EditProject /> },
+
+        { path: "import-inventory", element: <ImportInventory /> },
+
+        { path: "list-material", element: <MaterialList /> },
+
+        { path: "view-supplier", element: <ViewSupplier /> },
+
+        { path: "view-supplier-price", element: <ViewSupplierPrice /> },
+
+        { path: "import-quotation", element: <ImportQuotation /> },
+        { path: "list-quotation", element: <ListQuotation /> },
       ],
     },
     {
