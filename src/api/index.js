@@ -13,6 +13,7 @@ export {
   sendOTP,
   sendResetPassOTP,
   submitOTPResetPass,
+  updateAccount
 }
 from "./Account";
 
@@ -120,3 +121,15 @@ export {
   getImportMaterialWithExcelError
 }
 from "./ImportExportInventory";
+
+export {
+  createExportPriceMaterial,
+  deleteExportPriceMaterialById,
+  getAllExportPriceMaterial,
+  getExportPriceMaterialById,
+  getExportPriceMaterialTemplate,
+  getLatestExportPriceMaterial,
+  importExportPriceMaterialFromExcelSheet,
+  updateExportPriceMaterial
+}
+from "./ExportPriceMaterial";

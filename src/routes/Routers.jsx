@@ -52,6 +52,7 @@ import {
   ViewSupplier,
   MaterialList,
   ImportInventory,
+  ExportPrice,
 } from "../pages";
 
 import { PageNotfound } from "../components";
@@ -170,6 +171,7 @@ export default function Routers() {
         { path: "import-inventory", element: <ImportInventory /> },
 
         { path: "list-material", element: <MaterialList /> },
+        { path: "export-price-material", element: <ExportPrice /> },
 
         { path: "view-supplier", element: <ViewSupplier /> },
 

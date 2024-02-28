@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Avatar, BGProfile } from "../../assets";
-import { CiCamera } from "react-icons/ci";
+import { CiCamera, CiEdit } from "react-icons/ci";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import {
@@ -9,21 +9,15 @@ import {
   FaLinkedinIn,
   FaXTwitter,
 } from "react-icons/fa6";
+import UpdateAccountPopup from "./UpdateAccountPopup";
 
 function Profile() {
   const user = useSelector((state) => state?.user?.user);
 
-  const [selectedFile, setSelectedFile] = useState(null);
-
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    setSelectedFile(file);
-  };
+  const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
 
   const handleEditClick = () => {
-    // Thực hiện logic khi nút "Edit" được nhấp
-    // Ở đây, bạn có thể gọi API hoặc thực hiện các hành động khác với file đã chọn (nếu có)
-    console.log("Edit clicked. Selected file:", selectedFile);
+    setIsEditPopupOpen(true);
   };
 
   return (
@@ -42,12 +36,7 @@ function Profile() {
               className="flex cursor-pointer items-center justify-center gap-2 rounded 
             bg-primary py-1 px-2 text-sm font-medium text-white hover:bg-opacity-80 xsm:px-4"
             >
-              <input
-                type="file"
-                id="fileInput"
-                onChange={handleFileChange}
-                style={{ display: "none" }}
-              />
+              <input type="file" id="fileInput" style={{ display: "none" }} />
               <span>
                 <CiCamera className="text-xl" />
               </span>
@@ -60,12 +49,21 @@ function Profile() {
           <div className="relative rounded-full border-4 border-slate-200 border-opacity-40">
             <img src={Avatar} alt="avatar" className="w-28 rounded-full" />
             <div
+              onClick={handleEditClick}
               className="absolute right-0 bottom-0 bg-orange-400 p-2 rounded-full 
             border shadow-md"
             >
-              <CiCamera className="text-xl text-white" />
+              <CiEdit className="text-xl text-white" />
             </div>
           </div>
+          {isEditPopupOpen && (
+            <div className="flex">
+              <UpdateAccountPopup
+                user={user}
+                onClose={() => setIsEditPopupOpen(false)}
+              />
+            </div>
+          )}
           <div className="mb-1.5 text-2xl font-semibold text-black">
             {user?.firstName} {user?.lastName}
           </div>

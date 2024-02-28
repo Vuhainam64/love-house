@@ -24,6 +24,7 @@ import control from "../../assets/images/control.png";
 import HouseLogo from "../../assets/images/HouseLogo.png";
 import { BiSolidDetail } from "react-icons/bi";
 import { IoPricetagsSharp } from "react-icons/io5";
+import { FcSalesPerformance } from "react-icons/fc";
 
 export default function StaffSidebar() {
   const [open, setOpen] = useState(true);
@@ -87,6 +88,13 @@ export default function StaffSidebar() {
       title: "Material",
       icon: <SiMaterialdesignicons />,
       submenu: [{ title: "Material List", path: "/dashboard/list-material" }],
+    },
+    {
+      title: "Sale Price",
+      icon: <FcSalesPerformance />,
+      submenu: [
+        { title: "Sale Price List", path: "/dashboard/export-price-material" },
+      ],
     },
     {
       title: "Supplier",

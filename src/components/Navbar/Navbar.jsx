@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { FaBars } from "react-icons/fa";
 import { AiOutlineClose } from "react-icons/ai";
@@ -48,9 +48,9 @@ export default function Navbar() {
         className="flex justify-between items-center w-full px-12 md:px-24 mx-auto fixed top-0 left-0 right-0 bg-white "
         style={{ zIndex: 1000 }}
       >
-        <div>
+        <Link to={"/"}>
           <img src={mainlogo} alt="" className="w-36" />
-        </div>
+        </Link>
 
         <div
           className={`nav-links md:static absolute bg-white md:min-h-fit min-h-[60vh] -left-2 transition-all duration-500 ease-in ${
@@ -63,7 +63,9 @@ export default function Navbar() {
               <NavLink
                 to="/"
                 className={`hover:text-baseGreen transition border-b-2 border-white hover:border-baseGreen ${
-                  location.pathname === "/" ? "bg-baseGreen text-white rounded-full px-4 py-1 hover:text-black hover:border-none" : ""
+                  location.pathname === "/"
+                    ? "bg-baseGreen text-white rounded-full px-4 py-1 hover:text-black hover:border-none"
+                    : ""
                 }`}
               >
                 Home
@@ -74,7 +76,9 @@ export default function Navbar() {
               <NavLink
                 to="/aboutus"
                 className={`hover:text-baseGreen transition border-b-2 border-white hover:border-baseGreen ${
-                  location.pathname === "/aboutus" ? "bg-baseGreen text-white rounded-full px-4 py-1 hover:text-black hover:border-none" : ""
+                  location.pathname === "/aboutus"
+                    ? "bg-baseGreen text-white rounded-full px-4 py-1 hover:text-black hover:border-none"
+                    : ""
                 }`}
               >
                 About Us
@@ -85,7 +89,9 @@ export default function Navbar() {
               <NavLink
                 to="/houseProject"
                 className={`hover:text-baseGreen transition border-b-2 border-white hover:border-baseGreen ${
-                  location.pathname === "/houseProject" ? "bg-baseGreen text-white rounded-full px-4 py-1 hover:text-black hover:border-none" : ""
+                  location.pathname === "/houseProject"
+                    ? "bg-baseGreen text-white rounded-full px-4 py-1 hover:text-black hover:border-none"
+                    : ""
                 }`}
               >
                 Projects
@@ -96,7 +102,9 @@ export default function Navbar() {
               <span
                 onClick={handleConstructionQuotesClick}
                 className={`hover:text-baseGreen transition border-b-2 border-white hover:border-baseGreen cursor-pointer ${
-                  location.pathname === "/quote-request" ? "bg-baseGreen text-white rounded-full px-4 py-1 hover:text-black hover:border-none" : ""
+                  location.pathname === "/quote-request"
+                    ? "bg-baseGreen text-white rounded-full px-4 py-1 hover:text-black hover:border-none"
+                    : ""
                 }`}
               >
                 Construction Quotes
@@ -107,7 +115,9 @@ export default function Navbar() {
               <NavLink
                 to="/news"
                 className={`hover:text-baseGreen transition border-b-2 border-white hover:border-baseGreen ${
-                  location.pathname === "/news" ? "bg-baseGreen text-white rounded-full px-4 py-1 hover:text-black hover:border-none" : ""
+                  location.pathname === "/news"
+                    ? "bg-baseGreen text-white rounded-full px-4 py-1 hover:text-black hover:border-none"
+                    : ""
                 }`}
               >
                 News
@@ -118,7 +128,9 @@ export default function Navbar() {
               <NavLink
                 to="/blog"
                 className={`hover:text-baseGreen transition border-b-2 border-white hover:border-baseGreen ${
-                  location.pathname === "/blog" ? "bg-baseGreen text-white rounded-full px-4 py-1 hover:text-black hover:border-none" : ""
+                  location.pathname === "/blog"
+                    ? "bg-baseGreen text-white rounded-full px-4 py-1 hover:text-black hover:border-none"
+                    : ""
                 }`}
               >
                 Blogs
@@ -128,7 +140,7 @@ export default function Navbar() {
         </div>
 
         <div className="flex items-center gap-6">
-          <BtnLoginRegister/>
+          <BtnLoginRegister />
 
           <button
             className="text-3xl cursor-pointer md:hidden"

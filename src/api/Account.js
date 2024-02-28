@@ -1,6 +1,7 @@
 import axios from "axios";
 import {
-    baseURL
+    baseURL,
+    usertoken
 } from ".";
 
 export const loginWithEmailPass = async (email, password) => {
@@ -111,6 +112,27 @@ export const submitOTPResetPass = async (email, recoveryCode, newPassword) => {
 export const getAllAccount = async (pageIndex, pageSize) => {
     try {
         const res = await axios.post(`${baseURL}/account/get-all-account?pageIndex=${pageIndex}&pageSize=${pageSize}`, []);
+        return res.data;
+    } catch (err) {
+        return null;
+    }
+};
+
+export const updateAccount = async (email, firstName, lastName, phoneNumber) => {
+    try {
+        const res = await axios.put(
+            `${baseURL}/account/update-account`, {
+                email,
+                firstName,
+                lastName,
+                phoneNumber,
+            }, {
+                headers: {
+                    Authorization: `Bearer ${usertoken}`,
+                    "Content-Type": "application/json",
+                },
+            }
+        );
         return res.data;
     } catch (err) {
         return null;

@@ -43,7 +43,7 @@ function Setting() {
                     >
                       Password
                     </NavLink>
-                    <NavLink
+                    {/* <NavLink
                       to={"/setting/account"}
                       className={({ isActive }) =>
                         isActive
@@ -52,7 +52,7 @@ function Setting() {
                       }
                     >
                       Edit account
-                    </NavLink>
+                    </NavLink> */}
                   </div>
                 </div>
               </div>
