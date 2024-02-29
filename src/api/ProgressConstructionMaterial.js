@@ -7,7 +7,7 @@ import {
 export const getRemainQuantityForFulfillment = async (QuotationDetailId) => {
     try {
         const res = await axios.get(
-            `${baseURL}/progress-construction-material/Get-remain-quantity-for-fulfillment-by-quotation-detail-Id/${QuotationDetailId}`, {
+            `${baseURL}/progress-construction-material/get-remain-quantity-for-fulfillment-by-quotation-detail-Id/${QuotationDetailId}`, {
                 params: {
                     QuotationDetailId,
                 },

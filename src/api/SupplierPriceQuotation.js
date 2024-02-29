@@ -6,7 +6,7 @@ import {
 
 export const uploadSupplierQuotationWithExcelFile = async (excelData) => {
     try {
-        const res = await axios.post(`${baseURL}/supplier-price-quotation/Upload-supplier-quotation-with-excel-file`, excelData, {
+        const res = await axios.post(`${baseURL}/supplier-price-quotation/upload-supplier-quotation-with-excel-file`, excelData, {
             headers: {
                 Authorization: `Bearer ${usertoken}`,
                 "Content-Type": "multipart/form-data",
@@ -22,7 +22,7 @@ export const uploadSupplierQuotationWithExcelFile = async (excelData) => {
 
 export const getUploadSupplierQuotationWithExcelFileError = async (excelData) => {
     try {
-        const res = await axios.post(`${baseURL}/supplier-price-quotation/Upload-supplier-quotation-with-excel-file`, excelData, {
+        const res = await axios.post(`${baseURL}/supplier-price-quotation/upload-supplier-quotation-with-excel-file`, excelData, {
             headers: {
                 Authorization: `Bearer ${usertoken}`,
                 "Content-Type": "multipart/form-data",
