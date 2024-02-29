@@ -22,11 +22,16 @@ export default function CustomerSidebar() {
     },
     // { title: "Quotation Detail", icon: <MdOutlinePriceChange /> },
     // { title: "Deal Quotation", icon: <GrTransaction /> },
-    { title: "Accounts", icon: <FaRegCircleUser />, gap: true },
+    {
+      title: "Accounts",
+      icon: <FaRegCircleUser />,
+      gap: true,
+      path: "/customer/account/profile",
+    },
     { title: "Transaction ", icon: <RiWallet3Line /> },
 
     // { title: "Analytics", icon: "Chart" },
-    { title: "Go to Home page", icon: <RiHome4Line />, gap: true, path: "/",},
+    { title: "Go to Home page", icon: <RiHome4Line />, gap: true, path: "/" },
     { title: "Log out", icon: <RiLogoutCircleRLine /> },
   ];
   return (

@@ -42,6 +42,7 @@ export { default as ImportQuotation } from "./Dashboard/SupplierQuotation/Import
 export { default as ListQuotation } from "./Dashboard/SupplierQuotation/ListQuotation";
 
 export { default as AboutUs } from "./AboutUs/AboutUs";
+export { default as CustomerAccount } from "./Customer/Account/Account";
 
 // House Projects
 export { default as HouseProject } from "../pages/HouseProjects/HouseProject";

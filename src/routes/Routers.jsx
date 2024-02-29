@@ -55,6 +55,7 @@ import {
   ExportPrice,
   ExportInventory,
   QuotationDetail,
+  CustomerAccount,
 } from "../pages";
 
 import { PageNotfound } from "../components";
@@ -118,6 +119,15 @@ export default function Routers() {
         {
           path: "/customer/payment-progress/:id",
           element: <PaymentProgress />,
+        },
+        {
+          path: "/customer/account",
+          element: <CustomerAccount />,
+          children: [
+            { path: "profile", element: <Profile /> },
+            { path: "password", element: <Password /> },
+            { path: "account", element: <Account /> },
+          ],
         },
       ],
     },
