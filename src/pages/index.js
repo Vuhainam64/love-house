@@ -27,6 +27,8 @@ export { default as ProjectDetail } from "./Dashboard/HouseProjectPage/ProjectDe
 export { default as EditProject } from "./Dashboard/HouseProjectPage/EditProject";
 
 export { default as ImportInventory } from "./Dashboard/Inventory/ImportInventory";
+export { default as ExportInventory } from "./Dashboard/Inventory/ExportInventory";
+export { default as QuotationDetail } from "./Dashboard/Inventory/QuotationDetail";
 
 export { default as CreateMaterial } from "./Dashboard/Material/CreateMaterial";
 export { default as MaterialList } from "./Dashboard/Material/MaterialList";

@@ -82,6 +82,7 @@ export default function StaffSidebar() {
       icon: <MdInventory />,
       submenu: [
         { title: "List Inventory", path: "/dashboard/import-inventory" },
+        { title: "Export Inventory", path: "/dashboard/export-inventory" },
       ],
     },
     {
