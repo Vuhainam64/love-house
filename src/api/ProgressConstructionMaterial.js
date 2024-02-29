@@ -46,3 +46,24 @@ export const updateProgressConstructionMaterial = async (id, quantity, quotation
         return null;
     }
 };
+
+export const createProgressConstructionMaterial = async (quotationDetailId, quantity) => {
+    try {
+        const res = await axios.post(
+            `${baseURL}/progress-construction-material/create-progress-construction-material`, [{
+                quotationDetailId,
+                quantity,
+            }], {
+                headers: {
+                    Authorization: `Bearer ${usertoken}`,
+                },
+                withCredentials: true,
+            }
+        );
+
+        return res.data;
+    } catch (err) {
+        console.error("Error updating progress construction material:", err);
+        return null;
+    }
+};

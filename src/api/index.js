@@ -146,6 +146,7 @@ from "./QuotationDetail";
 
 export {
   getRemainQuantityForFulfillment,
-  updateProgressConstructionMaterial
+  updateProgressConstructionMaterial,
+  createProgressConstructionMaterial
 }
 from "./ProgressConstructionMaterial"

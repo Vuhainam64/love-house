@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Space, Table, Modal, Input, notification } from "antd";
+import { Space, Table, Input, notification } from "antd";
 
 import { FaChevronRight } from "react-icons/fa";
 import { IoReturnUpBack } from "react-icons/io5";
 import { MdInventory } from "react-icons/md";
 
 import {
+  createProgressConstructionMaterial,
   getAllApprovedQuotationDetailsByProjectId,
   getRemainQuantityForFulfillment,
-  updateProgressConstructionMaterial,
 } from "../../../api";
 
 const QuotationDetail = () => {
@@ -17,7 +17,6 @@ const QuotationDetail = () => {
 
   const [quotationDetailsData, setQuotationDetailsData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [visible, setVisible] = useState(false);
   const [fulfillmentQuantity, setFulfillmentQuantity] = useState(0);
   const [selectedItem, setSelectedItem] = useState(null);
 
@@ -44,15 +43,13 @@ const QuotationDetail = () => {
 
   const handleFulfill = (record) => {
     setSelectedItem(record);
-    setVisible(true);
   };
 
   const handleOk = async () => {
     try {
-      const result = await updateProgressConstructionMaterial(
+      const result = await createProgressConstructionMaterial(
         selectedItem.id,
-        fulfillmentQuantity,
-        selectedItem.quotationId
+        fulfillmentQuantity
       );
       console.log("aaaa: ", selectedItem);
       if (result.isSuccess) {
@@ -70,8 +67,6 @@ const QuotationDetail = () => {
           })
         );
         setQuotationDetailsData(dataWithRemain);
-
-        setVisible(false);
       } else {
         notification.error({
           message: "Fulfillment failed",
@@ -80,11 +75,47 @@ const QuotationDetail = () => {
       }
     } catch (error) {
       console.error("Error fulfilling:", error);
+    } finally {
+      setSelectedItem(null);
     }
   };
 
   const handleCancel = () => {
-    setVisible(false);
+    setSelectedItem(null);
+  };
+
+  const renderPopup = () => {
+    return (
+      selectedItem && (
+        <div className="absolute w-full h-full flex items-center justify-center">
+          <div className="bg-white p-6 rounded-md w-96 border shadow-md">
+            <p className="mb-2">Material Name: {selectedItem.material.name}</p>
+            <p className="mb-2">Remain: {selectedItem.remain.result.data}</p>
+            <Input
+              type="number"
+              placeholder="Enter fulfillment quantity"
+              value={fulfillmentQuantity}
+              onChange={(e) => setFulfillmentQuantity(e.target.value)}
+              className="mb-2"
+            />
+            <div className="flex justify-end">
+              <button
+                onClick={handleOk}
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
+              >
+                Submit
+              </button>
+              <button
+                onClick={handleCancel}
+                className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )
+    );
   };
 
   const columns = [
@@ -122,8 +153,9 @@ const QuotationDetail = () => {
       ),
     },
   ];
+
   return (
-    <div className="flex flex-col p-8">
+    <div className="relative flex flex-col p-8">
       <div className="flex items-center space-x-2 text-xl">
         <MdInventory />
         <div>Import Export</div>
@@ -157,26 +189,7 @@ const QuotationDetail = () => {
         loading={loading}
         pagination={{ pageSize: 5 }}
       />
-
-      <Modal
-        title="Fulfillment"
-        open={visible}
-        onOk={handleOk}
-        onCancel={handleCancel}
-      >
-        {selectedItem && (
-          <div>
-            <p>Material Name: {selectedItem.material.name}</p>
-            <p>Remain: {selectedItem.remain.result.data}</p>
-            <Input
-              type="number"
-              placeholder="Enter fulfillment quantity"
-              value={fulfillmentQuantity}
-              onChange={(e) => setFulfillmentQuantity(e.target.value)}
-            />
-          </div>
-        )}
-      </Modal>
+      {renderPopup()}
     </div>
   );
 };
