@@ -17,7 +17,7 @@ const InputField = ({ label, name, type, value, readOnly }) => {
         <input
           {...field}
           type={type}
-          value={value}
+          value={value !== undefined && value !== "0" ? value : field.value}
           readOnly={readOnly}
           style={{
             borderColor: meta.touched && meta.error ? "red" : "",

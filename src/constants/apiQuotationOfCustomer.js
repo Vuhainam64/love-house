@@ -12,6 +12,7 @@ export const quoteRequest = async (userData, accountId) => {
     formData.append("Area", userData.area);
     formData.append("LandDrawingFile", userData.landDrawingFileUrl); 
     formData.append("Type", userData.constructionType);
+    formData.append("AddressProject", userData.address);
     formData.append("AccountId", accountId);
  
 

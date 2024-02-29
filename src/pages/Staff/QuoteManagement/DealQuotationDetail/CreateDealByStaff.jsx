@@ -46,7 +46,7 @@ export default function CreateDealByStaff({ onModalClose }) {
         quotationId: projectDetail.quotations[0].id,
         rawMaterialDiscount: "",
         furnitureDiscount: "",
-        laborDiscount: "",
+        laborDiscount: 0,
       });
     }
   }, [projectDetail]);
@@ -55,7 +55,7 @@ export default function CreateDealByStaff({ onModalClose }) {
     quotationId: "", 
     rawMaterialDiscount: "",
     furnitureDiscount: "",
-    laborDiscount: "",
+    laborDiscount: 0,
   });
 
   const validationSchema = Yup.object().shape({
@@ -67,10 +67,7 @@ export default function CreateDealByStaff({ onModalClose }) {
       .required("Required")
       .positive("Must be positive")
       .integer("Must be an integer"),
-    laborDiscount: Yup.number()
-      .required("Required")
-      .positive("Must be positive")
-      .integer("Must be an integer"),
+    
   });
 
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
@@ -168,15 +165,7 @@ export default function CreateDealByStaff({ onModalClose }) {
                     </div>
                   )}
 
-                  <label htmlFor="laborDiscount" className="">
-                    Labor Discount
-                  </label>
-                  <Field name="laborDiscount" as={Input} type="number" />
-                  {errors.laborDiscount && touched.laborDiscount && (
-                    <div style={{ color: "red", marginBottom: "12px" }}>
-                      {errors.laborDiscount}
-                    </div>
-                  )}
+                  
 
                   <Button
                     type="primary"

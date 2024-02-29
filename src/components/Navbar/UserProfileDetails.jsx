@@ -14,6 +14,7 @@ function UserProfileDetails() {
   const navigate = useNavigate();
 
   const user = useSelector((state) => state.user?.user);
+  //const role = useSelector((state) => state.user?.role);
   const auth = useSelector((state) => state?.auth);
 
   const isAdminOrStaff =

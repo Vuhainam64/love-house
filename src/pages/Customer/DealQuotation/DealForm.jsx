@@ -25,7 +25,8 @@ export default function DealForm({ onModalClose }) {
     quotationId: id,
     materialDiscount: "",
     furnitureDiscount: "",
-    laborDiscount: "",
+    laborDiscount: 0,
+    description: "",
   };
 
   const validationSchema = Yup.object().shape({
@@ -37,10 +38,7 @@ export default function DealForm({ onModalClose }) {
       .required("Required")
       .positive("Must be positive")
       .integer("Must be an integer"),
-    laborDiscount: Yup.number()
-      .required("Required")
-      .positive("Must be positive")
-      .integer("Must be an integer"),
+   
   });
 
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
@@ -50,6 +48,7 @@ export default function DealForm({ onModalClose }) {
         materialDiscount: values.materialDiscount,
         furnitureDiscount: values.furnitureDiscount,
         laborDiscount: values.laborDiscount,
+        description: values.description,
       };
 
       console.log("Form data submitted:", formattedData);
@@ -78,6 +77,7 @@ export default function DealForm({ onModalClose }) {
       setSubmitting(false);
     }
   };
+  
 
   return (
     <>
@@ -137,13 +137,23 @@ export default function DealForm({ onModalClose }) {
                     </div>
                   )}
 
-                  <label htmlFor="laborDiscount" className="">
+                  {/* <label htmlFor="laborDiscount" className="">
                     Labor Discount
                   </label>
                   <Field name="laborDiscount" as={Input} type="number" />
                   {errors.laborDiscount && touched.laborDiscount && (
                     <div style={{ color: "red", marginBottom: "12px" }}>
                       {errors.laborDiscount}
+                    </div>
+                  )} */}
+
+                  <label htmlFor="description" className="">
+                    Description
+                  </label>
+                  <Field name="description"  as={Input} type="text" />
+                  {errors.description && touched.description && (
+                    <div style={{ color: "red", marginBottom: "12px" }}>
+                      {errors.description}
                     </div>
                   )}
 

@@ -35,7 +35,7 @@ export default function CustomerSidebar() {
     { title: "Log out", icon: <RiLogoutCircleRLine /> },
   ];
   return (
-    <div className="flex">
+    <div className="flex pr-4">
       <div
         className={` ${
           open ? "w-64" : "w-20 "
@@ -43,7 +43,7 @@ export default function CustomerSidebar() {
       >
         <img
           src={control}
-          className={`absolute cursor-pointer -right-5 top-9 w-7  border-baseGreen
+          className={`absolute cursor-pointer -right-2 top-9 w-7  border-baseGreen
            border-2 rounded-full  ${!open && "rotate-180"}`}
           onClick={() => setOpen(!open)}
         />

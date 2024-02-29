@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Formik, Form, FieldArray, Field, ErrorMessage } from "formik";
 import { Input, Button, Space, message } from "antd";
-import axios from "axios";
-import * as Yup from "yup";
+
 import { getAllWorker } from "../../../../constants/apiWorker";
 import {
   updateProjectConfig,
@@ -28,7 +27,7 @@ const ConfigForm = () => {
   const errorStyle = { color: "red", marginBottom: "20px" };
 
   const initialValues = {
-    id: projectId || "",
+    id: id,
     sandMixingRatio: 0,
     cementMixingRatio: 0,
     stoneMixingRatio: 0,
@@ -65,8 +64,8 @@ const ConfigForm = () => {
         const data = await getProjectById(id);
         if (data && data.result) {
           setProjectDetail(data.result.data);
-          fetchedProjectId = data.result.data?.project?.id || "";
-          setProjectId(fetchedProjectId);
+          // fetchedProjectId = data.result.data?.project?.id || "";
+          // setProjectId(fetchedProjectId);
         } else {
           console.error("Invalid data format:", data);
         }
@@ -86,7 +85,7 @@ const ConfigForm = () => {
       validationSchema={projectConfigValidationSchema}
       onSubmit={async (values, { setSubmitting }) => {
         const formattedData = {
-          id: projectId,
+          id: id,
           sandMixingRatio: values.sandMixingRatio,
           cementMixingRatio: values.cementMixingRatio,
           stoneMixingRatio: values.stoneMixingRatio,
@@ -105,17 +104,24 @@ const ConfigForm = () => {
         };
 
         try {
-          await updateProjectConfig(formattedData);
+          const result = await updateProjectConfig(formattedData);
           console.log(values);
-
-          alert.alertSuccessWithTime(
-            "Create Config Successfully",
-            "",
-            2000,
-            "30",
-            () => {}
-          );
-          navigate("/staff/all-request");
+          if (result.isSuccess) {
+            alert.alertSuccessWithTime(
+              "Create Config Successfully",
+              "",
+              2000,
+              "30",
+              () => {}
+            );
+            navigate(`/staff/project-detail/${id}`);
+          }else {
+            for (var i = 0; i < result.messages.length; i++) {
+              toast.error(result.messages[i])
+            }
+            
+          }
+          
         } catch (error) {
           console.error("Error updating project config:", error);         
           alert.alertFailedWithTime(
@@ -136,7 +142,7 @@ const ConfigForm = () => {
             label="ID"
             name="id"
             type="text"
-            value={projectId}
+            value={id}
             readOnly
           />
           <p className="font-semibold text-l mx-4 border-t-2 border-gray-300 pt-6">Properties</p>
@@ -186,29 +192,6 @@ const ConfigForm = () => {
             />
           </div>
 
-          <p className="font-semibold text-l mx-4 border-t-2 border-gray-300 pt-6">Discount (Optional)</p>
-          <div className="flex flex-col md:flex-row justify-between mt-6 gap-x-10">
-            <InputField
-              label="Raw Material"
-              name="rawMaterialDiscount"
-              type="number"
-              error={errors.rawMaterialDiscount && touched.rawMaterialDiscount}
-            />
-
-            <InputField
-              label="Furniture"
-              name="furnitureDiscount"
-              type="number"
-              error={errors.furnitureDiscount && touched.furnitureDiscount}
-            />
-
-            <InputField
-              label="Labor"
-              name="laborDiscount"
-              type="number"
-              error={errors.laborDiscount && touched.laborDiscount}
-            />
-          </div>
 
           <InputField
             label="Estimated Time Of Completion (days)"

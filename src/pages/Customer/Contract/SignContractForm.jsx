@@ -9,7 +9,8 @@ import { Input, Button } from "antd";
 import { Modal } from "../../../components";
 import { alert } from "../../../components/Alert/Alert";
 
-import { getContractProgressById, signContract } from "../../../constants/apiContract";
+import { getContractProgressById, resendVerificationCodeByContractId, signContract } from "../../../constants/apiContract";
+import { toast } from "react-toastify";
 
 
 
@@ -39,11 +40,32 @@ export default function SignContractForm({ onModalClose }) {
     fetchContract();
   }, [id]);
 
+  // const handleButtonClick = () => {
+  //   setShowModal(true);
+  // };
   const handleButtonClick = () => {
-    setShowModal(true);
+    console.log("he",user)
+    if (user?.phoneNumber ==null || user.phoneNumber == "") {
+      // If phone number is empty, show confirmation modal
+      Swal.fire({
+        title: "Update Phone Number",
+        text: "Your phone number is empty. Do you want to update it?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, update it!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // If confirmed, navigate to update account page
+          navigate("/update-account");
+        }
+      });
+    } else {
+      // If phone number is not empty, proceed with sign API
+      setShowModal(true);
+    }
   };
-
-  
 const initialValues = {
   contractId: id,
   verificationCode: "",
@@ -55,9 +77,27 @@ const validationSchema = Yup.object().shape({
     .required("Required")
 });
  
-
+const handleResend= async()=>{
+var result = await resendVerificationCodeByContractId(id);
+if(result.isSuccess){
+  toast.success("Resend successfully");
+}
+}
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     try {
+      if (!user?.phoneNumber) {
+        // Handle case when user's phone number is empty
+        alert.alertFailedWithTime(
+          "Failed To Sign Contract",
+          "Please update your phone number first",
+          2500,
+          "25",
+          () => {}
+        );
+        setShowModal(false);
+        onModalClose();
+        return;
+      }
       const formattedData = {
         contractId: values.contractId,
         verificationCode: values.verificationCode,
@@ -105,7 +145,7 @@ const validationSchema = Yup.object().shape({
             <h3 className="text-xl font-semibold text-gray-900 mb-5">
               Sign Contract
             </h3>
-
+ <button style={{cursor:'pointer'}} onClick={() => handleResend()}>Resend verification code</button>
             <Formik
               initialValues={initialValues}
               validationSchema={validationSchema}

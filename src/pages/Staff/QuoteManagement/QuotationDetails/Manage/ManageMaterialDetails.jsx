@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, NavLink } from "react-router-dom";
-
+import { toast } from "react-toastify";
 import {
   getQuoteDetailByQuoteId,
   publicQuotationForCustomer,
@@ -9,11 +9,19 @@ import {
 } from "../../../../../constants/apiQuotationOfStaff";
 import { alert } from "../../../../../components/Alert/Alert";
 
-import { StaffSidebar, CurrencyFormatter, LoadingOverlay } from "../../../../../components";
+import {
+  StaffSidebar,
+  CurrencyFormatter,
+  LoadingOverlay,
+  DBHeader,
+} from "../../../../../components";
 import FormCreateMaterialDetail from "./FormCreateMaterialDetail";
 import FormUpdateMaterialDetail from "./FormUpdateMaterialDetail";
 import DeleteMaterialDetail from "./DeleteMaterialDetail";
+import InfoSection from "./InforSection";
 
+import MaterialGrid from "../Grid/MaterialGrid";
+import SendQuotationResult from "./SendQuotationResult";
 
 export default function ManageMaterialDetails() {
   const { id } = useParams();
@@ -23,19 +31,6 @@ export default function ManageMaterialDetails() {
   const [reloadContent, setReloadContent] = useState(false);
   const navigate = useNavigate();
   const [projectDetail, setProjectDetail] = useState({});
-
-  const handleBack = () => {
-    const projectDetailId = projectDetail?.project?.id;
-
-    if (projectDetailId) {
-      navigate(`/staff/project-detail/${projectDetailId}`);
-    } else {
-      // Handle the case when projectDetail or its 'project' property is undefined
-      console.error(
-        "Cannot navigate to project detail: projectDetail or 'project' is undefined"
-      );
-    }
-  };
 
   const fetchQuotation = async () => {
     try {
@@ -68,90 +63,142 @@ export default function ManageMaterialDetails() {
     fetchQuoteDetail();
   }, [id, reloadContent]);
 
-
-
   const handleReloadContent = () => {
     setReloadContent((prev) => !prev);
   };
 
-  const handlePublicProject = async () => {
-    try {
-      const swalWithBootstrapButtons = Swal.mixin({
-        customClass: {
-          confirmButton:
-            "bg-green-500 hover:bg-green-600 text-white mx-3 px-4 py-2 rounded",
-          cancelButton:
-            "bg-red-500 hover:bg-red-600 text-white mx-3 px-4 py-2 rounded",
-        },
-        buttonsStyling: false,
-      });
+  // const handlePublicProject = async () => {
+  //   try {
+  //     const projectID = quote?.quotation?.projectId
+  //     const projectDetailsResponse = await getProjectById(projectID);
 
-      const result = await swalWithBootstrapButtons.fire({
-        title: "Are you sure?",
-        text: "Do you want to public quotation detail for customer?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Yes, public it",
-        cancelButtonText: "No, cancel",
-        reverseButtons: true,
-        focusConfirm: false,
-      });
+  //     if (projectDetailsResponse && projectDetailsResponse.result) {
+  //       const projectDetails = projectDetailsResponse.result.data;
 
-      if (result.isConfirmed) {
-        const data = await publicQuotationForCustomer(id);
-        console.log("check data: ", data);
-        handleReloadContent();
-        alert.alertSuccessWithTime(
-          "Public Quote detail Successfully!",
-          "",
-          2000,
-          "25",
-          () => {}
-        );
-        //navigate("")
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        alert.alertFailedWithTime("Failed to public", "", 2000, "25", () => {});
-      }
-    } catch (error) {
-      alert.alertFailedWithTime(
-        "Failed to public quote detail. ",
-        "Please try again.",
-        2000,
-        "25",
-        () => {}
-      );
-    }
-  };
+  //       const constructionType = projectDetails.constructionType;
+
+  //       if (constructionType === 1) {
+  //         const quoteDetailsResponse = await getQuoteDetailByQuoteId(id);
+
+  //         if (quoteDetailsResponse && quoteDetailsResponse.result) {
+  //           const quoteDetails = quoteDetailsResponse.result.data;
+
+  //           const hasLamp = quoteDetails.some(
+  //             (item) => item.material.name === "Lamp"
+  //           );
+
+  //           if (!hasLamp) {
+  //             alert.alertFailedWithTime(
+  //               "Failed to send quotation results to customers ",
+  //               "This is a completed project, please add interior materials",
+  //               2000,
+  //               "25",
+  //               () => {}
+  //             );
+  //             return;
+  //           }
+  //         }
+  //       }
+
+  //       const swalWithBootstrapButtons = Swal.mixin({
+  //         customClass: {
+  //           confirmButton:
+  //             "bg-green-500 hover:bg-green-600 text-white mx-3 px-4 py-2 rounded",
+  //           cancelButton:
+  //             "bg-red-500 hover:bg-red-600 text-white mx-3 px-4 py-2 rounded",
+  //         },
+  //         buttonsStyling: false,
+  //       });
+
+  //       const result = await swalWithBootstrapButtons.fire({
+  //         title: "Are you sure?",
+  //         text: "Do you want to send quotation results to customer?",
+  //         icon: "warning",
+  //         showCancelButton: true,
+  //         confirmButtonText: "Yes, public it",
+  //         cancelButtonText: "No, cancel",
+  //         reverseButtons: true,
+  //         focusConfirm: false,
+  //       });
+
+  //       if (result.isConfirmed) {
+  //         const data = await publicQuotationForCustomer(id);
+
+  //         if (data && data.isSuccess) {
+  //           handleReloadContent();
+  //           alert.alertSuccessWithTime(
+  //             "Public Quote detail Successfully!",
+  //             "",
+  //             2000,
+  //             "25",
+  //             () => {}
+  //           );
+
+  //           navigate(`/staff/project-detail/${projectID}`);
+  //         } else {
+  //           alert.alertFailedWithTime(
+  //             "Failed to send quotation results to customers",
+  //             "This is a completed project, please add interior materials",
+  //             2000,
+  //             "25",
+  //             () => {}
+  //           );
+  //         }
+  //       } else {
+  //         alert.alertFailedWithTime("Failed to send quotation results to customers", "", 2000, "25", () => {});
+  //       }
+  //     }
+  //   } catch (error) {
+  //     // Handle error
+  //     alert.alertFailedWithTime("Failed to send quotation results to customers", "", 2000, "25", () => {});
+  //   }
+  // };
 
   return (
     <>
       <LoadingOverlay loading={loading} />
-      <div className="flex">
+      <div className="flex h-auto overflow-hidden">
         <StaffSidebar />
 
-        <div className="h-screen flex-1 p-7">
-          <h1 className="text-3xl font-semibold pb-4 pl-4">Quote Detail</h1>
+        <div className=" h-screen flex-1 ">
+          <DBHeader />
+          <h1 className="text-2xl font-semibold pb-2 mt-5 mb-5 pl-4 uppercase ">
+            Quote Detail
+          </h1>
+          <div className=" sticky top-0  bg-white  overflow-hidden">
+            <InfoSection />
+          </div>
+
+          {quote?.quotation?.rawMaterialPrice > 0 && (
+            <div className="flex text-xl font-semibold pb-2 mt-5 pl-4 uppercase ">
+              <span>Total:</span>
+              <div className="ml-4 text-red-500">
+                <CurrencyFormatter
+                  amount={quote?.quotation?.rawMaterialPrice}
+                />
+              </div>
+            </div>
+          )}
 
           {quote?.quotation?.quotationStatus === 0 && (
             <div className="flex items-center">
               <div className="ml-4">
                 <FormCreateMaterialDetail onModalClose={handleReloadContent} />
               </div>
-              <button
+              {/* <button
                 onClick={handlePublicProject}
                 className="text-white bg-green-600 hover:bg-green-800 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center my-6 ml-4 "
               >
                 Public Project
-              </button>
+              </button> */}
+              <SendQuotationResult
+                projectId={quote?.quotation?.projectId}
+                quoteId={id}
+                handleReloadContent={handleReloadContent}
+              />
             </div>
           )}
-
-          {/* <button className="flex items-center" onClick={handleBack}>
-          Back
-        </button>
-       */}
-
-          <div className="p-5 h-screen bg-gray-100 ">
+          <div className="p-5 h-screen overflow-hidden">
             <div className="overflow-auto rounded-lg shadow hidden md:block">
               <table className="w-full">
                 <thead className="bg-gray-50 border-b-2 border-gray-200">
@@ -171,9 +218,11 @@ export default function ManageMaterialDetails() {
                     <th className="w-24 p-3 text-sm font-semibold tracking-wide text-right">
                       Quantity
                     </th>
+
                     <th className=" p-3 text-sm font-semibold tracking-wide text-right">
                       Total
                     </th>
+
                     {quote?.quotation?.quotationStatus === 0 && (
                       <th className=" p-3 text-sm font-semibold tracking-wide">
                         Action
@@ -248,6 +297,12 @@ export default function ManageMaterialDetails() {
                 </tbody>
               </table>
             </div>
+
+            <MaterialGrid
+              quote={quote}
+              quoteDetail={quoteDetail}
+              handleReloadContent={handleReloadContent}
+            />
           </div>
         </div>
       </div>

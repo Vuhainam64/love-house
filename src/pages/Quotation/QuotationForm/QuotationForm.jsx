@@ -19,6 +19,7 @@ export default function QuotationForm() {
   const [area, setArea] = useState("");
   const [constructionType, setConstructionType] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
+  const [address, setAddress] = useState("");
   const [progress, setProgress] = useState(null);
   // const [isLoading, setisLoading] = useState(false);
 
@@ -27,6 +28,8 @@ export default function QuotationForm() {
     area: "",
     constructionType: "",
     selectedImage: "",
+    address:""
+
   });
 
   const uploadImage = (e) => {
@@ -69,6 +72,7 @@ export default function QuotationForm() {
         area: area,
         landDrawingFileUrl: selectedImage ? selectedImage : null,
         constructionType: constructionType,
+        address: address,
       };
       const result = await Swal.fire({
         title: "Are you sure?",
@@ -122,6 +126,7 @@ export default function QuotationForm() {
       area: "",
       constructionType: "",
       selectedImage: "",
+      address:"",
     };
 
     if (!floor) {
@@ -140,12 +145,16 @@ export default function QuotationForm() {
     if (!selectedImage) {
       newErrors.selectedImage = "Please select an image!";
     }
+    if (!address) {
+      newErrors.address = "Address is required!";
+    }
 
     if (
       newErrors.floor ||
       newErrors.area ||
       newErrors.constructionType ||
-      newErrors.selectedImage
+      newErrors.selectedImage ||
+      newErrors.address
     ) {
       setErrorsProject(newErrors);
       const firstErrorKey = Object.keys(newErrors).find(
@@ -211,7 +220,7 @@ export default function QuotationForm() {
                           Total area (m²)
                         </span>
                         <input
-                          type="number"
+                          type="text"
                           name="area"
                           className="block w-full outline-none bg-transparent  placeholder-gray-50 font-semibold"
                           value={area}
@@ -230,6 +239,33 @@ export default function QuotationForm() {
                         </div>
                       )}
                     </div>
+
+                    <div className="w-full  px-4 mb-10">
+                      <div className="relative w-full h-14 py-4 px-3 border border-gray-400 hover:border-white focus-within:border-green-500 rounded-lg">
+                        <span className="absolute bottom-full left-0 ml-3 -mb-1 transform translate-y-0.5 text-xs font-semibold text-gray-500 px-1  bg-white ">
+                          Address 
+                        </span>
+                        <input
+                          type="text"
+                          name="address"
+                          className="block w-full outline-none bg-transparent  placeholder-gray-50 font-semibold"
+                          value={address}
+                          onChange={(e) => {
+                            setAddress(e.target.value);
+                            setErrorsProject({
+                              ...errorsProject,
+                              address: "",
+                            });
+                          }}
+                        />
+                      </div>
+                      {errorsProject.address && (
+                        <div className="text-red-500 text-sm mt-1">
+                          {errorsProject.address}
+                        </div>
+                      )}
+                    </div>
+
 
                     <div className="w-full px-4 mb-10">
                       <div className="relative w-full h-14 py-4 px-3 border border-gray-400 hover:border-white focus-within:border-green-500 rounded-lg">

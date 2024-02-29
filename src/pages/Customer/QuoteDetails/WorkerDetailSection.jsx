@@ -27,7 +27,7 @@ export default function WorkerDetailSection() {
 
   return (
     <>
-      <h1 className="text-xl font-semibold pb-5 pt-12 uppercase">Workers for project</h1>
+      <h1 className="text-xl font-semibold pb-5 pt-12 py-5 uppercase pl-5">Workers for project</h1>
       <div className="px-5 pb-5 h-auto ">
         <div className="overflow-auto rounded-lg shadow hidden md:block">
           {quoteDetail.workerForProjects &&
@@ -45,11 +45,9 @@ export default function WorkerDetailSection() {
                     Quantity
                   </th>
                   <th className="p-3 text-sm font-semibold tracking-wide text-right">
-                    Labor Cost
+                  Average Labor Cost
                   </th>
-                  <th className=" p-3 text-sm font-semibold tracking-wide text-right">
-                    Total
-                  </th>
+                  
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
@@ -70,9 +68,7 @@ export default function WorkerDetailSection() {
                         <CurrencyFormatter amount={item.exportLaborCost} />
                         /person
                       </td>
-                      <td className="p-3 text-sm text-gray-700 whitespace-nowrap text-right">
-                        <CurrencyFormatter amount={total} />
-                      </td>
+                      
                     </tr>
                   );
                 })}
@@ -81,6 +77,36 @@ export default function WorkerDetailSection() {
           ) : (
             <p>No materials available.</p>
           )}
+        </div>
+
+        <div className="grid grid-cols-1 gap-16 pt-4 px-8 md:hidden h-[300px] overflow-auto">
+          {quoteDetail.workerForProjects &&
+            quoteDetail.workerForProjects.map((item, index) => (
+              <div
+                key={item.id}
+                className=" space-y-4 rounded-lg shadow px-8 py-5 bg-slate-100"
+              >
+                <div className="flex items-center justify-between space-x-5 text-sm">
+                  <div className="text-blue-500 text-xl font-bold hover:underline">
+                    #{index + 1}
+                    <span className="font-semibold text-xl ml-4">
+                      {item.workerPrice.positionName}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex justify-between text-sm text-gray-700">
+                  <span>Quantity:</span>
+                  {item.quantity}
+                </div>
+
+                <div className="flex justify-between text-sm text-gray-700">
+                  <span>Average Labor Cost:</span>
+                  <CurrencyFormatter amount={item.exportLaborCost} />
+                  /person
+                </div>
+              </div>
+            ))}
         </div>
       </div>
     </>

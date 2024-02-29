@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, NavLink } from "react-router-dom";
 
 import { getContractProgressById } from "../../../constants/apiContract"
+import {getProjectByIdForCustomer} from "../../../constants/apiQuotationOfCustomer"
 
 import {
     StaffSidebar,
@@ -9,6 +10,7 @@ import {
     DateFormatter,
     PaymentStatusBadge,
     CurrencyFormatter,
+    DBHeader,
   } from "../../../components"
 import SignContractForm from "./SignContractForm";
 
@@ -17,6 +19,7 @@ export default function PaymentProgress() {
     const [loading, setLoading] = useState(true);
     const [reloadContent, setReloadContent] = useState(false);
     const [progressDetail, setProgressDetail] = useState([]);
+    const [projectDetail, setProjectDetail] = useState({});
 
   
     const fetchProgressDetail = async () => {
@@ -40,31 +43,17 @@ export default function PaymentProgress() {
       fetchProgressDetail();
     }, [id, reloadContent]);
 
-    const fetchProjectDetail = async () => {
-      try {
-        const data = await getProjectByIdForCustomer(id);
-  
-        if (data && data.result) {
-          setProjectDetail(data.result.data);
-          setLoading(false);
-        }
-      } catch (error) {
-        console.error("Error fetching project detail:", error);
-      }
-    };
-  
-    useEffect(() => {
-      fetchProjectDetail();
-    }, [id]);
+
     
   return (
     <>
       <LoadingOverlay loading={loading} />
-      <div className="flex">
+      <div className="flex overflow-hidden">
         <StaffSidebar />
 
-        <div className="h-screen flex-1 p-7">
-          <h1 className="text-3xl font-semibold pb-4 pl-4">
+        <div className="h-screen overflow-y-auto flex-1 bg-gray-100">
+          <DBHeader/>
+          <h1 className="text-2xl font-semibold pb-2 mt-5 uppercase text-center">
             Payment Progress Detail
           </h1>
 
@@ -167,6 +156,50 @@ export default function PaymentProgress() {
                     })}
                 </tbody>
               </table>
+            </div>
+
+            <div className="grid grid-cols-1 gap-4 md:hidden">
+              {progressDetail &&
+                progressDetail.map((item, index) => (
+                  <div
+                    key={item.id}
+                    className="bg-gray-50 border border-gray-300 space-y-4 rounded-lg shadow px-8 py-5"
+                  >
+                    <div className="flex items-center justify-between space-x-5 text-sm">
+                      <div className="flex flex-col space-y-3">
+                        <div className="flex">
+                          <div className="text-blue-500 font-bold hover:underline mr-2">
+                            #{index + 1}
+                          </div>
+                          <div className="text-blue-500 font-bold uppercase">
+                            {item.name}
+                          </div>
+                        </div>
+
+                        <div>
+                          <PaymentStatusBadge
+                            paymentStatus={item.payment.paymentStatus}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      Description:
+                      <span className="ml-2">{item.payment.content}</span>
+                    </div>
+                    <div>
+                      Price:
+                      <span className="ml-2 text-red-500 font-semibold">
+                        <CurrencyFormatter amount={item.payment.price} />
+                      </span>
+                    </div>
+                    <div>
+                      <DateFormatter dateString={item.date} />
+                    </div>
+
+                   
+                  </div>
+                ))}
             </div>
           </div>
         </div>

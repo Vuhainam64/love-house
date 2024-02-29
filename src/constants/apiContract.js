@@ -52,7 +52,20 @@ export const getContractProgressById = async (contractId) => {
     }
   };
   
-
+  export const resendVerificationCodeByContractId = async (contractId) => {
+    try {
+      const res = await axios.get(`${baseURL}/contract/resend-verification-code-by-contractId/${contractId}`, {
+        headers: {
+          Authorization: `Bearer ${usertoken}`,
+        },
+        withCredentials: true,
+      });
+      return res.data;
+    } catch (err) {
+      return null;
+    }
+  };
+  
   export const createContractProgress = async (createData) => {
     try {
       const res = await axios.post(
