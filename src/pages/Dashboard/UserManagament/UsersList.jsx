@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { MutatingDots, Pagination } from "../../../components";
+import { Table, Button, Space, Pagination as AntPagination, Spin } from "antd";
 import {
   getAllAccount,
   getAllRoles,
@@ -12,16 +12,16 @@ import { setAllUsers } from "../../../context/actions/allUsersAction";
 import { setAllRoles } from "../../../context/actions/allRolesAction";
 import { FaChevronRight, FaRegUser } from "react-icons/fa6";
 
-function UsersList() {
+const UsersList = () => {
   const allUsers = useSelector((state) => state?.allUsers?.allUsers);
   const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(true);
   const [selectedRole, setSelectedRole] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [curentPageShowCourse, setCurentPageShowCourse] = useState([]);
+  const [itemsPerPage, setItemsPerPage] = useState(5); // Set default items per page to 5
   const [totalItems, setTotalItems] = useState();
+  const [currentItems, setCurrentItems] = useState([]);
 
   useEffect(() => {
     async function fetchUsers() {
@@ -52,25 +52,21 @@ function UsersList() {
   useEffect(() => {
     if (allUsers) {
       setTotalItems(allUsers.length);
-      setCurentPageShowCourse([]);
       const firstItem = currentPage * itemsPerPage - itemsPerPage;
       if (firstItem >= allUsers.length) return;
 
       const lastIndex = Math.min(firstItem + itemsPerPage, allUsers.length);
-      setCurentPageShowCourse(allUsers.slice(firstItem, lastIndex));
+      setCurrentItems(allUsers.slice(firstItem, lastIndex));
     }
   }, [currentPage, itemsPerPage, allUsers]);
 
-  const paginate = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
-
-  const choseItemPerPage = (itemNumber) => {
-    setItemsPerPage(itemNumber);
+  const chooseID = (userId, roleId) => {
+    setSelectedRole({ userId, roleId });
   };
 
   const updateUserRole = async (userId) => {
     try {
+      // Placeholder for the update user role functionality
       const updatedUser = await assignRoleForUser(userId);
       if (updatedUser?.isSuccess) {
         console.log("User role assigned successfully:", updatedUser);
@@ -86,6 +82,7 @@ function UsersList() {
 
   const removeUserRole = async (userId) => {
     try {
+      // Placeholder for the remove user role functionality
       const removedUser = await removeRoleForUser(userId);
       if (removedUser?.isSuccess) {
         console.log("User role removed successfully:", removedUser);
@@ -99,17 +96,106 @@ function UsersList() {
     }
   };
 
-  const chooseID = (userId, roleId) => {
-    setSelectedRole({ userId, roleId });
+  const columns = [
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+      render: (text, record) => (
+        <div
+          key={record.user.id}
+        >{`${record.user.firstName} ${record.user.lastName}`}</div>
+      ),
+      width: "20%",
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
+      render: (text, record) => (
+        <div key={record.user.id}>{record.user.email}</div>
+      ),
+      width: "20%",
+    },
+    {
+      title: "Verify",
+      dataIndex: "verify",
+      key: "verify",
+      render: (text, record) => (
+        <div key={record.user.id}>
+          {record.user.isVerified ? "verify" : "not verify"}
+        </div>
+      ),
+      width: "20%",
+    },
+    {
+      title: "Role",
+      dataIndex: "role",
+      key: "role",
+      render: (text, record) => (
+        <div key={record.user.id}>
+          {record.role[0]?.name || record.role[1]?.name || record.role[2]?.name}
+        </div>
+      ),
+      width: "20%",
+    },
+    {
+      title: "Edit",
+      dataIndex: "edit",
+      key: "edit",
+      render: (text, record) => (
+        <Space key={record.user.id}>
+          {selectedRole.userId === record.user.id ? (
+            <>
+              {!record?.role[0]?.name || !record?.role[1]?.name ? (
+                <Button
+                  style={{ backgroundColor: "#1890ff", color: "#fff" }}
+                  onClick={() => updateUserRole(record.user.id)}
+                >
+                  Update Permission
+                </Button>
+              ) : (
+                <Button
+                  style={{ backgroundColor: "#ff4d4f", color: "#fff" }}
+                  onClick={() => removeUserRole(record.user.id)}
+                >
+                  Remove Role
+                </Button>
+              )}
+              <Button onClick={() => setSelectedRole({ userId: 0, roleId: 0 })}>
+                Cancel
+              </Button>
+            </>
+          ) : (
+            <Button
+              style={{ backgroundColor: "#1890ff", color: "#fff" }}
+              onClick={() =>
+                chooseID(
+                  record.user.id,
+                  record.role[0]?.id || record.role[1]?.id || record.role[2]?.id
+                )
+              }
+            >
+              Edit
+            </Button>
+          )}
+        </Space>
+      ),
+      width: "20%",
+    },
+  ];
+
+  const onPageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const onItemsPerPageChange = (current, size) => {
+    setItemsPerPage(size);
   };
 
   return (
     <>
-      {loading ? (
-        <div className="flex items-center justify-center h-full">
-          <MutatingDots />
-        </div>
-      ) : (
+      <Spin spinning={loading}>
         <div className="flex flex-col p-8 text-gray-900">
           {/* title */}
           <div>
@@ -124,138 +210,30 @@ function UsersList() {
               User List
             </div>
           </div>
-          <div className="px-3 py-4 flex justify-center ">
-            <table className="table-auto w-full border-collapse">
-              <thead className="text-white h-10 px-5 py-1 bg-gray-700">
-                <tr className="text-left">
-                  <th className="w-[20%] rounded-tl-lg">
-                    <div className="h-full pl-5 items-center whitespace-nowrap">
-                      <label>Name</label>
-                    </div>
-                  </th>
-                  <th className="w-[20%] ">
-                    <div className="h-full pl-5 whitespace-nowrap">
-                      <label>Email</label>
-                    </div>
-                  </th>
-                  <th className="w-[20%] ">
-                    <div className="h-full pl-5 whitespace-nowrap">
-                      <label>Verify</label>
-                    </div>
-                  </th>
-                  <th className="w-[20%] ">
-                    <div className="h-full text-center whitespace-nowrap">
-                      <label>Role</label>
-                    </div>
-                  </th>
-                  <th className="w-[20%] rounded-tr-lg">
-                    <div className="h-full text-center whitespace-nowrap">
-                      <label>Edit</label>
-                    </div>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {curentPageShowCourse.map((user, index) => (
-                  <tr
-                    className="border-b hover:bg-orange-100 bg-white shadow-lg"
-                    key={index}
-                  >
-                    <td className="p-3 px-5">
-                      <div className="bg-transparent border-gray-300 py-2 w-full">
-                        {user.user.firstName} {user.user.lastName}
-                      </div>
-                    </td>
-                    <td className="p-3 px-5">
-                      <div className="bg-transparent border-gray-300 py-2 w-full">
-                        {user.user.email}
-                      </div>
-                    </td>
-                    <td className="p-3 px-5">
-                      <div className="bg-transparent border-gray-300 py-2 w-full">
-                        {user.user.isVerified ? "verify" : "not verify"}
-                      </div>
-                    </td>
-                    <td className="p-3 px-5 text-center">
-                      <div className="bg-transparent border-gray-300 py-2 w-full text-wrap">
-                        {user.role[0].name ||
-                          user.role[1].name ||
-                          user.role[2].name}
-                      </div>
-                    </td>
-                    <td>
-                      {selectedRole.userId === user.user.id ? (
-                        <div className="p-3 px-5 flex justify-center items-center gap-3">
-                          {!user?.role[0]?.name || !user?.role[1]?.name ? (
-                            <button
-                              type="button"
-                              onClick={() =>
-                                updateUserRole(selectedRole.userId)
-                              }
-                              className="text-sm bg-green-500 hover:bg-green-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline"
-                            >
-                              Update Permission
-                            </button>
-                          ) : (
-                            <button
-                              type="button"
-                              onClick={() =>
-                                removeUserRole(selectedRole.userId)
-                              }
-                              className="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline text-nowrap"
-                            >
-                              Remove Role
-                            </button>
-                          )}
-
-                          <button
-                            type="button"
-                            onClick={() =>
-                              setSelectedRole({ userId: 0, roleId: 0 })
-                            }
-                            className="text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline"
-                          >
-                            Cancel
-                          </button>
-                        </div>
-                      ) : (
-                        <div className="p-3 px-5 flex justify-center items-center">
-                          <button
-                            type="button"
-                            onClick={() =>
-                              chooseID(
-                                user.user.id,
-                                user.role[0].id ||
-                                  user.role[1].id ||
-                                  user.role[2].id
-                              )
-                            }
-                            className="text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline"
-                          >
-                            Edit
-                          </button>
-                        </div>
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <Table
+            columns={columns}
+            dataSource={currentItems}
+            pagination={false}
+          />
           <div className="w-full p-5">
             {totalItems && (
-              <Pagination
-                itemsPerPage={itemsPerPage}
-                totalItems={totalItems}
-                paginate={paginate}
-                choseItemPerPage={choseItemPerPage}
+              <AntPagination
+                current={currentPage}
+                pageSize={itemsPerPage}
+                total={totalItems}
+                onChange={onPageChange}
+                showSizeChanger
+                onShowSizeChange={onItemsPerPageChange}
+                showTotal={(total, range) =>
+                  `${range[0]}-${range[1]} of ${total} items`
+                }
               />
             )}
           </div>
         </div>
-      )}
+      </Spin>
     </>
   );
-}
+};
 
 export default UsersList;

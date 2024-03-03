@@ -72,6 +72,7 @@ export {
   getSupplierById,
   importSupplierFromExcelSheet,
   updateSupplier,
+  getSupplierTemplate
 }
 from "./Supplier";
 

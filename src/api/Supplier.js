@@ -98,3 +98,29 @@ export const getAllSuppliers = async (pageIndex, pageSize, sortField, sortOrder)
         return null;
     }
 };
+
+export const getSupplierTemplate = async () => {
+    try {
+        const res = await axios.get(`${baseURL}/supplier/get-supplier-template`, {
+            headers: {
+                Authorization: `Bearer ${usertoken}`,
+            },
+            responseType: "blob",
+        });
+
+        // Create a Blob from the response data
+        const blob = new Blob([res.data], {
+            type: res.headers["content-type"]
+        });
+
+        // Create a link element and trigger a download
+        const link = document.createElement("a");
+        link.href = window.URL.createObjectURL(blob);
+        link.download = "Supplier.xlsx";
+        link.click();
+
+        return "Success";
+    } catch (err) {
+        return null;
+    }
+};

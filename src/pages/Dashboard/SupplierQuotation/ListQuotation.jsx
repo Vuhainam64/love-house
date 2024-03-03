@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { format } from "date-fns";
+import { Input, Table, Space, Pagination as AntPagination } from "antd";
 
 import { FaChevronRight } from "react-icons/fa6";
 import { IoPricetagsSharp } from "react-icons/io5";
+import { MdDelete } from "react-icons/md";
 
 import {
   deleteSupplierQuotationById,
   getAllSupplierQuotations,
 } from "../../../api";
-import { MutatingDots, Pagination } from "../../../components";
-import { MdDelete, MdOutlineViewInAr } from "react-icons/md";
+import { MutatingDots } from "../../../components";
 import ConfirmPopup from "../../../components/Dashboard/ConfirmPopup";
+
+const { Column } = Table;
 
 function ListQuotation() {
   const [quotations, setQuotations] = useState([]);
@@ -135,7 +138,7 @@ function ListQuotation() {
             <div className="flex items-center space-x-2 mb-4">
               <div className="px-2">Search</div>
               <div>
-                <input
+                <Input
                   type="text"
                   className="border px-2 py-1"
                   value={searchTerm}
@@ -143,61 +146,62 @@ function ListQuotation() {
                 />
               </div>
             </div>
-            <table className="min-w-full bg-white border border-gray-300 ">
-              <thead>
-                <tr className="bg-gray-700 text-white">
-                  <th className="py-2 px-4 border-b border-gray-300">Name</th>
-                  <th className="py-2 px-4 border-b border-gray-300">Date</th>
-                  <th className="py-2 px-4 border-b border-gray-300">MOQ</th>
-                  <th className="py-2 px-4 border-b border-gray-300">Price</th>
-                  <th className="py-2 px-4 border-b border-gray-300">Edit</th>
-                </tr>
-              </thead>
-              <tbody>
-                {currentQuotations.map((quotation, index) => (
-                  <tr
-                    key={index}
-                    className={`${
-                      index % 2 === 0 ? "bg-gray-100" : "bg-white"
-                    } hover:bg-orange-100`}
-                  >
-                    <td className="py-2 px-4 border-b border-gray-300 text-center">
-                      {quotation.supplierPriceQuotation.supplier.supplierName}
-                    </td>
-                    <td className="py-2 px-4 border-b border-gray-300 text-center">
-                      {quotation.supplierPriceQuotation.date}
-                    </td>
-                    <td className="py-2 px-4 border-b border-gray-300 text-center">
-                      {quotation.supplierPriceDetails[0].moq}
-                    </td>
-                    <td className="py-2 px-4 border-b border-gray-300 text-center">
-                      {quotation.supplierPriceDetails[0].price}
-                    </td>
-                    <td className="py-2 px-4 border-b border-gray-300 text-center">
-                      <div className="flex items-center justify-center space-x-4">
-                        <MdDelete
-                          className="cursor-pointer text-xl hover:text-red-500"
-                          onClick={() =>
-                            openDeleteConfirmation(
-                              quotation.supplierPriceQuotation.id
-                            )
-                          }
-                        />
-                        {/* <MdOutlineViewInAr className="cursor-pointer text-xl" /> */}
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <Table
+              dataSource={currentQuotations}
+              pagination={false}
+              rowKey={(record, index) =>
+                `${record.supplierPriceQuotation.id}-${index}`
+              }
+            >
+              <Column
+                title="Name"
+                dataIndex={[
+                  "supplierPriceQuotation",
+                  "supplier",
+                  "supplierName",
+                ]}
+                key="supplierName"
+              />
+              <Column
+                title="Date"
+                dataIndex={["supplierPriceQuotation", "date"]}
+                key="date"
+              />
+              <Column
+                title="MOQ"
+                dataIndex={["supplierPriceDetails", 0, "moq"]}
+                key="moq"
+              />
+              <Column
+                title="Price"
+                dataIndex={["supplierPriceDetails", 0, "price"]}
+                key="price"
+              />
+              <Column
+                title="Edit"
+                key="edit"
+                render={(text, record) => (
+                  <Space size="middle">
+                    <MdDelete
+                      className="cursor-pointer text-xl hover:text-red-500"
+                      onClick={() =>
+                        openDeleteConfirmation(record.supplierPriceQuotation.id)
+                      }
+                    />
+                  </Space>
+                )}
+              />
+            </Table>
           </div>
           <div className="w-full p-5">
             {totalItems && (
-              <Pagination
-                itemsPerPage={itemsPerPage}
-                totalItems={totalItems}
-                paginate={paginate}
-                choseItemPerPage={chooseItemPerPage}
+              <AntPagination
+                current={currentPage}
+                pageSize={itemsPerPage}
+                total={totalItems}
+                onChange={paginate}
+                showSizeChanger
+                onShowSizeChange={chooseItemPerPage}
               />
             )}
           </div>

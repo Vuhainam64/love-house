@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
+import { Button, Input, Pagination, Popconfirm, Space, Table } from "antd";
 import * as XLSX from "xlsx";
 
 import { GrSupport } from "react-icons/gr";
@@ -11,13 +12,14 @@ import {
   getAllSuppliers,
   deleteSupplierById,
   importSupplierFromExcelSheet,
+  getSupplierTemplate,
 } from "../../../api";
-import { DataTable, MutatingDots, Pagination } from "../../../components";
 import ConfirmPopup from "../../../components/Dashboard/ConfirmPopup";
-import { FaRegEdit } from "react-icons/fa";
 import { buttonClick } from "../../../assets/animations";
 import CreateSupplier from "./CreateSupplier";
 import EditSupplier from "./EditSupplier";
+import { DataTable, MutatingDots } from "../../../components";
+import { FaRegEdit } from "react-icons/fa";
 
 const ViewSupplier = () => {
   const [suppliers, setSuppliers] = useState([]);
@@ -70,19 +72,6 @@ const ViewSupplier = () => {
     }
   }, [currentPage, itemsPerPage, suppliers, searchTerm]);
 
-  const paginate = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
-
-  const chooseItemPerPage = (itemNumber) => {
-    setItemsPerPage(itemNumber);
-    setCurrentPage(1);
-  };
-
-  const openDeleteConfirmation = (supplierId) => {
-    setDeleteConfirmation(supplierId);
-  };
-
   const closeDeleteConfirmation = () => {
     setDeleteConfirmation(null);
   };
@@ -106,7 +95,6 @@ const ViewSupplier = () => {
       try {
         const response = await deleteSupplierById(deleteConfirmation);
         if (response && response.isSuccess) {
-          // Refresh data or update state after successful deletion
           toast.success("Supplier deleted successfully");
           refreshData();
         } else {
@@ -131,43 +119,26 @@ const ViewSupplier = () => {
   };
 
   const handleSubmit = async (data, file) => {
-    // Extracting valid data from the data object
     const validData = data.validData;
-
-    // Creating a 2D array with headers and valid data
     const sheetData = [
       Object.keys(validData[0]),
       ...validData.map((item) => Object.values(item)),
     ];
-
-    // Creating a worksheet
     const ws = XLSX.utils.aoa_to_sheet(sheetData);
-
-    // Creating a workbook
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Sheet 1");
-
-    // Creating an array buffer
     const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
-
-    // Creating a Blob from the array buffer
     const blob = new Blob([excelBuffer], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
-
-    // Create a FormData object to append the Blob
     const formData = new FormData();
     formData.append("file", blob, "SauChien_20122023.xlsx");
-
     console.log("data: ", data);
     try {
-      // Upload the file using your API function
       const uploadResponse = await importSupplierFromExcelSheet(formData);
-
       if (uploadResponse.date) {
         toast.success("Upload successful: " + uploadResponse.date);
       } else {
-        // Create a download link
         const downloadLink = document.createElement("a");
         downloadLink.href = URL.createObjectURL(uploadResponse);
         downloadLink.download = "SauChien_20122023_error.xlsx";
@@ -177,6 +148,63 @@ const ViewSupplier = () => {
       toast.error("Error during upload:", error);
     }
   };
+
+  const downloadExample = async () => {
+    try {
+      const response = await getSupplierTemplate();
+      if (response === "Success") {
+        toast.success("Download successful");
+      } else {
+        toast.error("Download failed");
+      }
+    } catch (error) {
+      toast.error("Error:", error);
+    }
+  };
+
+  const columns = [
+    {
+      title: "Name",
+      dataIndex: "supplierName",
+      key: "supplierName",
+      align: "center",
+    },
+    {
+      title: "Type",
+      dataIndex: "type",
+      key: "type",
+      render: (text) =>
+        text === 0
+          ? "Contruction Material"
+          : text === 1
+          ? "Furniture Supplier"
+          : "Both",
+      align: "center",
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: (text, record) => (
+        <Space size="middle" align="center">
+          <Popconfirm
+            title="Are you sure delete this supplier?"
+            onConfirm={() => confirmDelete(record.id)}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button type="danger" size="small" icon={<MdDelete />} />
+          </Popconfirm>
+          <Button
+            style={{ backgroundColor: "#1890ff", color: "#fff" }}
+            size="small"
+            icon={<FaRegEdit />}
+            onClick={() => openEditSupplier(record.id)}
+          />
+        </Space>
+      ),
+      align: "center",
+    },
+  ];
 
   return (
     <>
@@ -203,7 +231,7 @@ const ViewSupplier = () => {
           <div className="flex flex-wrap justify-between items-center mb-4">
             <div className="flex items-center space-x-2">
               <div className="px-2 font-semibold">Search</div>
-              <input
+              <Input
                 type="text"
                 className="border px-2 py-1 w-80"
                 placeholder="Search..."
@@ -214,7 +242,7 @@ const ViewSupplier = () => {
             <div className="flex flex-wrap space-x-2">
               <motion.div
                 {...buttonClick}
-                // onClick={() => setIsImport(true)}
+                onClick={downloadExample}
                 className="px-4 py-2 border rounded-md text-white bg-green-500 hover:bg-green-600 font-semibold shadow-md cursor-pointer"
               >
                 Download Sample
@@ -237,58 +265,11 @@ const ViewSupplier = () => {
           </div>
 
           {/* Supplier Table */}
-          <table className="min-w-full bg-white border border-gray-300 ">
-            <thead>
-              <tr className="bg-gray-700 text-white">
-                <th className="py-2 px-4 border-b border-gray-300">Name</th>
-                <th className="py-2 px-4 border-b border-gray-300">Type</th>
-                <th className="py-2 px-4 border-b border-gray-300">Edit</th>
-              </tr>
-            </thead>
-            <tbody>
-              {currentSuppliers.map((supplier, index) => (
-                <tr
-                  key={index}
-                  className={`${
-                    index % 2 === 0 ? "bg-gray-100" : "bg-white"
-                  } hover:bg-orange-100`}
-                >
-                  <td className="py-2 px-4 border-b border-gray-300 text-center">
-                    {supplier.supplierName}
-                  </td>
-                  <td className="py-2 px-4 border-b border-gray-300 text-center">
-                    {supplier.type === 0
-                      ? "Contruction Material"
-                      : (supplier.type = 1 ? "Furniture Supplier" : "Both")}
-                  </td>
-                  <td className="py-2 px-4 border-b border-gray-300 text-center">
-                    <div className="flex items-center justify-center space-x-4">
-                      <MdDelete
-                        className="cursor-pointer text-xl text-red-400 hover:text-red-500"
-                        onClick={() => openDeleteConfirmation(supplier.id)}
-                      />
-                      <FaRegEdit
-                        onClick={() => openEditSupplier(supplier.id)}
-                        className="cursor-pointer text-xl text-blue-400 hover:text-blue-500"
-                      />
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-
-          {/* Pagination */}
-          <div className="w-full p-5">
-            {totalItems && (
-              <Pagination
-                itemsPerPage={itemsPerPage}
-                totalItems={totalItems}
-                paginate={paginate}
-                choseItemPerPage={chooseItemPerPage}
-              />
-            )}
-          </div>
+          <Table
+            columns={columns}
+            dataSource={currentSuppliers}
+            pagination={false}
+          />
         </div>
       )}
 
