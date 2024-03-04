@@ -9,26 +9,8 @@ import {
   LoadingOverlay,
 } from "../../../../components";
 
-export default function Worker() {
-  const { id } = useParams();
-  const [quoteDetail, setQuoteDetail] = useState([]);
+export default function Worker({quoteDetail}) {
 
-  const fetchQuoteDetail = async () => {
-    try {
-      const data = await getQuotationById(id);
-
-      if (data && data.result) {
-        setQuoteDetail(data.result.data);
-        //setLoading(false);
-      }
-    } catch (error) {
-      console.error("Error fetching quote detail:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchQuoteDetail();
-  }, [id]);
   return (
     <>
       <h1 className="text-xl font-semibold pb-5 pt-12 py-5 uppercase pl-5">

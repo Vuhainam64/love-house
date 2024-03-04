@@ -3,9 +3,9 @@ import axios from "axios";
 const baseURL = "https://hcqs-backend.azurewebsites.net";
 export const usertoken = localStorage.accessToken;
 
-export const getAllRequestForStaff = async (fieldName, ascending) => {
+export const getAllRequestForStaff = async (status) => {
   try {
-    const res = await axios.get(`${baseURL}/project/get-all-project`, {
+    const res = await axios.get(`${baseURL}/project/get-all-project?status=${status}`, {
       headers: {
         Authorization: `Bearer ${usertoken}`,
       },

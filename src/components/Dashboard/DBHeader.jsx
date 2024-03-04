@@ -15,7 +15,7 @@ function DBHeader({ setIsOpen, isOpen }) {
   const user = useSelector((state) => state?.user?.user);
 
   return (
-    <div className="flex items-center justify-between w-full bg-white p-4 shadow-md sticky top-0">
+    <div className="flex items-center justify-between w-full bg-white p-4 shadow-md sticky top-0 z-10">
       <div className="flex items-center justify-center ">
         <NavLink to="" onClick={() => window.history.back()}>
           <div className="flex items-center space-x-2 text-green-600">

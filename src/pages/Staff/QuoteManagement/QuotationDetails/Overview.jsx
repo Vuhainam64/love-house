@@ -10,28 +10,9 @@ import {
 } from "../../../../components";
 import OverviewGrid from "./Grid/OverviewGrid";
 
-export default function Overview() {
-  const { id } = useParams();
-  const [quoteDetail, setQuoteDetail] = useState([]);
+export default function Overview({quoteDetail}) {
   const [reloadContent, setReloadContent] = useState(false);
-  const [loading, setLoading] = useState(true);
 
-  const fetchQuoteDetail = async () => {
-    try {
-      const data = await getQuotationById(id);
-
-      if (data && data.result) {
-        setQuoteDetail(data.result.data);
-        setLoading(false);
-      }
-    } catch (error) {
-      console.error("Error fetching quote detail:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchQuoteDetail();
-  }, [id, reloadContent]);
 
   const handleReloadContent = () => {
     setReloadContent((prev) => !prev);
@@ -45,7 +26,6 @@ export default function Overview() {
 
   return (
     <>
-      <LoadingOverlay loading={loading} />
       <div id="overview" className="">
         <h1 className="text-xl font-semibold py-5 uppercase pl-5">Overview</h1>
         <div className="px-5 pb-5 h-auto ">

@@ -14,7 +14,7 @@ const ExportInventory = () => {
 
   useEffect(() => {
     const fetchProjects = async () => {
-      const res = await getAllProjects();
+      const res = await getAllProjects(2);
       if (res?.isSuccess) {
         setProjects(res.result.data);
       }

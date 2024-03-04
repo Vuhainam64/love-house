@@ -5,7 +5,7 @@ import { Input, Button, Space, message } from "antd";
 import axios from "axios";
 import * as Yup from "yup";
 
-import { createContractProgress,getContractById } from "../../../../../constants/apiContract";
+import { createContractProgress, getContractById } from "../../../../../constants/apiContract";
 
 import { getProjectById } from "../../../../../constants/apiQuotationOfStaff";
 
@@ -22,7 +22,7 @@ export default function CreateProgressForm() {
 
   const [progressItem, setProgressItem] = useState([]);
   const [contract, setContract] = useState({});
- 
+
 
   const initialValues = {
     progressDetails: [
@@ -56,15 +56,21 @@ export default function CreateProgressForm() {
 
       console.log("Form data submitted:", formattedData);
 
-      await createContractProgress(formattedData);
+      const result = await createContractProgress(formattedData);
       resetForm();
-      alert.alertSuccessWithTime(
-        "Create List Contract Progress Successfully",
-        "",
-        2000,
-        "30",
-        () => {}
-      );
+      if (result.isSuccess) {
+        alert.alertSuccessWithTime(
+          "Create List Contract Progress Successfully",
+          "",
+          2000,
+          "25",
+          () => { }
+        );
+      } else {
+        for (var i = 0; i < result.messages.length; i++) {
+          toast.error(result.messages[i]);
+        }
+      }
       navigate(`/staff/contract-payment-progress/${id}`);
     } catch (error) {
       alert.alertFailedWithTime(
@@ -72,7 +78,7 @@ export default function CreateProgressForm() {
         "Please try again",
         2500,
         "25",
-        () => {}
+        () => { }
       );
     } finally {
       setSubmitting(false);
@@ -85,7 +91,7 @@ export default function CreateProgressForm() {
 
       if (data && data.result) {
         setContract(data.result.data);
-       // setLoading(false);
+        // setLoading(false);
       }
     } catch (error) {
       console.error("Error fetching progress detail:", error);
@@ -106,7 +112,7 @@ export default function CreateProgressForm() {
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
           >
-            {({ values, errors, touched , setFieldValue}) => (
+            {({ values, errors, touched, setFieldValue }) => (
               <Form>
                 <FieldArray name="progressDetails">
                   {({ push, remove }) => (
@@ -148,9 +154,9 @@ export default function CreateProgressForm() {
                               label="Price"
                               name={`progressDetails.${index}.price`}
                               type="text"
-                            
+
                             />
-                            
+
 
                             {index > 0 && (
                               <Button
@@ -193,9 +199,9 @@ export default function CreateProgressForm() {
         </div>
 
         <div className="total w-1/3">
-          <div className="flex">Total: 
-          <p className="text-red-500 font-semibold ml-4">  <CurrencyFormatter amount={contract.total} /></p>
-         </div>
+          <div className="flex">Total:
+            <p className="text-red-500 font-semibold ml-4">  <CurrencyFormatter amount={contract.total} /></p>
+          </div>
           {/* <p>Remaining amounts:</p> */}
         </div>
       </div>

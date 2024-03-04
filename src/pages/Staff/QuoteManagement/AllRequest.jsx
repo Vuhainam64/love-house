@@ -10,25 +10,16 @@ import {
   DBHeader,
 } from "../../../components";
 import { getAllRequestForStaff } from "../../../constants/apiQuotationOfStaff";
-
-
+import { Tabs } from "antd";
 
 export default function AllRequest() {
   const [allRequest, setAllRequest] = useState([]);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
-  const [selectedTab, setSelectedTab] = useState(0);
-  const [filteredProjects, setFilteredProjects] = useState(allRequest);
-  const tabs = [
-    { title: "New", filter: (item) => item.projectStatus === 0 },
-    { title: "Processing", filter: (item) => item.projectStatus === 1 },
-  ];
-  const [currentContent, setCurrentContent] = useState(tabs[0].title);
 
-  
-  const fetchData = async () => {
+  const fetchData = async (status) => {
     try {
-      const data = await getAllRequestForStaff();
+      const data = await getAllRequestForStaff(status);
       if (data && data.result) {
         const sortedData = data.result.data.slice().sort((a, b) => {
           return new Date(b.createDate) - new Date(a.createDate);
@@ -37,26 +28,34 @@ export default function AllRequest() {
         setLoading(false);
       }
     } catch (error) {
-      console.error("Error fetching blogs:", error);
+      console.error("Error fetching request:", error);
     }
   };
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    fetchData(); 
+    fetchData(0);
   }, []);
 
 
-  // const filterProjectsByTab = (index) => {
-  //   const filterFunction = tabs[index].filter;
-  //   const filtered = allRequest.filter(filterFunction);
-  //   setFilteredProjects(filtered);
-  // };
-
-  const handleTabChange = (index) => {
-    setSelectedTab(index);
-    filterProjectsByTab(index);
+  const onChange = async (key) => {
+    console.log(key);
+    await fetchData(key);
   };
+  const items = [
+    {
+      key: "0",
+      label: "Pending",
+    },
+    {
+      key: "1",
+      label: "Processing",
+    },
+    {
+      key: "2",
+      label: "Under Construction",
+    },
+  ];
 
   return (
     <>
@@ -65,18 +64,13 @@ export default function AllRequest() {
         <StaffSidebar />
 
         <div className="h-screen overflow-y-auto flex-1  bg-gray-100 ">
-          <DBHeader/>
+          <DBHeader />
           <h1 className="text-2xl font-semibold pb-2 mt-5 uppercase text-center">
             Quote Request
           </h1>
-          {/* <TabsComponent
-            items={tabs}
-            initialTabTitle={currentContent}
-            onTabChange={handleTabChange}
-            defaultTabIndex={0}
-          /> */}
-
           <div className="p-5 h-screen bg-gray-100 ">
+            <Tabs defaultActiveKey="0" items={items} onChange={onChange} />
+
             <div className="overflow-auto rounded-lg shadow hidden md:block">
               <table className="w-full">
                 <thead className="bg-gray-50 border-b-2 border-gray-200">
@@ -84,9 +78,7 @@ export default function AllRequest() {
                     <th className="w-20 p-3 text-sm font-semibold tracking-wide text-left">
                       No.
                     </th>
-                    <th className="w-24 p-3 text-sm font-semibold tracking-wide text-left">
-                      Project ID
-                    </th>
+                   
                     <th className="w-24 p-3 text-sm font-semibold tracking-wide text-left">
                       Details
                     </th>
@@ -117,9 +109,7 @@ export default function AllRequest() {
                         <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
                           {index + 1}
                         </td>
-                        <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                          {item.id}
-                        </td>
+                       
                         <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
                           Floors: {item.numOfFloor}, Area: {item.area} m
                           <sup>2</sup>
@@ -134,13 +124,14 @@ export default function AllRequest() {
                         {item.account.phoneNumber} 
                         </td> */}
                         <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                          <ProjectStatusBadge
-                            projectStatus={item.projectStatus}
-                          />
+                          <ProjectStatusBadge projectStatus={item.status} />
                         </td>
                         <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                          {item.projectStatus === 0 && (
-                            <NavLink to={`/staff/config-project/${item.id}`}>
+                          {item.status === 0 && (
+                            <NavLink
+                              className={"mx-2"}
+                              to={`/staff/config-project/${item.id}`}
+                            >
                               Config
                             </NavLink>
                           )}
@@ -174,7 +165,7 @@ export default function AllRequest() {
                     <div className="text-gray-500">
                       <DateFormatter dateString={item.createDate} />
                     </div>
-                    <div >
+                    <div>
                       <ProjectStatusBadge projectStatus={item.projectStatus} />
                     </div>
                   </div>
@@ -190,7 +181,7 @@ export default function AllRequest() {
                   </div>
 
                   <div className="text-sm font-medium text-black text-right">
-                    {item.projectStatus === 0 && (
+                    {item.status === 0 && (
                       <NavLink to={`/staff/config-project/${item.id}`}>
                         <button className="bg-red-500 text-white font-semibold px-4 py-2 rounded hover:bg-red-400">
                           Config
@@ -198,7 +189,7 @@ export default function AllRequest() {
                       </NavLink>
                     )}
 
-                    {item.projectStatus !== 0 && (
+                    {item.status !== 0 && (
                       <>
                         <NavLink to={`/staff/project-detail/${item.id}`}>
                           <button className="bg-baseGreen text-white font-semibold px-4 py-2 rounded hover:bg-green-600">

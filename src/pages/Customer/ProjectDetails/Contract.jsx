@@ -9,7 +9,7 @@ import {
   LoadingOverlay,
   DateFormatter,
 } from "../../../components";
-
+import SignContractForm from "../Contract/SignContractForm";
 export default function Contract() {
   const { id } = useParams();
   const [projectDetail, setProjectDetail] = useState({});
@@ -31,6 +31,10 @@ export default function Contract() {
   useEffect(() => {
     fetchProjectDetail();
   }, [id]);
+  const handleReloadContent = () => {
+    setReloadContent((prev) => !prev);
+  };
+
   return (
     <>
       {projectDetail?.contract !== null && (
@@ -119,6 +123,10 @@ export default function Contract() {
                           View payment progress
                         </NavLink>
                       </div>
+                      {projectDetail?.contract != null && projectDetail?.contract.contractStatus == 1 && (
+                        // <button>Sign Contract</button>
+                        <SignContractForm onModalClose={handleReloadContent} id={projectDetail?.contract?.id} />
+                      )}
                     </td>
                   </tr>
                 </tbody>

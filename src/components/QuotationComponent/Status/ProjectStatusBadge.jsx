@@ -1,6 +1,7 @@
 import React from "react";
 
 const ProjectStatusBadge = ({ projectStatus }) => {
+  console.log(projectStatus)
   switch (projectStatus) {
     case 0:
       return (

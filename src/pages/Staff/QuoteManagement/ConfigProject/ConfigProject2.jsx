@@ -7,7 +7,7 @@ const ConfigProject2 = () => {
     <>
       <div className="flex">
         <StaffSidebar />
-        <div className="flex flex-col items-center justify-center mx-auto px-6 w-full">
+        <div className="flex flex-col items-center justify-center mx-auto px-32 w-full">
           <h1 className="my-6 text-4xl">Config Form</h1>
           <div className="w-full mx-auto">
             <ConfigForm />

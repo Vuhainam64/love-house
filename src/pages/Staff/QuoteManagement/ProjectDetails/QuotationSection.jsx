@@ -9,30 +9,9 @@ import {
   LoadingOverlay,
 } from "../../../../components";
 import QuotationGrid from "./Grid/QuotationGrid";
+import CreateDealByStaff from "../DealQuotationDetail/CreateDealByStaff";
 
-export default function QuotationSection() {
-  const { id } = useParams();
-  const [projectDetail, setProjectDetail] = useState({});
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
-  const [reloadContent, setReloadContent] = useState(false);
-
-  const fetchProjectDetail = async () => {
-    try {
-      const data = await getProjectById(id);
-
-      if (data && data.result) {
-        setProjectDetail(data.result.data);
-        setLoading(false);
-      }
-    } catch (error) {
-      console.error("Error fetching project detail:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchProjectDetail();
-  }, [id, reloadContent]);
+export default function QuotationSection({ projectDetail }) {
   const handleReloadContent = () => {
     setReloadContent((prev) => !prev);
   };
@@ -45,7 +24,6 @@ export default function QuotationSection() {
 
   return (
     <>
-      <LoadingOverlay loading={loading} />
       <div className="flex-1 p-5">
         <h1 className="text-xl font-semibold  uppercase">Quotation Overview</h1>
 
@@ -221,6 +199,13 @@ export default function QuotationSection() {
                           >
                             View Quotation Detail
                           </NavLink>
+                        )}
+
+                        {quotation.quotationStatus === 2 && (
+                          <CreateDealByStaff
+                            onModalClose={handleReloadContent}
+                            quotationId={quotation.id}
+                          />
                         )}
                       </td>
                     </tr>

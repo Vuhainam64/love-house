@@ -64,6 +64,9 @@ import CreateProgressForm from "../pages/Staff/QuoteManagement/ContractDetails/M
 import CreateProgress from "../pages/Staff/QuoteManagement/ContractDetails/ManageContract/CreateProgress";
 import QuoteDetailsForStaff from "../pages/Staff/QuoteManagement/QuotationDetails/QuoteDetailsForStaff";
 import PaymentProgress from "../pages/Customer/Contract/PaymentProgress";
+import ConstructionConfigManagement from "../pages/Staff/ConstructionConfig/ConstructionConfigManagement.jsx";
+import StaffDashboard from "../pages/Staff/StaffDashboard/StaffDashboard"
+import WorkerManagement from "../pages/Staff/WorkerManagement/WorkerManagement";
 
 export default function Routers() {
   const auth = useSelector((state) => state?.auth);
@@ -135,6 +138,7 @@ export default function Routers() {
       path: "/staff",
       element: <StaffLayout />,
       children: [
+        { path: "/staff/dashboard", element: <StaffDashboard/> },
         { path: "/staff/all-request", element: <AllRequest /> },
         {
           path: "/staff/project-detail/:id",
@@ -158,6 +162,11 @@ export default function Routers() {
           path: "/staff/create-list-progress/:id",
           element: <CreateProgress />,
         },
+        {
+          path: "/staff/construction-config",
+          element: <ConstructionConfigManagement />,
+        },
+        { path: "/staff/worker-management", element: <WorkerManagement/> },
       ],
     },
     {

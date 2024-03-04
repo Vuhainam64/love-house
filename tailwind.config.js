@@ -1,26 +1,23 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     container: {
       container: true,
     },
     extend: {
       fontFamily: {
-        'poppins': ['Poppins', 'sans-serif'],
+        poppins: ["Poppins", "sans-serif"],
       },
       colors: {
-        "main": "#003b29",
-        "baseOrange": "#E48824",
-        "baseGreen": "#88B844",
-        "baseDark": "#333333",
-        "baseWhite": "#fff",
-        "baseGray": "#666666",
+        main: "#003b29",
+        baseOrange: "#E48824",
+        baseGreen: "#88B844",
+        baseDark: "#333333",
+        baseWhite: "#fff",
+        baseGray: "#666666",
         "bg-button": "#f3f3f3",
-        "baseDashboard": "#1c2434",
+        baseDashboard: "#1c2434",
         headingColor: "#2e2e2e",
         textColor: "#515151",
         primary2: "#f3f3f3",
@@ -82,7 +79,5 @@ module.exports = {
       },
     },
   },
-  plugins: [
-    require("tailwind-scrollbar")
-  ],
-}
+  plugins: [require("tailwind-scrollbar")],
+};

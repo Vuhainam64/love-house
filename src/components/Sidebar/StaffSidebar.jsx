@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 
 import {
   RiMailSendFill,
@@ -14,7 +14,11 @@ import {
   FaRegCircleUser,
   FaRegNewspaper,
 } from "react-icons/fa6";
-import { MdInventory, MdOutlinePriceChange } from "react-icons/md";
+import {
+  MdInventory,
+  MdOutlinePriceChange,
+  MdOutlineSettings,
+} from "react-icons/md";
 import { GrSupport, GrTransaction } from "react-icons/gr";
 import { FaRegCalendarAlt } from "react-icons/fa";
 import { AiOutlineProject } from "react-icons/ai";
@@ -29,8 +33,11 @@ import { FcSalesPerformance } from "react-icons/fc";
 export default function StaffSidebar() {
   const [open, setOpen] = useState(true);
   const [activeSubMenu, setActiveSubMenu] = useState(null);
+  const location = useLocation();
 
   const Menus = [
+    { title: "Dashboard", icon: <RiHome4Line />, path: "/staff/dashboard" },
+
     {
       label: "MENU",
     },
@@ -44,7 +51,12 @@ export default function StaffSidebar() {
       icon: <FaRegCircleUser />,
       submenu: [{ title: "Users List", path: "/dashboard/users-list" }],
     },
-    { title: "Calendar ", icon: <FaRegCalendarAlt /> },
+    {
+      title: "Construction Config ",
+      icon: <MdOutlineSettings />,
+      submenu: [{ title: "Config List", path: "/staff/construction-config" }],
+    },
+    { title: "Woker Management", icon: <RiHome4Line />, path: "/staff/worker-management" },
 
     {
       label: "FUNCTION",
@@ -120,6 +132,7 @@ export default function StaffSidebar() {
         { title: "Quotation List", path: "/dashboard/list-quotation" },
       ],
     },
+
     {
       label: "OTHER",
     },
@@ -132,6 +145,8 @@ export default function StaffSidebar() {
   const toggleSubMenu = (index) => {
     setActiveSubMenu(activeSubMenu === index ? null : index);
   };
+
+  const isActive = (path) => location.pathname === path;
 
   return (
     <div className=" flex w-72.5 overflow-y-auto duration-300 ease-linear scrollbar-thin scrollbar-none scrollbar-track-gray-100 border-r shadow-sm">
@@ -159,7 +174,7 @@ export default function StaffSidebar() {
           <img
             src={control}
             className={` cursor-pointer top-9 w-7  border-baseGreen
-     border-2 rounded-full  ${!open && "rotate-180"}`}
+     border-2 rounded-full ml-10  ${!open && "rotate-180"}`}
             onClick={() => setOpen(!open)}
           />
         </div>
@@ -173,35 +188,50 @@ export default function StaffSidebar() {
                 >
                   {menu.label}
                 </li>
-              ) : null} 
+              ) : null}
               {!menu.label ? (
                 <>
-                  <li
+                  <NavLink
                     key={index}
-                    onClick={() => toggleSubMenu(index)}
-                    className={`flex rounded-md p-2 cursor-pointer hover:bg-baseGreen text-black hover:text-white text-sm items-center gap-x-4 
-                    ${menu.gap ? "mt-9" : "mt-2"} ${
-                      index === 0 && "bg-baseGreen text-white"
-                    } `}
+                    to={menu.path}
+                    className="text-decoration-none"
                   >
-                    <span style={{ fontSize: "24px" }}>{menu.icon}</span>
-                    <span
-                      className={`${
-                        !open && "hidden"
-                      } origin-left duration-200`}
+                    <li
+                      // key={index}
+                      onClick={() => toggleSubMenu(index)}
+                      // className={`flex rounded-md p-2 cursor-pointer hover:bg-baseGreen text-black hover:text-white text-sm items-center gap-x-4
+                      // ${menu.gap ? "mt-9" : "mt-2"} ${
+                      //   index === 0 && "bg-baseGreen text-white"
+                      // } `}
+
+                      className={`flex rounded-md p-2 cursor-pointer ${
+                        isActive(menu.path)
+                          ? "bg-baseGreen text-white"
+                          : "hover:bg-baseGreen text-black hover:text-white"
+                      } text-sm items-center gap-x-4`}
                     >
-                      {menu.title}
-                    </span>
-                    {menu.submenu && (
-                      <span className={`ml-auto ${open ? "block" : "hidden"}`}>
-                        {activeSubMenu === index ? (
-                          <FaChevronUp />
-                        ) : (
-                          <FaChevronDown />
-                        )}
+                      <span style={{ fontSize: "24px" }}>{menu.icon}</span>
+                      <span
+                        className={`${
+                          !open && "hidden"
+                        } origin-left duration-200`}
+                      >
+                        {menu.title}
                       </span>
-                    )}
-                  </li>
+                      {menu.submenu && (
+                        <span
+                          className={`ml-auto ${open ? "block" : "hidden"}`}
+                        >
+                          {activeSubMenu === index ? (
+                            <FaChevronUp />
+                          ) : (
+                            <FaChevronDown />
+                          )}
+                        </span>
+                      )}
+                    </li>
+                  </NavLink>
+
                   {menu.submenu && activeSubMenu === index && (
                     <ul className={`pl-6 ${open ? "block" : "hidden"}`}>
                       {menu.submenu.map((submenu, subIndex) => (

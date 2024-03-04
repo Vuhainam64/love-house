@@ -7,30 +7,10 @@ import { CurrencyFormatter, LoadingOverlay } from "../../../../components";
 
 import { FiEdit } from "react-icons/fi";
 
-export default function Material() {
-  const { id } = useParams();
-  const [quoteDetail, setQuoteDetail] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  const fetchQuoteDetail = async () => {
-    try {
-      const data = await getQuotationById(id);
-
-      if (data && data.result) {
-        setQuoteDetail(data.result.data);
-        setLoading(false);
-      }
-    } catch (error) {
-      console.error("Error fetching quote detail:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchQuoteDetail();
-  }, [id]);
+export default function Material({quoteDetail}) {
+  
   return (
     <>
-      <LoadingOverlay loading={loading} />
       <div id="material">
         <div className="flex items-center mt-12 ">
           <h1 className="text-xl font-semibold mr-4 uppercase pb-8 pl-5">
@@ -154,8 +134,6 @@ export default function Material() {
                         {item.material.name}
                       </span>
                     </div>
-
-                    
                   </div>
 
                   <div className="flex justify-between text-sm text-gray-700">

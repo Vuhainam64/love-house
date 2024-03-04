@@ -10,7 +10,10 @@ import { Input, Button } from "antd";
 import { Modal } from "../../../components";
 import { alert } from "../../../components/Alert/Alert";
 
-import { getContractProgressById, signContract } from "../../../constants/apiContract";
+import {
+  getContractProgressById,
+  signContract,
+} from "../../../constants/apiContract";
 
 export default function SignContractForm({ onModalClose }) {
   const user = useSelector((state) => state?.user?.user);
@@ -62,7 +65,7 @@ export default function SignContractForm({ onModalClose }) {
           showLoaderOnConfirm: true,
           didOpen: () => {
             // Fill in contractId and accountId
-            document.querySelector('input.swal2-input').value = contractId;
+            document.querySelector("input.swal2-input").value = contractId;
           },
         })
           .then((result) => {
@@ -99,11 +102,23 @@ export default function SignContractForm({ onModalClose }) {
       console.log("Form data submitted:", formattedData);
 
       await signContract(formattedData);
-      alert.alertSuccessWithTime("Sign Contract Successfully", "", 2000, "30", () => {});
+      alert.alertSuccessWithTime(
+        "Sign Contract Successfully",
+        "",
+        2000,
+        "30",
+        () => {}
+      );
       setShowModal(false);
       onModalClose();
     } catch (error) {
-      alert.alertFailedWithTime("Failed To Sign Contract", "Please try again", 2500, "25", () => {});
+      alert.alertFailedWithTime(
+        "Failed To Sign Contract",
+        "Please try again",
+        2500,
+        "25",
+        () => {}
+      );
     }
   };
 
@@ -119,13 +134,26 @@ export default function SignContractForm({ onModalClose }) {
 
         <Modal isVisible={showModal} onClose={() => setShowModal(false)}>
           <div className="p-4 my-auto lg:px-8 text-left overflow-y-auto max-h-[500px]">
-            <h3 className="text-xl font-semibold text-gray-900 mb-5">Sign Contract</h3>
+            <h3 className="text-xl font-semibold text-gray-900 mb-5">
+              Sign Contract
+            </h3>
 
-            <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
+            <Formik
+              initialValues={initialValues}
+              validationSchema={validationSchema}
+              onSubmit={handleSubmit}
+            >
               {() => (
                 <Form>
                   <label htmlFor="contractId">Contract ID</label>
-                  <Field name="contractId" as={Input} type="text" readOnly className="mb-3" />
+                  <Field
+                    name="contractId"
+                    as={Input}
+                    type="text"
+                    readOnly
+                    hidden
+                    className="mb-3"
+                  />
 
                   {/* Remove the verificationCode field */}
                   <Button

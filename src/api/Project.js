@@ -36,9 +36,9 @@ export const configProject = async (configData) => {
     }
 };
 
-export const getAllProjects = async () => {
+export const getAllProjects = async (status) => {
     try {
-        const res = await axios.get(`${baseURL}/project/get-all-project`, {
+        const res = await axios.get(`${baseURL}/project/get-all-project?status=${status}`, {
             headers: {
                 Authorization: `Bearer ${usertoken}`,
             },

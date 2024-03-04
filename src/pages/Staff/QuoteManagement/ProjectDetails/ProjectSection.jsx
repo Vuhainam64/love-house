@@ -10,31 +10,10 @@ import {
 
 import ProjectGrid from "./Grid/ProjectGrid";
 
-export default function ProjectSection() {
-  const { id } = useParams();
-  const [projectDetail, setProjectDetail] = useState({});
-  const [loading, setLoading] = useState(true);
-
-  const fetchProjectDetail = async () => {
-    try {
-      const data = await getProjectById(id);
-
-      if (data && data.result) {
-        setProjectDetail(data.result.data);
-        setLoading(false);
-      }
-    } catch (error) {
-      console.error("Error fetching project detail:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchProjectDetail();
-  }, [id]);
+export default function ProjectSection({projectDetail}) {
 
   return (
     <>
-      <LoadingOverlay loading={loading} />
       <div className="flex-1 p-5">
         <h1 className="text-xl font-semibold uppercase">Project</h1>
 

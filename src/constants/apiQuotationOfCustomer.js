@@ -7,22 +7,23 @@ export const quoteRequest = async (userData, accountId) => {
   try {
     const formData = new FormData();
 
-   
     formData.append("NumOfFloor", userData.numOfFloor);
     formData.append("Area", userData.area);
-    formData.append("LandDrawingFile", userData.landDrawingFileUrl); 
+    formData.append("LandDrawingFile", userData.landDrawingFileUrl);
     formData.append("Type", userData.constructionType);
     formData.append("AddressProject", userData.address);
     formData.append("AccountId", accountId);
- 
 
- 
-    const res = await axios.post(`${baseURL}/project/create-project-by-user`, formData, {
-      headers: {
-        "Authorization": `Bearer ${usertoken}`, 
-         "Content-Type": "multipart/form-data",
-      },
-    });
+    const res = await axios.post(
+      `${baseURL}/project/create-project-by-user`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${usertoken}`,
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
 
     return res.data;
   } catch (err) {
@@ -46,30 +47,34 @@ export const quoteRequest = async (userData, accountId) => {
 //   }
 // };
 
-
-export const getAllRequest = async (accountId) => {
+export const getAllRequest = async (accountId, status) => {
   try {
-      const res = await axios.get(`${baseURL}/project/get-all-project-by-accountId/${accountId}`,
+    const res = await axios.get(
+      `${baseURL}/project/get-all-project-by-accountId/${accountId}?status=${status}`,
       {
         headers: {
           Authorization: `Bearer ${usertoken}`,
         },
         withCredentials: true,
-      });
-      return res.data;
+      }
+    );
+    return res.data;
   } catch (err) {
-      return null;
+    return null;
   }
 };
 
-export const getProjectByIdForCustomer = async (id) => {
+export const getProjectByIdForCustomer = async (id, status) => {
   try {
-    const res = await axios.get(`${baseURL}/project/get-project-by-id-for-customer/${id}`, {
-      headers: {
-        Authorization: `Bearer ${usertoken}`,
-      },
-      withCredentials: true,
-    });
+    const res = await axios.get(
+      `${baseURL}/project/get-project-by-id-for-customer/${id}?status=${status}`,
+      {
+        headers: {
+          Authorization: `Bearer ${usertoken}`,
+        },
+        withCredentials: true,
+      }
+    );
     return res.data;
   } catch (err) {
     return null;
@@ -116,7 +121,8 @@ export const createQuotationDealRequest = async (createData) => {
 export const dealQuotation = async ({ quotationId, status }) => {
   try {
     const res = await axios.post(
-      `${baseURL}/quotation/deal-quotation?status=${status}`, `${quotationId}`,
+      `${baseURL}/quotation/deal-quotation?status=${status}`,
+      `${quotationId}`,
       {
         headers: {
           Authorization: `Bearer ${usertoken}`,

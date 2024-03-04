@@ -43,7 +43,7 @@ export default function Navbar() {
   };
 
   return (
-    <header className="bg-white mb-24">
+    <header className="bg-white">
       <nav
         className="flex justify-between items-center w-full px-12 md:px-24 mx-auto fixed top-0 left-0 right-0 bg-white "
         style={{ zIndex: 1000 }}

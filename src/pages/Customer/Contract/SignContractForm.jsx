@@ -9,17 +9,20 @@ import { Input, Button } from "antd";
 import { Modal } from "../../../components";
 import { alert } from "../../../components/Alert/Alert";
 
-import { getContractProgressById, resendVerificationCodeByContractId, signContract } from "../../../constants/apiContract";
+import {
+  getContractProgressById,
+  resendVerificationCodeByContractId,
+  signContract,
+} from "../../../constants/apiContract";
 import { toast } from "react-toastify";
 
 
 
 
-export default function SignContractForm({ onModalClose }) {
+export default function SignContractForm({ onModalClose, id }) {
   const user = useSelector((state) => state?.user?.user);
 
   const [showModal, setShowModal] = useState(false);
-  const { id } = useParams();
   const navigate = useNavigate();
   const [contract, setContract] = useState({});
 
@@ -35,17 +38,19 @@ export default function SignContractForm({ onModalClose }) {
       console.error("Error fetching project detail:", error);
     }
   };
-
   useEffect(() => {
-    fetchContract();
+    if(projectDetail !=null){
+      fetchContract();
+
+    }
   }, [id]);
 
   // const handleButtonClick = () => {
   //   setShowModal(true);
   // };
   const handleButtonClick = () => {
-    console.log("he",user)
-    if (user?.phoneNumber ==null || user.phoneNumber == "") {
+    console.log("he", user)
+    if (user?.phoneNumber == null || user.phoneNumber == "") {
       // If phone number is empty, show confirmation modal
       Swal.fire({
         title: "Update Phone Number",
@@ -66,23 +71,36 @@ export default function SignContractForm({ onModalClose }) {
       setShowModal(true);
     }
   };
-const initialValues = {
-  contractId: id,
-  verificationCode: "",
-  
-};
+  const initialValues = {
+    contractId: id,
+    verificationCode: "",
 
-const validationSchema = Yup.object().shape({
-  verificationCode: Yup.string()
-    .required("Required")
-});
- 
-const handleResend= async()=>{
-var result = await resendVerificationCodeByContractId(id);
-if(result.isSuccess){
-  toast.success("Resend successfully");
-}
-}
+  };
+
+  const validationSchema = Yup.object().shape({
+    verificationCode: Yup.string()
+      .required("Required")
+  });
+
+  const handleResend = async () => {
+    var result = await resendVerificationCodeByContractId(id);
+    try {
+      if (result.isSuccess) {
+        alert.alertSuccessWithTime(
+          "Resend code Successfully",
+          "",
+          2000,
+          "25",
+          () => { }
+        );
+      } else {
+        for (var i = 0; i < result.messages.length; i++) {
+          toast.error(result.messages[i]);
+        }
+      }
+
+    } catch (error) { }
+  }
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     try {
       if (!user?.phoneNumber) {
@@ -92,7 +110,7 @@ if(result.isSuccess){
           "Please update your phone number first",
           2500,
           "25",
-          () => {}
+          () => { }
         );
         setShowModal(false);
         onModalClose();
@@ -101,21 +119,26 @@ if(result.isSuccess){
       const formattedData = {
         contractId: values.contractId,
         verificationCode: values.verificationCode,
-        accountId: user?.id
+        accountId: user?.id,
       };
 
       console.log("Form data submitted:", formattedData);
 
-      await signContract(formattedData);
+      const result = await signContract(formattedData);
       resetForm();
-      alert.alertSuccessWithTime(
-        "Sign Contract Successfully",
-        "",
-        2000,
-        "30",
-        () => {}
-      );
-
+      if (result.isSuccess) {
+        alert.alertSuccessWithTime(
+          "Sign Contract Successfully",
+          "",
+          2000,
+          "25",
+          () => { }
+        );
+      } else {
+        for (var i = 0; i < result.messages.length; i++) {
+          toast.error(result.messages[i]);
+        }
+      }
       setShowModal(false);
       onModalClose();
     } catch (error) {
@@ -124,7 +147,7 @@ if(result.isSuccess){
         "Please try again",
         2500,
         "25",
-        () => {}
+        () => { }
       );
     } finally {
       setSubmitting(false);
@@ -133,26 +156,30 @@ if(result.isSuccess){
   return (
     <>
       <Fragment>
-        <button
-          onClick={handleButtonClick}
-          className="bg-baseOrange text-white rounded-lg p-2 mb-2 font-semibold"
-        >
-          Sign Contract
-        </button>
-
+       {projectDetail?.contract?.contractStatus === 1 &&
+     
+       <button
+       onClick={handleButtonClick}
+       className="bg-baseOrange text-white rounded-lg p-2 mb-2 font-semibold"
+     >
+       Sign Contract
+     </button>   
+       
+       }
+    
         <Modal isVisible={showModal} onClose={() => setShowModal(false)}>
-          <div className="p-4 my-auto lg:px-8 text-left overflow-y-auto max-h-[500px]">
+          <div className="p-4 my-auto lg:px-8 text-left overflow-y-auto max-h-[500px] flex flex-col">
             <h3 className="text-xl font-semibold text-gray-900 mb-5">
               Sign Contract
             </h3>
- <button style={{cursor:'pointer'}} onClick={() => handleResend()}>Resend verification code</button>
+            <button style={{ cursor: 'pointer' }} onClick={() => handleResend()}>Resend verification code</button>
             <Formik
               initialValues={initialValues}
               validationSchema={validationSchema}
               onSubmit={handleSubmit}
             >
               {({ values, errors, touched, setFieldValue }) => (
-                <Form>
+                <Form className="flex flex-col">
                   <label htmlFor="contractId">Contract ID</label>
                   <Field
                     name="contractId"
@@ -175,7 +202,7 @@ if(result.isSuccess){
                     </div>
                   )}
 
-                 
+
 
                   <Button
                     type="primary"

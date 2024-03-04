@@ -8,13 +8,11 @@ import { Input, Button } from "antd";
 import { Modal } from "../../../components";
 import { alert } from "../../../components/Alert/Alert";
 import { createQuotationDealRequest } from "../../../constants/apiQuotationOfCustomer";
+import { toast } from "react-toastify";
 
-export default function DealForm({ onModalClose }) {
+export default function DealForm({ onModalClose, id }) {
   const [showModal, setShowModal] = useState(false);
 
-  const [discount, setDiscount] = useState({});
-
-  const { id } = useParams();
   const navigate = useNavigate();
 
   const handleButtonClick = () => {
@@ -38,46 +36,32 @@ export default function DealForm({ onModalClose }) {
       .required("Required")
       .positive("Must be positive")
       .integer("Must be an integer"),
-   
   });
 
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
-    try {
-      const formattedData = {
-        quotationId: id,
-        materialDiscount: values.materialDiscount,
-        furnitureDiscount: values.furnitureDiscount,
-        laborDiscount: values.laborDiscount,
-        description: values.description,
-      };
+    const formattedData = {
+      quotationId: id,
+      materialDiscount: values.materialDiscount,
+      furnitureDiscount: values.furnitureDiscount,
+      laborDiscount: 0,
+      description: values.description,
+    };
 
-      console.log("Form data submitted:", formattedData);
+    console.log("Form data submitted:", formattedData);
 
-      await createQuotationDealRequest(formattedData);
-      resetForm();
-
-      alert.alertSuccessWithTime(
-        "Create Quotation Deal Request Successfully",
-        "",
-        2000,
-        "30",
-        () => {}
-      );
-      setShowModal(false);
-      onModalClose();
-    } catch (error) {
-      alert.alertFailedWithTime(
-        "Failed To Create",
-        "Please try again",
-        2500,
-        "25",
-        () => {}
-      );
-    } finally {
-      setSubmitting(false);
+    const result = await createQuotationDealRequest(formattedData);
+    resetForm();
+    if (result.isSuccess) {
+      toast.success("Create successfully");
+    } else {
+      for (var i = 0; i < result.messages.length; i++) {
+        toast.error(result.messages[i]);
+      }
     }
+    setShowModal(false);
+    onModalClose();
+    setSubmitting(false);
   };
-  
 
   return (
     <>
@@ -150,7 +134,7 @@ export default function DealForm({ onModalClose }) {
                   <label htmlFor="description" className="">
                     Description
                   </label>
-                  <Field name="description"  as={Input} type="text" />
+                  <Field name="description" as={Input} type="text" />
                   {errors.description && touched.description && (
                     <div style={{ color: "red", marginBottom: "12px" }}>
                       {errors.description}

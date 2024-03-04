@@ -5,25 +5,8 @@ import { getQuoteDetailForCustomer } from "../../../constants/apiQuotationOfCust
 
 import { CurrencyFormatter } from "../../../components";
 
-export default function WorkerDetailSection() {
-  const { id } = useParams();
-  const [quoteDetail, setQuoteDetail] = useState({});
+export default function WorkerDetailSection({quoteDetail}) {
 
-  const fetchQuoteDetail = async () => {
-    try {
-      const data = await getQuoteDetailForCustomer(id);
-      if (data && data.result) {
-        setQuoteDetail(data.result.data);
-        //setLoading(false);
-      }
-    } catch (error) {
-      console.error("Error fetching quote detail:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchQuoteDetail();
-  }, [id]);
 
   return (
     <>

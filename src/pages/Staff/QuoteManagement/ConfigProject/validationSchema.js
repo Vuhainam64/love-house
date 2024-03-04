@@ -1,50 +1,6 @@
 import * as Yup from "yup";
 
 export const projectConfigValidationSchema = Yup.object().shape({
-    sandMixingRatio: Yup.number()
-    .test(
-      "no-e",
-      "Invalid character: 'e' not allowed",
-      (value) => !String(value).includes("e")
-    )
-    .integer("'Sand Mixing Ratio' must be an integer")
-    .moreThan(0, "'Sand Mixing Ratio' must be greater than 0")
-    .required("'Sand Mixing Ratio' must not be empty"),
-  cementMixingRatio: Yup.number()
-    .required("'Cement Mixing Ratio' must not be empty")
-    .integer("'Cement Mixing Ratio' must be an integer")
-    .moreThan(0, "'Cement Mixing Ratio' must be greater than 0")
-    .test(
-      "no-e",
-      "Invalid character: 'e' not allowed",
-      (value) => !String(value).includes("e")
-    ),
-
-  stoneMixingRatio: Yup.number()
-    .required("'Stone Mixing Ratio' must not be empty")
-    .integer("'Stone Mixing Ratio' must be an integer")
-    .moreThan(0, "'Stone Mixing Ratio' must be greater than 0")
-    .test(
-      "no-e",
-      "Invalid character: 'e' not allowed",
-      (value) => !String(value).includes("e")
-    ),
-
-  rawMaterialDiscount: Yup.number().min(
-    0,
-    "'Raw Material Discount' must be greater than or equal to 0"
-  ),
-
-  furnitureDiscount: Yup.number().min(
-    0,
-    "'Funiture Discount' must be greater than or equal to 0"
-  ),
-
-  laborDiscount: Yup.number().min(
-    0,
-    "'Labor Discount' must be greater than or equal to 0"
-  ),
-
   tiledArea: Yup.number()
     .required("'The TiledArea' must not be empty")
     .moreThan(0, "'The TiledArea' must be greater than 0"),

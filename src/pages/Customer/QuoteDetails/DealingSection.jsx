@@ -36,9 +36,7 @@ export default function DealingSection() {
       { quoteDetail?.quotation?.quotationStatus !== 3 && (
         <>
           <LoadingOverlay loading={loading} />
-          <h1 className="text-xl font-semibold py-5 uppercase pl-5">
-            Quotation Dealing
-          </h1>
+        
 
           {quoteDetail.quotationDealings?.length > 0 ? (
             <div className="px-5 pb-5 h-auto ">

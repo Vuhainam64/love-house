@@ -15,7 +15,7 @@ export {
   submitOTPResetPass,
   updateAccount
 }
-from "./Account";
+from "./Account.js";
 
 //news
 export {
@@ -35,7 +35,7 @@ export {
   updateBlog,
   deleteBlogById,
 }
-from "./Blog";
+from "./Blog.js";
 
 //project
 export {
@@ -45,7 +45,7 @@ export {
   getSampleProjectById,
   updateSampleProject,
 }
-from "./SampleProject";
+from "./SampleProject.js";
 
 //project
 export {
@@ -54,7 +54,7 @@ export {
   createProjectByUser,
   getProjectById,
 }
-from "./Project";
+from "./Project.js";
 
 //role
 export {

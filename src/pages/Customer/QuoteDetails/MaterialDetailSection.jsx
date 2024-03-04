@@ -6,30 +6,10 @@ import { getQuoteDetailForCustomer } from "../../../constants/apiQuotationOfCust
 import { CurrencyFormatter, LoadingOverlay } from "../../../components";
 
 
-export default function MaterialDetailSection() {
-  const { id } = useParams();
-  const [quoteDetail, setQuoteDetail] = useState({});
-  const [loading, setLoading] = useState(true);
-
-  const fetchQuoteDetail = async () => {
-    try {
-      const data = await getQuoteDetailForCustomer(id);
-      if (data && data.result) {
-        setQuoteDetail(data.result.data);
-        setLoading(false);
-      }
-    } catch (error) {
-      console.error("Error fetching quote detail:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchQuoteDetail();
-  }, [id]);
+export default function MaterialDetailSection({quoteDetail}) {
 
   return (
     <>
-    <LoadingOverlay loading={loading} />
       <h1 className="text-xl font-semibold mt-6 py-5 uppercase pl-5">Details of materials</h1>
       <div className="px-5 pb-5 h-auto ">
         <div className="overflow-auto rounded-lg shadow hidden md:block">

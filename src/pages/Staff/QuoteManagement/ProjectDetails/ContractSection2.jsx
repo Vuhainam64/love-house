@@ -109,18 +109,20 @@ export default function ContractSection2() {
                     </td>
                     <td className="p-3 text-sm text-gray-700 whitespace-nowrap text-center">
                       {projectDetail?.contract?.contractUrl ? (
-                        // <NavLink
-                        //   to={projectDetail?.contract?.contractUrl}
-                        //   className="text-blue-500 hover:underline"
-                        // >
-                        //   View contract
-                        // </NavLink>
-                        <NavLink
-                          to={`/staff/contract-payment-progress/${projectDetail?.contract?.id}`}
-                          className="text-blue-500 hover:underline"
-                        >
-                          View payment progress
-                        </NavLink>
+                        <>
+                          <NavLink
+                            to={projectDetail?.contract?.contractUrl}
+                            className="text-blue-500 hover:underline block"
+                          >
+                            View contract
+                          </NavLink>
+                          <NavLink
+                            to={`/staff/contract-payment-progress/${projectDetail?.contract?.id}`}
+                            className="text-blue-500 hover:underline block"
+                          >
+                            View payment progress
+                          </NavLink>
+                        </>
                       ) : (
                         <NavLink
                           to={`/staff/contract-payment-progress/${projectDetail?.contract?.id}`}

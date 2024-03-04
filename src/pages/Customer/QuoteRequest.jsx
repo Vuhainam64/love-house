@@ -9,7 +9,7 @@ import {
   DBHeader,
 } from "../../components";
 import { getAllRequest } from "../../constants/apiQuotationOfCustomer";
-
+import { Tabs } from "antd";
 import { CgEnter } from "react-icons/cg";
 
 export default function QuoteRequest() {
@@ -21,9 +21,10 @@ export default function QuoteRequest() {
   const user = useSelector((state) => state?.user?.user);
 
   const customerId = user.id;
-  const fetchAllRequest = async () => {
+  const fetchAllRequest = async (status) => {
     try {
-      const data = await getAllRequest(customerId);
+      setLoading(true);
+      const data = await getAllRequest(customerId, status);
       if (data && data.result) {
         const sortedData = data.result.data.slice().sort((a, b) => {
           return new Date(b.createDate) - new Date(a.createDate);
@@ -40,8 +41,27 @@ export default function QuoteRequest() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    fetchAllRequest();
+    fetchAllRequest(0);
   }, [customerId]);
+  const onChange = async (key) => {
+    console.log(key);
+    await fetchAllRequest(key);
+  };
+
+  const items = [
+    {
+      key: "0",
+      label: "Pending",
+    },
+    {
+      key: "1",
+      label: "Processing",
+    },
+    {
+      key: "2",
+      label: "Under Construction",
+    },
+  ];
 
   return (
     <>
@@ -50,11 +70,13 @@ export default function QuoteRequest() {
         <CustomerSidebar />
 
         <div className="h-screen flex-1 overflow-y-auto bg-gray-100">
-          <DBHeader/>
+          <DBHeader />
           <h1 className="text-2xl font-semibold pb-5 mt-5 uppercase text-center">
             Quote Request
           </h1>
           <div className="p-5 h-screen bg-gray-100 ">
+            {/* Web */}
+            <Tabs defaultActiveKey="0" items={items} onChange={onChange} />
             <div className="overflow-auto rounded-lg shadow hidden md:block">
               <table className="w-full">
                 <thead className="bg-gray-50 border-b-2 border-gray-200">
@@ -102,11 +124,11 @@ export default function QuoteRequest() {
                         </td>
                         <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
                           <ProjectStatusBadge
-                            projectStatus={item.projectStatus}
+                            projectStatus={item?.status}
                           />
                         </td>
                         <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                          {item.projectStatus !== 0 && (
+                          {
                             <>
                               <NavLink
                                 to={`/customer/project-detail/${item.id}`}
@@ -114,7 +136,7 @@ export default function QuoteRequest() {
                                 View Detail
                               </NavLink>
                             </>
-                          )}
+                          }
                         </td>
                       </tr>
                     );
@@ -122,7 +144,7 @@ export default function QuoteRequest() {
                 </tbody>
               </table>
             </div>
-
+            {/* Mobile */}
             <div className="grid grid-cols-1 gap-4 md:hidden">
               {allRequest.map((item, index) => (
                 <div
@@ -140,8 +162,8 @@ export default function QuoteRequest() {
                       </div>
                     </div>
 
-                    <div>
-                      <ProjectStatusBadge projectStatus={item.projectStatus} />
+                    <div >
+                      <ProjectStatusBadge projectStatus={item.status} />
                     </div>
                   </div>
 
@@ -150,7 +172,7 @@ export default function QuoteRequest() {
                   </div>
 
                   <div className="text-sm font-medium text-black text-right">
-                    {item.projectStatus !== 0 && (
+                    {
                       // <NavLink to={`/customer/project-detail/${item.id}`}>
                       //   <button className="bg-baseGreen text-white font-semibold px-4 py-2 rounded hover:bg-red-400">
                       //     View Detail
@@ -162,7 +184,7 @@ export default function QuoteRequest() {
                           View Detail <CgEnter size={25} className="ml-2" />
                         </div>
                       </NavLink>
-                    )}
+                    }
                   </div>
                 </div>
               ))}
