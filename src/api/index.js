@@ -83,7 +83,8 @@ export {
   getAllSupplierQuotationsByMonth,
   getSupplierQuotationTemplate,
   uploadSupplierQuotationWithExcelFile,
-  getUploadSupplierQuotationWithExcelFileError
+  getUploadSupplierQuotationWithExcelFileError,
+  validExcelFile
 }
 from "./SupplierPriceQuotation";
 

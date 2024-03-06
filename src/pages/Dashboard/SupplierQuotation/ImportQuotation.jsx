@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 import * as XLSX from "xlsx";
@@ -13,10 +13,15 @@ import {
   getSupplierQuotationTemplate,
   getUploadSupplierQuotationWithExcelFileError,
   uploadSupplierQuotationWithExcelFile,
+  validExcelFile,
 } from "../../../api";
+import DataTableFalse from "../../../components/Dashboard/DataTableFalse";
+import { useSelector } from "react-redux";
 
 const ImportQuotation = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [excelData, setExcelData] = useState([]);
 
   const downloadExample = async () => {
     try {
@@ -32,47 +37,53 @@ const ImportQuotation = () => {
   };
 
   const handleSubmit = async (data, file) => {
-    // Extracting valid data from the data object
-    const validData = data.validData;
+    const validData = data.validData.map(
+      ({ No, MaterialName, Unit, MOQ, Price }) => ({
+        No,
+        MaterialName,
+        Unit,
+        MOQ,
+        Price,
+      })
+    );
 
-    // Creating a 2D array with headers and valid data
     const sheetData = [
       Object.keys(validData[0]),
       ...validData.map((item) => Object.values(item)),
     ];
-
-    // Creating a worksheet
     const ws = XLSX.utils.aoa_to_sheet(sheetData);
-
-    // Creating a workbook
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Sheet 1");
-
-    // Creating an array buffer
     const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
-
-    // Creating a Blob from the array buffer
     const blob = new Blob([excelBuffer], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
-
-    // Create a FormData object to append the Blob
     const formData = new FormData();
     formData.append("file", blob, "SauChien_20122023.xlsx");
-
     console.log("data: ", data);
-    try {
-      // Upload the file using your API function
-      const uploadResponse = await uploadSupplierQuotationWithExcelFile(
-        formData
-      );
 
-      if (uploadResponse.date) {
-        toast.success("Upload successful: " + uploadResponse.date);
+    try {
+      const uploadResponse = await validExcelFile(formData);
+      if (!uploadResponse.result.data.isValidated) {
+        const errors = uploadResponse.result.data.errors;
+        const updatedExcelData = validData.map((item, index) => ({
+          ...item,
+          Error: errors[index] || "",
+        }));
+        setIsError(true);
+        setExcelData(updatedExcelData);
+        console.log("excelData", updatedExcelData);
+      }
+      if (uploadResponse.result.data.isValidated) {
+        const uploadResponse2 = await uploadSupplierQuotationWithExcelFile(
+          formData
+        );
+        toast.success("Upload successful: " + uploadResponse2.date);
       } else {
-        toast.error("Upload Fail: Please check file error " );
+        toast.error("Upload Fail: Please check file error ");
         getUploadSupplierQuotationWithExcelFileError(formData);
       }
+      console.log("uploadResponse: ", uploadResponse.result.data.isValidated);
     } catch (error) {
       toast.error("Error during upload:", error);
     }
@@ -115,6 +126,15 @@ const ImportQuotation = () => {
       <div className="my-4">
         <img src={ImportExcel} alt="gif" className="rounded-xl" />
       </div>
+
+      <DataTableFalse
+        isOpen={isError}
+        onClose={() => setIsError(false)}
+        onSubmit={handleSubmit}
+        excelData={excelData}
+        fields={fields}
+      />
+
       <DataTable
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
@@ -137,8 +157,14 @@ const fields = [
     example: "1",
     validations: [
       {
-        rule: "required",
-        errorMessage: "No is required",
+        rule: "unique",
+        errorMessage: "No is unique",
+        level: "error",
+      },
+      {
+        rule: "regex",
+        value: "^[0-9]+$",
+        errorMessage: "No is a number",
         level: "error",
       },
     ],
@@ -156,6 +182,12 @@ const fields = [
         errorMessage: "Material Name is required",
         level: "error",
       },
+      {
+        rule: "regex",
+        value: "^[a-zA-Z]+$",
+        errorMessage: "Material is a text",
+        level: "error",
+      },
     ],
   },
   {
@@ -169,6 +201,12 @@ const fields = [
       {
         rule: "required",
         errorMessage: "Unit is required",
+        level: "error",
+      },
+      {
+        rule: "regex",
+        value: "^(Kg|M3|Bar|Item)$",
+        errorMessage: "Unit include Kg|M3|Bar|Item",
         level: "error",
       },
     ],
@@ -186,6 +224,12 @@ const fields = [
         errorMessage: "MOQ is required",
         level: "error",
       },
+      {
+        rule: "regex",
+        value: "^[1-9]\\d*$",
+        errorMessage: "MOQ > 0",
+        level: "error",
+      },
     ],
   },
   {
@@ -199,6 +243,28 @@ const fields = [
       {
         rule: "required",
         errorMessage: "Price is required",
+        level: "error",
+      },
+      {
+        rule: "regex",
+        value: "^(?!0+(\\.0*)?$)([1-9]\\d*|0)(\\.\\d+)?$",
+        errorMessage: "Price > 0",
+        level: "error",
+      },
+    ],
+  },
+  {
+    label: "Error",
+    key: "Error",
+    fieldType: {
+      type: "input",
+    },
+    example: " ",
+    validations: [
+      {
+        rule: "regex",
+        value: "^ *$",
+        errorMessage: "Check the error row",
         level: "error",
       },
     ],
