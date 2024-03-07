@@ -9,6 +9,15 @@ function DataTable({ isOpen, onClose, onSubmit, fields }) {
         onClose={onClose}
         onSubmit={onSubmit}
         fields={fields}
+        customTheme={{
+          components: {
+            Button: {
+              defaultProps: {
+                colorScheme: "green",
+              },
+            },
+          },
+        }}
       />
     </div>
   );

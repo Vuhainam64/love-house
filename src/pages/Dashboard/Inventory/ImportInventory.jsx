@@ -203,7 +203,7 @@ const ImportInventory = () => {
               <div>Inventory</div>
               <FaChevronRight />
             </div>
-            <div className="text-2xl text-orange-400 font-semibold py-4">
+            <div className="text-2xl text-green-400 font-semibold py-4">
               Import Inventory
             </div>
           </div>

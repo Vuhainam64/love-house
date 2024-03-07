@@ -57,7 +57,7 @@ const CreateSupplier = ({ setIsCreate, refreshData }) => {
         >
           <MdClose className="text-2xl" />
         </motion.div>
-        <div className="border rounded-full p-6 bg-orange-400 text-white">
+        <div className="border rounded-full p-6 bg-green-400 text-white">
           <FaPlus className="text-2xl" />
         </div>
         <div className="font-semibold py-4 text-xl">Create Supplier</div>

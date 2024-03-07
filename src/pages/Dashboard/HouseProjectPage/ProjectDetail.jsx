@@ -56,7 +56,7 @@ const ProjectDetail = () => {
           <div>Project Detail</div>
           <FaChevronRight />
         </div>
-        <div className="text-2xl text-orange-400 font-semibold py-4">
+        <div className="text-2xl text-green-400 font-semibold py-4">
           Project Management
         </div>
       </div>

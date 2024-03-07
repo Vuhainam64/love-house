@@ -120,7 +120,7 @@ function NewsCreate() {
           <div>News Management</div>
           <FaChevronRight />
         </div>
-        <div className="text-2xl text-orange-400 font-semibold py-4">
+        <div className="text-2xl text-green-400 font-semibold py-4">
           Create News
         </div>
       </div>

@@ -185,7 +185,7 @@ const ViewSupplierPrice = () => {
             <div>Supplier Price Detail</div>
             <FaChevronRight />
           </div>
-          <div className="text-2xl text-orange-400 font-semibold py-4">
+          <div className="text-2xl text-green-400 font-semibold py-4">
             View Supplier Price
           </div>
 

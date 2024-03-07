@@ -185,7 +185,7 @@ const MaterialList = () => {
               <div>Material</div>
               <FaChevronRight />
             </div>
-            <div className="text-2xl text-orange-400 font-semibold py-4">
+            <div className="text-2xl text-green-400 font-semibold py-4">
               Material List
             </div>
           </div>
@@ -205,7 +205,7 @@ const MaterialList = () => {
               <motion.div
                 {...buttonClick}
                 onClick={() => setIsCreate(true)}
-                className="px-4 py-2 border rounded-md text-white bg-orange-500 hover:bg-orange-600 font-semibold shadow-md cursor-pointer"
+                className="px-4 py-2 border rounded-md text-white bg-green-500 hover:bg-green-600 font-semibold shadow-md cursor-pointer"
               >
                 Create Material
               </motion.div>

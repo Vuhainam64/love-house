@@ -166,7 +166,7 @@ const QuotationDetail = () => {
         <FaChevronRight />
       </div>
       <div className="flex items-center justify-between">
-        <div className="text-2xl text-orange-400 font-semibold py-4">
+        <div className="text-2xl text-green-400 font-semibold py-4">
           Quotation Detail
         </div>
         <Link

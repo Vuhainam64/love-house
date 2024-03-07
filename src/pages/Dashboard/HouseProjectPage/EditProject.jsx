@@ -232,7 +232,7 @@ function EditProject() {
           <div>House Project Page</div>
           <FaChevronRight />
         </div>
-        <div className="text-2xl text-orange-400 font-semibold py-4">
+        <div className="text-2xl text-green-400 font-semibold py-4">
           Edit Project
         </div>
       </div>

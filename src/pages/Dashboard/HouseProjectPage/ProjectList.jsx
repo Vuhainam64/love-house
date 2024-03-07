@@ -113,7 +113,7 @@ const ProjectList = () => {
           <div>House Project Page</div>
           <FaChevronRight />
         </div>
-        <div className="text-2xl text-orange-400 font-semibold py-4">
+        <div className="text-2xl text-green-400 font-semibold py-4">
           Project List
         </div>
       </div>
@@ -128,7 +128,7 @@ const ProjectList = () => {
               <Link
                 to={"/dashboard/create-sample-project"}
                 className="v-btn py-2 px-4
-              bg-orange-600 hover:bg-orange-700 focus:ring-orange-500 focus:ring-offset-orange-200
+              bg-green-600 hover:bg-green-700 focus:ring-green-500 focus:ring-offset-green-200
               text-white transition ease-in duration-200 text-center text-base font-medium focus:outline-none focus:ring-2
               focus:ring-offset-2 rounded-lg flex items-center hover:no-underline"
               >
@@ -215,7 +215,7 @@ const ProjectList = () => {
                             </div>
 
                             <div
-                              className="relative group flex items-center justify-center p-2 bg-orange-500 hover:bg-orange-600 rounded-3xl text-white
+                              className="relative group flex items-center justify-center p-2 bg-green-500 hover:bg-green-600 rounded-3xl text-white
                               cursor-pointer"
                             >
                               <div>Operation</div>
