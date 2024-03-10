@@ -1,18 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-
-import { getQuotationById } from "../../../../constants/apiQuotationOfStaff";
 
 import {
   QuotationStatusBadge,
   CurrencyFormatter,
-  LoadingOverlay,
 } from "../../../../components";
 import OverviewGrid from "./Grid/OverviewGrid";
 
-export default function Overview({quoteDetail}) {
+export default function Overview({ quoteDetail }) {
   const [reloadContent, setReloadContent] = useState(false);
-
 
   const handleReloadContent = () => {
     setReloadContent((prev) => !prev);
@@ -26,9 +21,17 @@ export default function Overview({quoteDetail}) {
 
   return (
     <>
-      <div id="overview" className="">
-        <h1 className="text-xl font-semibold py-5 uppercase pl-5">Overview</h1>
-        <div className="px-5 pb-5 h-auto ">
+      <div className="flex-1 p-5">
+        <div className="px-2 mb-4 pb-6 -mt-4">
+          <div className="font-semibold border-b-2 mb-4 flex space-x-4">
+            <h4 className="pb-2 uppercase">Quotation</h4>
+            {/* <div>
+              <QuotationStatusBadge
+                quotationStatus={projectDetail?.quotations.quotationStatus}
+              />
+            </div> */}
+          </div>
+
           <div className="overflow-auto rounded-lg shadow hidden md:block">
             <table className="w-full">
               <thead className="bg-gray-50 border-b-2 border-gray-200">
@@ -64,7 +67,8 @@ export default function Overview({quoteDetail}) {
                       <span className="mr-2">
                         <CurrencyFormatter
                           amount={quoteDetail?.quotation?.rawMaterialPrice}
-                        />
+                        />{" "}
+                        VNĐ
                       </span>
                       {calculateOriginalPrice(
                         quoteDetail?.quotation?.rawMaterialPrice,
@@ -76,7 +80,8 @@ export default function Overview({quoteDetail}) {
                               quoteDetail?.quotation?.rawMaterialPrice,
                               quoteDetail?.quotation?.rawMaterialDiscount
                             )}
-                          />
+                          />{" "}
+                          VNĐ
                         </span>
                       )}
                     </div>
@@ -97,7 +102,8 @@ export default function Overview({quoteDetail}) {
                         <span className="mr-2">
                           <CurrencyFormatter
                             amount={quoteDetail?.quotation?.furniturePrice}
-                          />
+                          />{" "}
+                          VNĐ
                         </span>
 
                         {calculateOriginalPrice(
@@ -110,7 +116,8 @@ export default function Overview({quoteDetail}) {
                                 quoteDetail?.quotation?.furniturePrice,
                                 quoteDetail?.quotation?.furnitureDiscount
                               )}
-                            />
+                            />{" "}
+                            VNĐ
                           </span>
                         )}
                       </div>
@@ -134,7 +141,8 @@ export default function Overview({quoteDetail}) {
                         <span className="mr-2">
                           <CurrencyFormatter
                             amount={quoteDetail?.quotation?.laborPrice}
-                          />
+                          />{" "}
+                          VNĐ
                         </span>
 
                         {calculateOriginalPrice(
@@ -147,7 +155,8 @@ export default function Overview({quoteDetail}) {
                                 quoteDetail?.quotation?.laborPrice,
                                 quoteDetail?.quotation?.laborDiscount
                               )}
-                            />
+                            />{" "}
+                            VNĐ
                           </span>
                         )}
                       </div>
@@ -166,7 +175,8 @@ export default function Overview({quoteDetail}) {
                   </td>
 
                   <td className="p-3 text-sm text-red-500 font-semibold whitespace-nowrap text-center">
-                    <CurrencyFormatter amount={quoteDetail?.quotation?.total} />
+                    <CurrencyFormatter amount={quoteDetail?.quotation?.total} />{" "}
+                    VNĐ
                   </td>
 
                   <td className="p-3 text-sm text-gray-700 whitespace-nowrap text-center">

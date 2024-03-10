@@ -36,9 +36,7 @@ export default function WorkerManagement() {
     <>
       <LoadingOverlay loading={loading} />
       <div className="flex overflow-hidden">
-        <StaffSidebar />
         <div className="h-screen overflow-y-auto flex-1">
-          <DBHeader />
           <div className="">
             <ListWorker allWorker={allWorker} handleReloadContent={handleReloadContent} fetchAllWorker= {fetchAllWorker}/>
           </div>

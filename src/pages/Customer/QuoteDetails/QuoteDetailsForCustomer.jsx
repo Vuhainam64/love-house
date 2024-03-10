@@ -30,7 +30,6 @@ export default function QuoteDetailsForCustomer() {
           setProjectDetail(data.result.data);
         }
       }
-      console.log(loading);
     } catch (error) {
       console.error("Error fetching quote detail:", error);
     }

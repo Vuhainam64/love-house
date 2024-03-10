@@ -1,26 +1,32 @@
 import React from "react";
+import {
+  CheckCircleOutlined,
+  ClockCircleOutlined,
+  MinusCircleOutlined,
+} from "@ant-design/icons";
+import { Tag } from "antd";
 
 const ContractStatusBadge = ({ contractStatus }) => {
   switch (contractStatus) {
     case 0:
       return (
-        <span className="p-1.5 text-xs font-medium uppercase tracking-wider bg-yellow-300 rounded-lg bg-opacity-50">
-          New
-        </span>
+        <Tag icon={<ClockCircleOutlined />} color="warning">
+          NEW
+        </Tag>
       );
     case 1:
       return (
-        <span className="p-1.5 text-xs font-medium uppercase tracking-wider bg-gray-400 rounded-lg bg-opacity-50">
-          In active
-        </span>
+        <Tag icon={<MinusCircleOutlined />} color="error">
+          IN ACTIVE
+        </Tag>
       );
     case 2:
       return (
-        <span className="p-1.5 text-xs font-medium uppercase tracking-wider bg-blue-400 rounded-lg bg-opacity-50">
-         Active
-        </span>
+        <Tag icon={<CheckCircleOutlined />} color="success">
+          ACTIVE
+        </Tag>
       );
-    
+
     default:
       return null;
   }

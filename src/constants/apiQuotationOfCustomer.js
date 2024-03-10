@@ -64,10 +64,10 @@ export const getAllRequest = async (accountId, status) => {
   }
 };
 
-export const getProjectByIdForCustomer = async (id, status) => {
+export const getProjectByIdForCustomer = async (id) => {
   try {
     const res = await axios.get(
-      `${baseURL}/project/get-project-by-id-for-customer/${id}?status=${status}`,
+      `${baseURL}/project/get-project-by-id-for-customer/${id}`,
       {
         headers: {
           Authorization: `Bearer ${usertoken}`,

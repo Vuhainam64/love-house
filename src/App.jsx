@@ -49,7 +49,7 @@ function App() {
 
           if (accountId) {
             const accountData = await getAccountById(accountId, accessToken);
-            console.log("account data: ", accountData.result.data);
+           // console.log("account data: ", accountData.result.data);
             dispatch(SET_USER(accountData.result.data));
           } else {
             console.log("Invalid account ID. Handle accordingly.");

@@ -1,28 +1,36 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Formik, Form, FieldArray, Field, ErrorMessage } from "formik";
-import { Input, Button, Space, message } from "antd";
+import { Input, Button, Space, message, DatePicker } from "antd";
 import axios from "axios";
 import * as Yup from "yup";
 
-import { createContractProgress, getContractById } from "../../../../../constants/apiContract";
+import {
+  createContractProgress,
+  getContractById,
+} from "../../../../../constants/apiContract";
 
 import { getProjectById } from "../../../../../constants/apiQuotationOfStaff";
 
-import { InputField, CurrencyFormatter } from "../../../../../components";
+import {
+  InputField,
+  CurrencyFormatter,
+  LoadingOverlay,
+} from "../../../../../components";
 import { alert } from "../../../../../components/Alert/Alert";
-
-
+import { toast } from "react-toastify";
+import { formatDate, getCurrentDateTime } from "../../../../../constants/util";
+import dayjs from "dayjs";
 
 export default function CreateProgressForm() {
   const { id } = useParams();
   const navigate = useNavigate();
-
+  const [isLoading, setIsLoading] = useState(true);
   const [projectDetail, setProjectDetail] = useState({});
 
   const [progressItem, setProgressItem] = useState([]);
   const [contract, setContract] = useState({});
-
+  const defaultValue = dayjs('2024-01-01');
 
   const initialValues = {
     progressDetails: [
@@ -31,6 +39,7 @@ export default function CreateProgressForm() {
         content: "Deposit",
         price: 0,
         contractId: id,
+        endDate: defaultValue,
       },
     ],
   };
@@ -46,43 +55,35 @@ export default function CreateProgressForm() {
   });
 
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
-    try {
-      const formattedData = values.progressDetails.map((detail) => ({
-        name: detail.name,
-        content: detail.content,
-        price: detail.price,
-        contractId: id,
-      }));
+    const formattedData = values.progressDetails.map((detail) => ({
+      name: detail.name,
+      content: detail.content,
+      price: detail.price,
+      endDate: detail.endDate,
+      contractId: id,
+    }));
+    setIsLoading(true);
+    console.log("Form data submitted:", formattedData);
 
-      console.log("Form data submitted:", formattedData);
-
-      const result = await createContractProgress(formattedData);
-      resetForm();
-      if (result.isSuccess) {
-        alert.alertSuccessWithTime(
-          "Create List Contract Progress Successfully",
-          "",
-          2000,
-          "25",
-          () => { }
-        );
-      } else {
-        for (var i = 0; i < result.messages.length; i++) {
-          toast.error(result.messages[i]);
-        }
-      }
-      navigate(`/staff/contract-payment-progress/${id}`);
-    } catch (error) {
-      alert.alertFailedWithTime(
-        "Failed To Create",
-        "Please try again",
-        2500,
+    const result = await createContractProgress(formattedData);
+    resetForm();
+    if (result.isSuccess) {
+      alert.alertSuccessWithTime(
+        "Create List Contract Progress Successfully",
+        "",
+        2000,
         "25",
-        () => { }
+        () => {}
       );
-    } finally {
-      setSubmitting(false);
+      navigate(`/staff/contract-payment-progress/${id}`);
+    } else {
+      for (var i = 0; i < result.messages.length; i++) {
+        toast.error(result.messages[i]);
+      }
     }
+    setIsLoading(false);
+
+    setSubmitting(false);
   };
 
   const fetchContract = async () => {
@@ -91,7 +92,7 @@ export default function CreateProgressForm() {
 
       if (data && data.result) {
         setContract(data.result.data);
-        // setLoading(false);
+        setIsLoading(false);
       }
     } catch (error) {
       console.error("Error fetching progress detail:", error);
@@ -102,9 +103,9 @@ export default function CreateProgressForm() {
     fetchContract();
   }, [id]);
 
-
   return (
     <>
+      <LoadingOverlay loading={isLoading} />
       <div className="flex justify-between gap-x-10">
         <div className="w-2/3">
           <Formik
@@ -119,19 +120,9 @@ export default function CreateProgressForm() {
                     <div>
                       {values.progressDetails.map((material, index) => (
                         <div key={index}>
-                          {index === 0 ? (
-                            <>
-                              <InputField
-                                label="ID"
-                                name={`progressDetails.${index}.contractId`}
-                                type="text"
-                                value={values.progressDetails[index].contractId}
-                                readOnly
-                              />
-                            </>
-                          ) : null}
+                          {index === 0 ? <></> : null}
                           <>
-                            <div className="mb-6 pt-4 mx-4 border-t-2 border-gray-300 font-semibold">
+                            <div className="mb-6 pt-4 mx-4  font-semibold">
                               No.{index + 1}
                             </div>
                             <InputField
@@ -154,9 +145,20 @@ export default function CreateProgressForm() {
                               label="Price"
                               name={`progressDetails.${index}.price`}
                               type="text"
-
+                              className="w-32"
                             />
-
+                            <div className="flex w-full my-5">
+                              <p className="mx-5">End Date</p>
+                              <DatePicker
+                                label="End Date"
+                                showTime
+                                name={`progressDetails.${index}.endDate`}
+                                defaultValue={defaultValue}
+                                onChange={(date, dateString) => {
+                                  setFieldValue(`progressDetails.${index}.endDate`, formatDate(dateString) );
+                                }}
+                              />
+                            </div>
 
                             {index > 0 && (
                               <Button
@@ -177,6 +179,7 @@ export default function CreateProgressForm() {
                             name: "",
                             content: "",
                             price: 0,
+                            endDate: defaultValue
                           });
                         }}
                         className="text-white bg-blue-400 font-semibold mx-4"
@@ -187,12 +190,13 @@ export default function CreateProgressForm() {
                   )}
                 </FieldArray>
 
-                <button
-                  type="submit"
+                <Button
+                  htmlType="submit"
                   className="text-white bg-baseGreen hover:bg-green-700 font-semibold mx-4 my-4 px-4 py-1 rounded"
+                  loading={isLoading}
                 >
                   Create
-                </button>
+                </Button>
               </Form>
             )}
           </Formik>
@@ -200,7 +204,7 @@ export default function CreateProgressForm() {
 
         <div className="total w-1/3">
           <div className="flex">Total:
-            <p className="text-red-500 font-semibold ml-4">  <CurrencyFormatter amount={contract.total} /></p>
+            <p className="text-red-500 font-semibold ml-4"><CurrencyFormatter amount={contract.total} /> VNĐ</p>
           </div>
           {/* <p>Remaining amounts:</p> */}
         </div>

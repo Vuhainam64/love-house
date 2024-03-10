@@ -10,6 +10,7 @@ import "react-quill/dist/quill.snow.css";
 import "react-toastify/dist/ReactToastify.css";
 import "react-datepicker/dist/react-datepicker.css";
 import HouseContextProvider from "./components/HouseProjectsComponent/Filter/HouseContext";
+import 'tailwindcss/tailwind.css';
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 

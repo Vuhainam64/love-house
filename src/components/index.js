@@ -24,6 +24,7 @@ export {
 // Sidebar
 export { default as CustomerSidebar } from "./Sidebar/CustomerSidebar"; 
 export { default as StaffSidebar } from "./Sidebar/StaffSidebar"; 
+export { default as AdminSidebar } from "./Sidebar/AdminSidebar"; 
 
 // Home Component
 export { default as IntroSection } from "./HomeComponent/IntroSection"; 

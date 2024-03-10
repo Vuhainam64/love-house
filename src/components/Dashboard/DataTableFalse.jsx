@@ -13,6 +13,15 @@ function DataTableFalse({ isOpen, onClose, onSubmit, fields, excelData }) {
         fields={fields}
         onClose={onClose}
         onSubmit={onSubmit}
+        customTheme={{
+          components: {
+            Button: {
+              defaultProps: {
+                colorScheme: "green",
+              },
+            },
+          },
+        }}
       />
     </div>
   );

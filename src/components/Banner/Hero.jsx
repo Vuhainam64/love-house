@@ -6,7 +6,7 @@ import Slider2 from "../Slider/Slider2";
 
 export default function Hero() {
   return (
-    <section className="h-full max-h-[640px] mb-8 xl:mb-24">
+    <section className="h-full max-h-[640px] mb-8 xl:mb-24 mt-24">
       <div className="flex flex-col lg:flex-row ">
         <div className="lg:ml-8 xl:ml-[135px] flex flex-col items-center lg:items-start text-center lg:text-left justify-center flex-1 lg:pl-24 ">
           <h1 className="lg:text-7xl text-4xl leading-none mb-6 font-semibold">

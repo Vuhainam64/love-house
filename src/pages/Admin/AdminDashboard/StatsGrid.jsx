@@ -57,7 +57,7 @@ export default function StatsGrid() {
   }, []);
 
   return (
-    <div className="flex flex-wrap lg:flex-nowrap mx-3 mt-6 -mb-2 ">
+    <div className="flex flex-wrap lg:flex-nowrap mx-3 mt-6 -mb-6">
   <div className="w-full md:w-1/2 xl:w-1/4 px-3 ">
     <div className="w-full bg-white border text-blue-400 rounded-lg flex items-center p-6 mb-6 xl:mb-0 hover:shadow-lg transform hover:scale-[103%] transition duration-300 ease-out">
       <TbBuildingCommunity className="w-16 h-16 mr-4 lg:block " />

@@ -2,7 +2,12 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { Navigate, useRoutes } from "react-router-dom";
 
-import { HomeLayout, CustomerLayout, StaffLayout } from "../layout";
+import {
+  HomeLayout,
+  CustomerLayout,
+  StaffLayout,
+  AdminLayout,
+} from "../layout";
 import AuthLayout from "../layout/AuthLayout";
 
 import Home from "../pages/Home/Home.jsx";
@@ -65,16 +70,20 @@ import CreateProgress from "../pages/Staff/QuoteManagement/ContractDetails/Manag
 import QuoteDetailsForStaff from "../pages/Staff/QuoteManagement/QuotationDetails/QuoteDetailsForStaff";
 import PaymentProgress from "../pages/Customer/Contract/PaymentProgress";
 import ConstructionConfigManagement from "../pages/Staff/ConstructionConfig/ConstructionConfigManagement.jsx";
-import StaffDashboard from "../pages/Staff/StaffDashboard/StaffDashboard"
+import PaymentNotification from "../pages/Customer/Payment/PaymentNotification.jsx";
+import AdminDashboard from "../pages/Admin/AdminDashboard/AdminDashboard";
 import WorkerManagement from "../pages/Staff/WorkerManagement/WorkerManagement";
 
 export default function Routers() {
   const auth = useSelector((state) => state?.auth);
 
-  const isAdminOrStaff =
-    auth?.userRole?.includes("ADMIN") || auth?.userRole?.includes("STAFF");
+  const isAdmin = auth?.userRole?.includes("ADMIN");
+
+  const isStaff = auth?.userRole?.includes("STAFF");
 
   const routing = useRoutes([
+    { path: "/payment/*", element: <PaymentNotification /> },
+
     {
       path: "/",
       element: <HomeLayout />,
@@ -136,49 +145,57 @@ export default function Routers() {
     },
     {
       path: "/staff",
-      element: <StaffLayout />,
+      element: isStaff ? <StaffLayout /> : <Navigate to="/404" replace />,
       children: [
-        { path: "/staff/dashboard", element: <StaffDashboard/> },
-        { path: "/staff/all-request", element: <AllRequest /> },
+        { path: "all-request", element: <AllRequest /> },
         {
-          path: "/staff/project-detail/:id",
+          path: "project-detail/:id",
           element: <ProjectDetailsForStaff />,
         },
-        { path: "/staff/config-project/:id", element: <ConfigProject2 /> },
+        { path: "config-project/:id", element: <ConfigProject2 /> },
 
         {
-          path: "/staff/quotation-detail/:id",
+          path: "quotation-detail/:id",
           element: <QuoteDetailsForStaff />,
         },
         {
-          path: "/staff/manage-material-detail/:id",
+          path: "manage-material-detail/:id",
           element: <ManageMaterialDetails />,
         },
         {
-          path: "/staff/contract-payment-progress/:id",
+          path: "contract-payment-progress/:id",
           element: <ListPaymentProgress />,
         },
         {
-          path: "/staff/create-list-progress/:id",
+          path: "create-list-progress/:id",
           element: <CreateProgress />,
         },
         {
-          path: "/staff/construction-config",
+          path: "construction-config",
           element: <ConstructionConfigManagement />,
         },
-        { path: "/staff/worker-management", element: <WorkerManagement/> },
-      ],
-    },
-    {
-      path: "/dashboard",
-      element: isAdminOrStaff ? <Dashboard /> : <Navigate to="/404" replace />,
-      children: [
-        { path: "home", element: <DBHome /> },
-        { path: "users-list", element: <UsersList /> },
+        { path: "/staff/worker-management", element: <WorkerManagement /> },
 
         { path: "create-news", element: <NewsCreate /> },
         { path: "list-news", element: <NewsList /> },
         { path: "edit-news/:id", element: <NewsEdit /> },
+        { path: "dashboard", element: <AdminDashboard /> },
+        { path: "users-list", element: <UsersList /> },
+        { path: "view-supplier-price", element: <ViewSupplierPrice /> },
+        { path: "import-quotation", element: <ImportQuotation /> },
+        { path: "list-quotation", element: <ListQuotation /> },
+      ],
+    },
+    {
+      path: "/dashboard",
+      element: isStaff ? <Dashboard /> : <Navigate to="/404" replace />,
+      children: [
+        { path: "home", element: <DBHome /> },
+        // { path: "users-list", element: <UsersList /> },
+
+        // { path: "create-news", element: <NewsCreate /> },
+        // { path: "list-news", element: <NewsList /> },
+        // { path: "edit-news/:id", element: <NewsEdit /> },
 
         { path: "create-blog", element: <BlogCreate /> },
         { path: "list-blog", element: <BlogsList /> },
@@ -199,12 +216,23 @@ export default function Routers() {
         { path: "list-material", element: <MaterialList /> },
         { path: "export-price-material", element: <ExportPrice /> },
 
+        // { path: "view-supplier", element: <ViewSupplier /> },
+
+        // { path: "view-supplier-price", element: <ViewSupplierPrice /> },
+
+        // { path: "import-quotation", element: <ImportQuotation /> },
+        // { path: "list-quotation", element: <ListQuotation /> },
+      ],
+    },
+    {
+      path: "/admin",
+      element: isAdmin ? <AdminLayout /> : <Navigate to="/404" replace />,
+      children: [
+        { path: "dashboard", element: <AdminDashboard /> },
+        { path: "users-list", element: <UsersList /> },
         { path: "view-supplier", element: <ViewSupplier /> },
-
-        { path: "view-supplier-price", element: <ViewSupplierPrice /> },
-
-        { path: "import-quotation", element: <ImportQuotation /> },
-        { path: "list-quotation", element: <ListQuotation /> },
+        { path: "view-supplier-price", element: <ViewSupplierPrice /> }
+       
       ],
     },
     {
@@ -220,7 +248,6 @@ export default function Routers() {
       path: "/404",
       element: <PageNotfound />,
     },
-    // { path: "*", element: <Navigate to="/404" replace /> },
   ]);
   return routing;
 }

@@ -79,7 +79,7 @@ function ProjectBarChart() {
           <ResponsiveContainer width="100%" height={300}>
             <BarChart
               width={700}
-              height={230}
+              height={220}
               data={data}
               margin={{
                 top: 25,

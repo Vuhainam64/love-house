@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 
 import * as Yup from "yup";
 import { Formik, Form, FieldArray, Field, ErrorMessage } from "formik";
-import { Input, Button} from "antd";
+import { Input, Button } from "antd";
 
 import { Modal } from "../../../../../components";
 import { alert } from "../../../../../components/Alert/Alert";
@@ -21,7 +21,7 @@ export default function FormCreateMaterialDetail({ onModalClose }) {
   const [materials, setMaterials] = useState([]);
   const [materialQuantity, setMaterialQuantity] = useState(0);
   const [existingMaterialIds, setExistingMaterialIds] = useState([]);
-
+  const [isLoading, setIsLoading] = useState(false);
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -51,17 +51,17 @@ export default function FormCreateMaterialDetail({ onModalClose }) {
   });
 
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
-    try {
-      const formattedData = values.materialDetails.map((detail) => ({
-        quantity: detail.quantity,
-        quotationId: id,
-        materialId: detail.materialId,
-      }));
+    const formattedData = values.materialDetails.map((detail) => ({
+      quantity: detail.quantity,
+      quotationId: id,
+      materialId: detail.materialId,
+    }));
+    setIsLoading(true);
+    console.log("Form data submitted:", formattedData);
 
-      console.log("Form data submitted:", formattedData);
-
-      await createListQuotationDetail(formattedData);
-      resetForm();
+    const data = await createListQuotationDetail(formattedData);
+    resetForm();
+    if (data.isSuccess) {
       alert.alertSuccessWithTime(
         "Create List Material Successfully",
         "",
@@ -69,20 +69,13 @@ export default function FormCreateMaterialDetail({ onModalClose }) {
         "30",
         () => {}
       );
-
-      setShowModal(false);
-      onModalClose();
-    } catch (error) {
-      alert.alertFailedWithTime(
-        "Failed To Create",
-        "Please try again",
-        2500,
-        "25",
-        () => {}
-      );
-    } finally {
-      setSubmitting(false);
     }
+
+    setIsLoading(false);
+    setShowModal(false);
+    onModalClose();
+
+    setSubmitting(false);
   };
 
   const fetchMaterial = async () => {
@@ -127,7 +120,8 @@ export default function FormCreateMaterialDetail({ onModalClose }) {
         <button
           className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center"
           onClick={handleButtonClick}
-        >+ Add material
+        >
+          + Add material
         </button>
         <Modal isVisible={showModal} onClose={() => setShowModal(false)}>
           <div className="p-4 my-auto lg:px-8 text-left overflow-y-auto max-h-[500px]">
@@ -266,6 +260,7 @@ export default function FormCreateMaterialDetail({ onModalClose }) {
                     type="primary"
                     htmlType="submit"
                     className="text-white bg-baseGreen font-semibold mx-auto mt-4"
+                    loading={isLoading}
                   >
                     Create
                   </Button>

@@ -1,4 +1,5 @@
 import React, { Children } from "react";
+import { AiOutlineClose } from "react-icons/ai";
 
 function Modal({ isVisible, onClose, children }) {
   if (!isVisible) return null;
@@ -14,10 +15,10 @@ function Modal({ isVisible, onClose, children }) {
     >
       <div className="w-[600px] flex flex-col">
         <button
-          className="text-white text-xl place-self-end"
+          className="text-white font-semibold place-self-end mb-3"
           onClick={() => onClose()}
         >
-          X
+         <AiOutlineClose size={20}/>
         </button>
         <div className="bg-white p-2 rounded">{children}</div>
       </div>

@@ -1,143 +1,118 @@
-import React, { useEffect, useState } from "react";
-import { NavLink, useParams } from "react-router-dom";
-
-import { getProjectById } from "../../../../constants/apiQuotationOfStaff";
+import React from "react";
+import { NavLink } from "react-router-dom";
 
 import {
   CurrencyFormatter,
   ContractStatusBadge,
-  LoadingOverlay,
   DateFormatter,
 } from "../../../../components";
 import ContractGrid from "./Grid/ContractGrid";
 
-export default function ContractSection2() {
-  const { id } = useParams();
-  const [projectDetail, setProjectDetail] = useState({});
-  const [loading, setLoading] = useState(true);
-
-  const fetchProjectDetail = async () => {
-    try {
-      const data = await getProjectById(id);
-
-      if (data && data.result) {
-        setProjectDetail(data.result.data);
-        setLoading(false);
-      }
-    } catch (error) {
-      console.error("Error fetching project detail:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchProjectDetail();
-  }, [id]);
-
+export default function ContractSection2({ projectDetail }) {
   return (
     <>
       {projectDetail?.contract !== null && (
         <>
-          <LoadingOverlay loading={loading} />
-          <h1 className="text-xl font-semibold pt-5 uppercase pl-5">
-            Contract information
-          </h1>
+          <div className="flex-1 px-5 pb-12">
+            <div className=" px-2 mb-4 h-auto pb-12">
+              <div className="font-semibold border-b-2 mb-4 flex space-x-4 items-center">
+                <h4 className="pb-2 uppercase">IV. Contract</h4>
+                <div className="pb-2">
+                  <ContractStatusBadge
+                    contractStatus={projectDetail?.contract?.contractStatus}
+                  />
+                </div>
+              </div>
 
-          <div className="p-5 h-225">
-            <div className="overflow-auto rounded-lg shadow hidden md:block">
-              <table className="w-full">
-                <thead className="bg-gray-50 border-b-2 border-gray-200">
-                  <tr>
-                    <th className=" p-3 text-sm font-semibold tracking-wide text-left">
-                      Total
-                    </th>
-                    <th className=" p-3 text-sm font-semibold tracking-wide ">
-                      Total Costs Incurred
-                    </th>
-                    <th className="p-3 text-sm font-semibold tracking-wide">
-                      Deposit
-                    </th>
-                    <th className="p-3 text-sm font-semibold tracking-wide">
-                      Start Date
-                    </th>
+              <div className="overflow-auto rounded-lg shadow hidden md:block">
+                <table className="w-full">
+                  <thead className="bg-gray-50 border-b-2 border-gray-200">
+                    <tr>
+                      <th className=" p-3 text-sm font-semibold tracking-wide">
+                        Total
+                      </th>
+                      <th className=" p-3 text-sm font-semibold tracking-wide ">
+                        Total Costs Incurred
+                      </th>
+                      <th className="p-3 text-sm font-semibold tracking-wide">
+                        Deposit
+                      </th>
+                      <th className="p-3 text-sm font-semibold tracking-wide">
+                        Start Date
+                      </th>
 
-                    <th className=" p-3 text-sm font-semibold tracking-wide">
-                      End Date
-                    </th>
+                      <th className=" p-3 text-sm font-semibold tracking-wide">
+                        End Date
+                      </th>
 
-                    <th className=" p-3 text-sm font-semibold tracking-wide">
-                      Status
-                    </th>
-                    <th className=" p-3 text-sm font-semibold tracking-wide">
-                      Action
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-100">
-                  <tr
-                    key={projectDetail.id}
-                    className="bg-white text-black text-left"
-                  >
-                    <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                      <CurrencyFormatter
-                        amount={projectDetail?.contract?.total}
-                      />
-                    </td>
-                    <td className="p-3 text-sm text-gray-700 whitespace-nowrap text-center">
-                      <CurrencyFormatter
-                        amount={projectDetail?.contract?.totalCostsIncurred}
-                      />
-                    </td>
-                    <td className="w-40 p-3 text-sm text-gray-700 whitespace-nowrap text-center">
-                      <CurrencyFormatter
-                        amount={projectDetail?.contract?.deposit}
-                      />
-                    </td>
-                    <td className=" w-40 p-3 text-sm text-gray-700 whitespace-nowrap text-center">
-                      <DateFormatter
-                        dateString={projectDetail?.contract?.startDate}
-                      />
-                    </td>
-                    <td className="w-40 p-3 text-sm text-gray-700 whitespace-nowrap text-center">
-                      <DateFormatter
-                        dateString={projectDetail?.contract?.endDate}
-                      />
-                    </td>
-                    <td className="p-3 text-sm text-gray-700 whitespace-nowrap text-center">
-                      <ContractStatusBadge
-                        contractStatus={projectDetail?.contract?.contractStatus}
-                      />
-                    </td>
-                    <td className="p-3 text-sm text-gray-700 whitespace-nowrap text-center">
-                      {projectDetail?.contract?.contractUrl ? (
-                        <>
-                          <NavLink
-                            to={projectDetail?.contract?.contractUrl}
-                            className="text-blue-500 hover:underline block"
-                          >
-                            View contract
-                          </NavLink>
+                      <th className=" p-3 text-sm font-semibold tracking-wide">
+                        Action
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100">
+                    <tr
+                      key={projectDetail.id}
+                      className="bg-white text-black text-left"
+                    >
+                      <td className="p-3 text-sm text-red-500 font-semibold whitespace-nowrap text-center">
+                        <CurrencyFormatter
+                          amount={projectDetail?.contract?.total}
+                        />{" "}VNĐ
+                      </td>
+                      <td className="p-3 text-sm text-gray-700 whitespace-nowrap text-center">
+                        <CurrencyFormatter
+                          amount={projectDetail?.contract?.totalCostsIncurred}
+                        />{" "}VNĐ
+                      </td>
+                      <td className="w-40 p-3 text-sm text-blue-500 font-semibold whitespace-nowrap text-center">
+                        <CurrencyFormatter
+                          amount={projectDetail?.contract?.deposit}
+                        />{" "}VNĐ
+                      </td>
+                      <td className=" w-40 p-3 text-sm text-gray-700 whitespace-nowrap text-center">
+                        <DateFormatter
+                          dateString={projectDetail?.contract?.startDate}
+                        />
+                      </td>
+                      <td className="w-40 p-3 text-sm text-gray-700 whitespace-nowrap text-center">
+                        <DateFormatter
+                          dateString={projectDetail?.contract?.endDate}
+                        />
+                      </td>
+                     
+                      <td className="p-3 text-sm text-gray-700 whitespace-nowrap text-center">
+                        {projectDetail?.contract?.contractUrl ? (
+                          <>
+                            <NavLink
+                              to={projectDetail?.contract?.contractUrl}
+                              className="text-blue-500 hover:underline block"
+                            >
+                              View contract
+                            </NavLink>
+                            <NavLink
+                              to={`/staff/contract-payment-progress/${projectDetail?.contract?.id}`}
+                              className="text-blue-500 hover:underline block"
+                            >
+                              View payment progress
+                            </NavLink>
+                          </>
+                        ) : (
                           <NavLink
                             to={`/staff/contract-payment-progress/${projectDetail?.contract?.id}`}
-                            className="text-blue-500 hover:underline block"
+                            className="text-blue-500 hover:underline"
                           >
-                            View payment progress
+                            Create payment progress
                           </NavLink>
-                        </>
-                      ) : (
-                        <NavLink
-                          to={`/staff/contract-payment-progress/${projectDetail?.contract?.id}`}
-                          className="text-blue-500 hover:underline"
-                        >
-                          Create payment progress
-                        </NavLink>
-                      )}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+                        )}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
 
-            <ContractGrid projectDetail={projectDetail} />
+              <ContractGrid projectDetail={projectDetail} />
+            </div>
           </div>
         </>
       )}

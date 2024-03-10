@@ -5,7 +5,7 @@ import CurrencyFormatter from "../../../../../components/Common/CurrencyFormatte
 
 const MaterialGrid = ({ quote, quoteDetail, handleReloadContent }) => {
   return (
-    <div className="grid grid-cols-1 gap-16 px-8 pt-4 pb-16 mb-24 md:hidden h-[300px] overflow-auto">
+    <div className="grid grid-cols-1 gap-16 px-8 pt-4 pb-16 mb-24 md:hidden h-[300px] overflow-auto scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent">
       {quoteDetail &&
         quoteDetail.map((item, index) => (
           <div

@@ -129,7 +129,7 @@ function ContractStatusChart() {
             <option value={4}>This Year</option>
           </select>
         </div>
-        <PieChart width={450} height={300}>
+        <PieChart width={550} height={300}>
           <Pie
             activeIndex={activeIndex}
             activeShape={renderActiveShape}

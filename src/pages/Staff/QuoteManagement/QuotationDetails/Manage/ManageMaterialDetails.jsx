@@ -67,101 +67,10 @@ export default function ManageMaterialDetails() {
     setReloadContent((prev) => !prev);
   };
 
-  // const handlePublicProject = async () => {
-  //   try {
-  //     const projectID = quote?.quotation?.projectId
-  //     const projectDetailsResponse = await getProjectById(projectID);
-
-  //     if (projectDetailsResponse && projectDetailsResponse.result) {
-  //       const projectDetails = projectDetailsResponse.result.data;
-
-  //       const constructionType = projectDetails.constructionType;
-
-  //       if (constructionType === 1) {
-  //         const quoteDetailsResponse = await getQuoteDetailByQuoteId(id);
-
-  //         if (quoteDetailsResponse && quoteDetailsResponse.result) {
-  //           const quoteDetails = quoteDetailsResponse.result.data;
-
-  //           const hasLamp = quoteDetails.some(
-  //             (item) => item.material.name === "Lamp"
-  //           );
-
-  //           if (!hasLamp) {
-  //             alert.alertFailedWithTime(
-  //               "Failed to send quotation results to customers ",
-  //               "This is a completed project, please add interior materials",
-  //               2000,
-  //               "25",
-  //               () => {}
-  //             );
-  //             return;
-  //           }
-  //         }
-  //       }
-
-  //       const swalWithBootstrapButtons = Swal.mixin({
-  //         customClass: {
-  //           confirmButton:
-  //             "bg-green-500 hover:bg-green-600 text-white mx-3 px-4 py-2 rounded",
-  //           cancelButton:
-  //             "bg-red-500 hover:bg-red-600 text-white mx-3 px-4 py-2 rounded",
-  //         },
-  //         buttonsStyling: false,
-  //       });
-
-  //       const result = await swalWithBootstrapButtons.fire({
-  //         title: "Are you sure?",
-  //         text: "Do you want to send quotation results to customer?",
-  //         icon: "warning",
-  //         showCancelButton: true,
-  //         confirmButtonText: "Yes, public it",
-  //         cancelButtonText: "No, cancel",
-  //         reverseButtons: true,
-  //         focusConfirm: false,
-  //       });
-
-  //       if (result.isConfirmed) {
-  //         const data = await publicQuotationForCustomer(id);
-
-  //         if (data && data.isSuccess) {
-  //           handleReloadContent();
-  //           alert.alertSuccessWithTime(
-  //             "Public Quote detail Successfully!",
-  //             "",
-  //             2000,
-  //             "25",
-  //             () => {}
-  //           );
-
-  //           navigate(`/staff/project-detail/${projectID}`);
-  //         } else {
-  //           alert.alertFailedWithTime(
-  //             "Failed to send quotation results to customers",
-  //             "This is a completed project, please add interior materials",
-  //             2000,
-  //             "25",
-  //             () => {}
-  //           );
-  //         }
-  //       } else {
-  //         alert.alertFailedWithTime("Failed to send quotation results to customers", "", 2000, "25", () => {});
-  //       }
-  //     }
-  //   } catch (error) {
-  //     // Handle error
-  //     alert.alertFailedWithTime("Failed to send quotation results to customers", "", 2000, "25", () => {});
-  //   }
-  // };
-
   return (
     <>
       <LoadingOverlay loading={loading} />
-      <div className="flex h-auto overflow-hidden">
-        <StaffSidebar />
-
-        <div className=" h-screen flex-1 ">
-          <DBHeader />
+      
           <h1 className="text-2xl font-semibold pb-2 mt-5 mb-5 pl-4 uppercase ">
             Quote Detail
           </h1>
@@ -304,8 +213,7 @@ export default function ManageMaterialDetails() {
               handleReloadContent={handleReloadContent}
             />
           </div>
-        </div>
-      </div>
+       
     </>
   );
 }

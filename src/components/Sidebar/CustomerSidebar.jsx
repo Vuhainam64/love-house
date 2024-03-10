@@ -2,37 +2,33 @@ import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import control from "../../assets/images/control.png";
 import HouseLogo from "../../assets/images/HouseLogo.png";
+
 import {
-  RiMailSendFill,
-  RiLogoutCircleRLine,
-  RiHome4Line,
-  RiWallet3Line,
-} from "react-icons/ri";
-import { MdOutlinePriceChange } from "react-icons/md";
-import { FaRegCircleUser } from "react-icons/fa6";
-import { GrTransaction } from "react-icons/gr";
+  AiOutlineFileSearch,
+  AiOutlineIdcard,
+  AiOutlineHome,
+  AiOutlineSwap,
+  AiOutlineLogout,
+} from "react-icons/ai";
 
 export default function CustomerSidebar() {
   const [open, setOpen] = useState(true);
   const Menus = [
     {
       title: "Quote Request",
-      icon: <RiMailSendFill />,
+      icon: <AiOutlineFileSearch />,
       path: "/customer/my-request",
     },
-    // { title: "Quotation Detail", icon: <MdOutlinePriceChange /> },
-    // { title: "Deal Quotation", icon: <GrTransaction /> },
     {
       title: "Accounts",
-      icon: <FaRegCircleUser />,
+      icon: <AiOutlineIdcard />,
       gap: true,
       path: "/customer/account/profile",
     },
-    { title: "Transaction ", icon: <RiWallet3Line /> },
+    { title: "Transaction ", icon: <AiOutlineSwap /> },
 
-    // { title: "Analytics", icon: "Chart" },
-    { title: "Go to Home page", icon: <RiHome4Line />, gap: true, path: "/" },
-    { title: "Log out", icon: <RiLogoutCircleRLine /> },
+    { title: "Go to Home page", icon: <AiOutlineHome />, gap: true, path: "/" },
+    { title: "Log out", icon: <AiOutlineLogout /> },
   ];
   return (
     <div className="flex pr-4">

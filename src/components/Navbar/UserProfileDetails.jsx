@@ -17,8 +17,9 @@ function UserProfileDetails() {
   //const role = useSelector((state) => state.user?.role);
   const auth = useSelector((state) => state?.auth);
 
-  const isAdminOrStaff =
-    auth?.userRole?.includes("ADMIN") || auth?.userRole?.includes("STAFF");
+  const isAdmin = auth?.userRole?.includes("ADMIN");
+
+  const isStaff = auth?.userRole?.includes("STAFF");
 
   const [isMenu, setIsMenu] = useState(false);
 
@@ -63,13 +64,26 @@ function UserProfileDetails() {
               </div>
             </motion.div>
 
-            {isAdminOrStaff && (
+            {isAdmin && (
               <motion.div
                 whileTap={{ scale: 0.9 }}
                 className="flex items-center justify-between text-md text-gray-700 hover:bg-gray-100 hover:text-gray-900 
                 w-full px-2 py-1 rounded-md cursor-pointer text-nowrap"
               >
-                <Link to={"/staff/dashboard"}>Staff Dashboard</Link>
+                <Link to={"/admin/dashboard"}>Admin Dashboard</Link>
+                <div className="text-xs pl-2">
+                  <FaChevronRight />
+                </div>
+              </motion.div>
+            )}
+
+            {isStaff && (
+              <motion.div
+                whileTap={{ scale: 0.9 }}
+                className="flex items-center justify-between text-md text-gray-700 hover:bg-gray-100 hover:text-gray-900 
+                w-full px-2 py-1 rounded-md cursor-pointer text-nowrap"
+              >
+                <Link to={"/staff/all-request"}>Staff Dashboard</Link>
                 <div className="text-xs pl-2">
                   <FaChevronRight />
                 </div>
@@ -90,13 +104,10 @@ function UserProfileDetails() {
             <motion.div
               onClick={handleSignout}
               whileTap={{ scale: 0.9 }}
-              className="flex items-center justify-end text-md text-gray-700 hover:bg-gray-100 hover:text-gray-900 
+              className="flex items-center  text-md text-gray-700 hover:bg-gray-100 hover:text-gray-900 
               w-full pl-2 py-1 rounded-md cursor-pointer text-nowrap"
             >
               <div>Log out</div>
-              <div className="text-xs pl-2">
-                <FaChevronRight />
-              </div>
             </motion.div>
           </motion.div>
         )}

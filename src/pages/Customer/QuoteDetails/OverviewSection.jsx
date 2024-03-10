@@ -37,7 +37,7 @@ console.log(projectDetail)
   };
 
   const handleConfirmQuotation = async () => {
-    try {
+
       const swalWithBootstrapButtons = Swal.mixin({
         customClass: {
           confirmButton:
@@ -70,7 +70,7 @@ console.log(projectDetail)
             "25",
             () => {}
           );
-          navigate(`customer/project-detail/${projectDetail.id}`);
+          navigate(`/customer/project-detail/${projectDetail?.quotation.projectId}`);
         } else {
           for (var i = 0; i < result.messages.length; i++) {
             toast.error(result.messages[i]);
@@ -78,20 +78,10 @@ console.log(projectDetail)
         }
         setReloadContent(true);
       }
-    } catch (error) {
-      console.error("Error confirming quotation:", error);
-      alert.alertFailedWithTime(
-        "Failed to delete quote detail. Please try again.",
-        "",
-        2000,
-        "25",
-        () => {}
-      );
-    }
   };
 
   const handleCancelQuotation = async () => {
-    try {
+
       const swalWithBootstrapButtons = Swal.mixin({
         customClass: {
           confirmButton:
@@ -124,6 +114,7 @@ console.log(projectDetail)
             "25",
             () => {}
           );
+          navigate(`/customer/project-detail/${projectDetail?.quotation.projectId}`);
         } else {
           for (var i = 0; i < result.messages.length; i++) {
             toast.error(result.messages[i]);
@@ -131,16 +122,6 @@ console.log(projectDetail)
         }
         setReloadContent(true);
       }
-    } catch (error) {
-      console.error("Error cancel quotation:", error);
-      alert.alertFailedWithTime(
-        "Failed to cancel quotation. Please try again.",
-        "",
-        2000,
-        "25",
-        () => {}
-      );
-    }
   };
 
   return (

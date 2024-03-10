@@ -15,7 +15,9 @@ import {
   getImportMaterialTemplate,
   getImportMaterialWithExcelError,
   importMaterialWithExcel,
+  validInventoryExcelFile,
 } from "../../../api";
+import DataTableFalse from "../../../components/Dashboard/DataTableFalse";
 
 const ImportInventory = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -23,6 +25,8 @@ const ImportInventory = () => {
   const [inventoryData, setInventoryData] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
+  const [isError, setIsError] = useState(false);
+  const [excelData, setExcelData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -173,16 +177,29 @@ const ImportInventory = () => {
     formData.append("file", blob, `${formattedDate}.xlsx`);
 
     console.log("formattedDate: ", formattedDate);
+
     try {
-      const uploadResponse = await importMaterialWithExcel(formData);
-      if (uploadResponse[0].date) {
-        toast.success("Upload successful: " + uploadResponse[0].date);
+      const uploadResponse = await validInventoryExcelFile(formData);
+      if (!uploadResponse.result.data.isValidated) {
+        const errors = uploadResponse.result.data.errors;
+        const updatedExcelData = validData.map((item, index) => ({
+          ...item,
+          Error: errors[index] || "",
+        }));
+        setIsError(true);
+        setExcelData(updatedExcelData);
+        console.log("excelData", updatedExcelData);
+      }
+      if (uploadResponse.result.data.isValidated) {
+        const uploadResponse2 = await importMaterialWithExcel(formData);
+        toast.success("Upload successful: " + uploadResponse2.date);
       } else {
         toast.error("Upload Fail: Please check file error ");
         getImportMaterialWithExcelError(formData);
       }
+      console.log("uploadResponse: ", uploadResponse.result.data.isValidated);
     } catch (error) {
-      console.error("Error during upload:", error);
+      toast.error("Error during upload:", error);
     }
   };
 
@@ -208,7 +225,7 @@ const ImportInventory = () => {
             </div>
           </div>
 
-          <div className="flex flex-wrap justify-start">
+          <div className="flex flex-wrap justify-start pb-6 ">
             <motion.div
               {...buttonClick}
               onClick={() => setIsOpen(true)}
@@ -231,9 +248,17 @@ const ImportInventory = () => {
             <Table
               columns={columns}
               dataSource={inventoryData}
-              pagination={{ pageSize: 10 }} // Adjust pageSize as needed
+              pagination={{ pageSize: 7 }}
             />
           </div>
+
+          <DataTableFalse
+            isOpen={isError}
+            onClose={() => setIsError(false)}
+            onSubmit={handleSubmit}
+            excelData={excelData}
+            fields={fields}
+          />
 
           <DataTable
             isOpen={isOpen}
@@ -284,6 +309,12 @@ const fields = [
         errorMessage: "Material Name is required",
         level: "error",
       },
+      {
+        rule: "regex",
+        value: "^[a-zA-Z]+$",
+        errorMessage: "Material is a text",
+        level: "error",
+      },
     ],
   },
   {
@@ -299,6 +330,12 @@ const fields = [
         errorMessage: "SupplierName is required",
         level: "error",
       },
+      {
+        rule: "regex",
+        value: "^[a-zA-Z]+( [a-zA-Z]+)?$",
+        errorMessage: "SupplierName is a text",
+        level: "error",
+      },
     ],
   },
   {
@@ -312,6 +349,28 @@ const fields = [
       {
         rule: "required",
         errorMessage: "Quantity is required",
+        level: "error",
+      },
+      {
+        rule: "regex",
+        value: "^[1-9]\\d*$",
+        errorMessage: "MOQ > 0",
+        level: "error",
+      },
+    ],
+  },
+  {
+    label: "Error",
+    key: "Error",
+    fieldType: {
+      type: "input",
+    },
+    example: " ",
+    validations: [
+      {
+        rule: "regex",
+        value: "^ *$",
+        errorMessage: "Check the error row",
         level: "error",
       },
     ],

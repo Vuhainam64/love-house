@@ -19,15 +19,15 @@ const OverviewGrid = ({ quoteDetail, calculateOriginalPrice }) => {
           </span>
         </div>
 
-        <div className="flex justify-between text-sm text-gray-700">
-          Raw Material Price:
+        <div className="flex justify-between">
+        <span className=" text-gray-500">Raw Material Price:</span>
           <div className="flex">
             {quoteDetail?.quotation?.rawMaterialPrice ? (
               <div className="flex items-center justify-center ml-4">
                 <span className="mr-2">
                   <CurrencyFormatter
                     amount={quoteDetail?.quotation?.rawMaterialPrice}
-                  />
+                  />{" "}VNĐ
                 </span>
                 {calculateOriginalPrice(
                   quoteDetail?.quotation?.rawMaterialPrice,
@@ -39,7 +39,7 @@ const OverviewGrid = ({ quoteDetail, calculateOriginalPrice }) => {
                         quoteDetail?.quotation?.rawMaterialPrice,
                         quoteDetail?.quotation?.rawMaterialDiscount
                       )}
-                    />
+                    />{" "}VNĐ
                   </span>
                 )}
               </div>
@@ -57,15 +57,15 @@ const OverviewGrid = ({ quoteDetail, calculateOriginalPrice }) => {
           </div>
         </div>
 
-        <div className="flex justify-between text-sm text-gray-700">
-          Furniture Price:
+        <div className="flex justify-between">
+        <span className=" text-gray-500">Furniture Price:</span>
           <div className="flex">
             {quoteDetail?.quotation?.furniturePrice ? (
               <div className="flex items-center justify-center ml-4">
                 <span className="mr-2">
                   <CurrencyFormatter
                     amount={quoteDetail?.quotation?.furniturePrice}
-                  />
+                  />{" "}VNĐ
                 </span>
 
                 {calculateOriginalPrice(
@@ -78,7 +78,7 @@ const OverviewGrid = ({ quoteDetail, calculateOriginalPrice }) => {
                         quoteDetail?.quotation?.furniturePrice,
                         quoteDetail?.quotation?.furnitureDiscount
                       )}
-                    />
+                    />{" "}VNĐ
                   </span>
                 )}
               </div>
@@ -94,15 +94,15 @@ const OverviewGrid = ({ quoteDetail, calculateOriginalPrice }) => {
           </div>
         </div>
 
-        <div className="flex justify-between text-sm text-gray-700">
-          Labor Price:
+        <div className="flex justify-between">
+        <span className=" text-gray-500">Labor Price:</span>
           <div className="flex">
             {quoteDetail?.quotation?.laborPrice > 0 ? (
               <div className="flex items-center justify-center ml-4">
                 <span className="mr-2">
                   <CurrencyFormatter
                     amount={quoteDetail?.quotation?.laborPrice}
-                  />
+                  />{" "}VNĐ
                 </span>
 
                 {calculateOriginalPrice(
@@ -115,7 +115,7 @@ const OverviewGrid = ({ quoteDetail, calculateOriginalPrice }) => {
                         quoteDetail?.quotation?.laborPrice,
                         quoteDetail?.quotation?.laborDiscount
                       )}
-                    />
+                    />{" "}VNĐ
                   </span>
                 )}
               </div>
@@ -131,11 +131,11 @@ const OverviewGrid = ({ quoteDetail, calculateOriginalPrice }) => {
           </div>
         </div>
 
-        <div className="flex justify-between text-sm text-gray-700">
-          <span className="font-semibold">Total:</span>
+        <div className="flex justify-between">
+        <span className="font-semibold text-gray-500">Total:</span>
           {quoteDetail?.quotation?.total ? (
             <div className="text-red-500 font-semibold mr-2">
-              <CurrencyFormatter amount={quoteDetail?.quotation?.total} />
+              <CurrencyFormatter amount={quoteDetail?.quotation?.total} />{" "}VNĐ
             </div>
           ) : (
             <span className="mx-2 text-gray-400">N/A</span>

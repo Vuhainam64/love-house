@@ -2,88 +2,74 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import {
   CurrencyFormatter,
-  ContractStatusBadge,
   DateFormatter,
 } from "../../../../../components";
+
+import { AiOutlineFileDone } from "react-icons/ai";
 
 const ContractGrid = ({ projectDetail }) => {
   return (
     <div className="grid grid-cols-1 gap-4 md:hidden pb-6 ">
       <div
         key={projectDetail.id}
-        className="bg-gray-50 border border-gray-300 space-y-3 rounded-lg shadow  px-8 py-5"
+        className="bg-gray-50 border border-gray-300 space-y-3 rounded-lg shadow  px-8 pb-5"
       >
-        <div className="text-right">
-          <ContractStatusBadge
-            contractStatus={projectDetail?.contract?.contractStatus}
-          />
+        <div className="flex justify-between sm:mb-3 pt-2">
+          <span className="text-gray-500">Total:</span>
+          <span className="text-red-500 font-bold hover:underline ml-4">
+            <CurrencyFormatter amount={projectDetail?.contract?.total} /> VNĐ
+          </span>
         </div>
 
         <div className="flex justify-between sm:mb-3 pt-2">
-          <span className="flex items-center">
-            {" "}
-            {/* <FaRegUser className="mr-2 pb-1" size={20} /> */}
-            Total:{" "}
-          </span>
-          <div className="text-red-500 font-bold hover:underline ml-4">
-            <CurrencyFormatter amount={projectDetail?.contract?.total} />
-          </div>
-        </div>
-
-        <div className="flex justify-between sm:mb-3 pt-2">
-          <span className="flex items-center">
-            {" "}
-            {/* <FaRegUser className="mr-2 pb-1" size={20} /> */}
-            Total Costs Incurred:{" "}
-          </span>
-          <div className="text-blue-500 font-bold hover:underline ml-4">
+          <span className="text-gray-500">Total Costs Incurred:</span>
+          <span className=" hover:underline ml-4">
             <CurrencyFormatter
               amount={projectDetail?.contract?.totalCostsIncurred}
-            />
-          </div>
+            />{" "}
+            VNĐ
+          </span>
         </div>
 
         <div className="flex justify-between sm:mb-3 pt-2">
-          <span className="flex items-center">
-            {" "}
-            {/* <FaRegUser className="mr-2 pb-1" size={20} /> */}
-            Deposit:{" "}
+          <span className="text-gray-500">Deposit:</span>
+          <span className="text-blue-500 font-bold hover:underline ml-4">
+            <CurrencyFormatter amount={projectDetail?.contract?.deposit} /> VNĐ
           </span>
-          <div className="text-blue-500 font-bold hover:underline ml-4">
-            <CurrencyFormatter amount={projectDetail?.contract?.deposit} />
-          </div>
         </div>
 
         <div className="flex items-center justify-between">
-          <div className="flex items-center">
-            {/* <FaRegCalendarAlt className="mr-2 pb-1" size={20} /> */}
-            Start date:
-          </div>
+          <span className="text-gray-500">Start date:</span>
 
-          <span className="text-gray-500">
+          <span className="">
             <DateFormatter dateString={projectDetail?.contract?.startDate} />
           </span>
         </div>
 
         <div className="flex items-center justify-between">
-          <div className="flex items-center">
-            {/* <FaRegCalendarAlt className="mr-2 pb-1" size={20} /> */}
-            End date:
-          </div>
+          <span className="text-gray-500">End date:</span>
 
-          <span className="text-gray-500">
+          <span className="">
             <DateFormatter dateString={projectDetail?.contract?.endDate} />
           </span>
         </div>
 
         <div className=" text-right">
           {projectDetail?.contract?.contractUrl ? (
-            <NavLink
-              to={`/staff/contract-payment-progress/${projectDetail?.contract?.id}`}
-              className="text-blue-500 hover:underline"
-            >
-              View payment progress
-            </NavLink>
+            <>
+              <NavLink
+                to={projectDetail?.contract?.contractUrl}
+                className="text-blue-500 hover:underline block italic"
+              >
+                View contract
+              </NavLink>
+              <NavLink
+                to={`/staff/contract-payment-progress/${projectDetail?.contract?.id}`}
+                className="text-blue-500 hover:underline italic"
+              >
+                View payment progress
+              </NavLink>
+            </>
           ) : (
             <NavLink
               to={`/staff/contract-payment-progress/${projectDetail?.contract?.id}`}

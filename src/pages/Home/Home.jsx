@@ -8,7 +8,7 @@ import Hero from "../../components/Banner/Hero";
 function Home() {
   return (
     <>
-      
+     
         <Navbar />
         <Hero/>
         {/* <Slider /> */}

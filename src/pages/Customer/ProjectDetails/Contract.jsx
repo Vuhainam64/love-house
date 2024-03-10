@@ -107,7 +107,7 @@ export default function Contract() {
                       />
                     </td>
                     <td className="p-3 text-sm text-gray-700 whitespace-nowrap text-center flex-col">
-                      {projectDetail?.contract?.contractStatus === 2 ? (
+                      {projectDetail?.contract?.contractStatus === 1 || projectDetail?.contract?.contractStatus === 2 ? (
                         <NavLink
                           to={projectDetail?.contract?.contractUrl}
                           className="text-blue-500 hover:underline"
@@ -125,7 +125,9 @@ export default function Contract() {
                       </div>
                       {projectDetail?.contract != null && projectDetail?.contract.contractStatus == 1 && (
                         // <button>Sign Contract</button>
-                        <SignContractForm onModalClose={handleReloadContent} id={projectDetail?.contract?.id} />
+
+                        <SignContractForm onModalClose={handleReloadContent} id={projectDetail?.contract?.id}  projectDetail={projectDetail} fetchData={fetchProjectDetail}/>
+
                       )}
                     </td>
                   </tr>
