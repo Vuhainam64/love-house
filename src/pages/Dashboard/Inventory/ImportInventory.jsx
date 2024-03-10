@@ -259,8 +259,14 @@ const fields = [
     example: "1",
     validations: [
       {
-        rule: "required",
-        errorMessage: "No is required",
+        rule: "unique",
+        errorMessage: "No is unique",
+        level: "error",
+      },
+      {
+        rule: "regex",
+        value: "^[0-9]+$",
+        errorMessage: "No is a number",
         level: "error",
       },
     ],

@@ -1,27 +1,48 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
+import { Button, DatePicker, Modal } from "antd";
 import * as XLSX from "xlsx";
 
 import { IoPricetagsSharp } from "react-icons/io5";
 import { FaChevronRight } from "react-icons/fa6";
 
-import { DataTable } from "../../../components";
-import { buttonClick } from "../../../assets/animations";
-import { ImportExcel } from "../../../assets";
 import {
+  getAllSuppliers,
   getSupplierQuotationTemplate,
   getUploadSupplierQuotationWithExcelFileError,
   uploadSupplierQuotationWithExcelFile,
   validExcelFile,
 } from "../../../api";
+import { DataTable } from "../../../components";
+import { ImportExcel } from "../../../assets";
+import { buttonClick } from "../../../assets/animations";
 import DataTableFalse from "../../../components/Dashboard/DataTableFalse";
-import { useSelector } from "react-redux";
 
 const ImportQuotation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isError, setIsError] = useState(false);
   const [excelData, setExcelData] = useState([]);
+  const [supplierName, setSupplierName] = useState("");
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [suppliers, setSuppliers] = useState([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await getAllSuppliers(1, 100);
+        if (response && response.isSuccess) {
+          setSuppliers(response.result.data);
+        }
+      } catch (error) {
+        toast.error("Error fetching suppliers:", error);
+        setSuppliers([]);
+      }
+    }
+
+    fetchData();
+  }, []);
 
   const downloadExample = async () => {
     try {
@@ -58,8 +79,12 @@ const ImportQuotation = () => {
     const blob = new Blob([excelBuffer], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
+
     const formData = new FormData();
-    formData.append("file", blob, "SauChien_20122023.xlsx");
+    const formattedDate = selectedDate ? selectedDate.format("DDMMYYYY") : "";
+    const filename = `${supplierName}_${formattedDate}.xlsx`;
+
+    formData.append("file", blob, filename);
     console.log("data: ", data);
 
     try {
@@ -89,6 +114,22 @@ const ImportQuotation = () => {
     }
   };
 
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  };
+
+  const handleFlow = () => {
+    if (!supplierName || !selectedDate) {
+      toast.error("Please select both supplier and date before proceeding.");
+      return;
+    }
+
+    setIsOpen(true);
+    setIsOpenModal(false);
+    console.log("supplierName: ", supplierName);
+    console.log("selectedDate: ", selectedDate);
+  };
+
   return (
     <div className="flex flex-col p-8 ">
       {/* title */}
@@ -108,7 +149,7 @@ const ImportQuotation = () => {
       <div className="flex flex-wrap justify-start">
         <motion.div
           {...buttonClick}
-          onClick={() => setIsOpen(true)}
+          onClick={() => setIsOpenModal(true)}
           className="px-4 py-2 border rounded-md text-white bg-gray-500 hover:bg-gray-600 font-semibold shadow-md cursor-pointer"
         >
           Open Flow
@@ -141,6 +182,62 @@ const ImportQuotation = () => {
         onSubmit={handleSubmit}
         fields={fields}
       />
+
+      <Modal
+        title="Enter Supplier Information"
+        open={isOpenModal}
+        onCancel={() => {
+          setIsOpenModal(false);
+        }}
+        footer={[
+          <Button
+            key="cancel"
+            onClick={() => {
+              setIsOpenModal(false);
+            }}
+          >
+            Cancel
+          </Button>,
+          <Button
+            onClick={handleFlow}
+            key="ok"
+            className="bg-blue-500 text-white "
+          >
+            OK
+          </Button>,
+        ]}
+      >
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Select Supplier
+          </label>
+          <select
+            value={supplierName}
+            onChange={(e) => setSupplierName(e.target.value)}
+            className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+          >
+            <option value="" disabled>
+              Select a supplier
+            </option>
+            {suppliers.map((supplier) => (
+              <option key={supplier.id} value={supplier.supplierName}>
+                {supplier.supplierName}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700">
+            Select Date
+          </label>
+          <DatePicker
+            value={selectedDate}
+            onChange={handleDateChange}
+            className="mt-1 w-full"
+          />
+        </div>
+      </Modal>
     </div>
   );
 };
