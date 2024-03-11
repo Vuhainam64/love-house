@@ -6,8 +6,7 @@ import { CustomerSidebar } from "../../../components";
 function Account() {
   const user = useSelector((state) => state?.user?.user);
   return (
-    <div className="flex">
-      <CustomerSidebar />
+    <div className="flex pb-32 mb-12 h-screen overflow-y-auto scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent">
       <div className="w-full">
         <div className="flex flex-col">
           <div className="bg-white flex-grow">

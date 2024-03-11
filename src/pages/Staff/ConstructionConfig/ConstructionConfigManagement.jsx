@@ -196,12 +196,12 @@ const ConstructionConfigManagement = () => {
     <>
       <LoadingOverlay loading={loading} />
 
-      <div className="flex flex-col flex-1 h-screen w-full overflow-y-auto">
+      <div className="flex flex-col h-screen w-full overflow-y-auto">
         <h1 className="text-2xl font-semibold pb-2 mt-5 uppercase text-center">
           Construction Config
         </h1>
 
-        <div className="flex flex-1 justify-between mb-4 px-16">
+        <div className="flex justify-between mb-4 px-16">
           <Button
             className="bg-baseGreen text-white flex items-center justify-between w-24"
             onClick={toggleFilter}
@@ -297,7 +297,7 @@ const ConstructionConfigManagement = () => {
           dataSource={constructionConfigList}
           columns={columns}
           key={`id`}
-          className="overflow-auto my-16"
+          className="overflow-auto"
           scroll={{ x: true }}
         />
 

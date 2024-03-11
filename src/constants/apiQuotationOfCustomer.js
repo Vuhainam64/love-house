@@ -63,7 +63,22 @@ export const getAllRequest = async (accountId, status) => {
     return null;
   }
 };
-
+export const getAllExportByQuotationDetailId = async (Id) => {
+  try {
+    const res = await axios.get(
+      `${baseURL}/import-export-inventory/get-all-export-by-quotation-detail-id/${Id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${usertoken}`,
+        },
+        withCredentials: true,
+      }
+    );
+    return res.data;
+  } catch (err) {
+    return null;
+  }
+};
 export const getProjectByIdForCustomer = async (id) => {
   try {
     const res = await axios.get(

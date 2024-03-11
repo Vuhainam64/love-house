@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
-import { Button, Input, Pagination, Popconfirm, Space, Table } from "antd";
+import { Button, Input, Popconfirm, Space, Table } from "antd";
 import * as XLSX from "xlsx";
 
 import { GrSupport } from "react-icons/gr";

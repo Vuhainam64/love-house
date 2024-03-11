@@ -4,8 +4,17 @@ import { NavLink } from "react-router-dom";
 import { CurrencyFormatter } from "../../../../components";
 
 import { FiEdit } from "react-icons/fi";
+import ViewExportQuotationModal from "../../../Customer/ExportQuotationDetail/ViewExportQuotationModal";
+import { Button } from "antd";
 
 export default function Material({ quoteDetail }) {
+  const [exportModal, setExportModal] = useState(false)
+  const [data, setData] = useState(false)
+  const handleExportView = (item) => {
+    setData(item.id)
+    setExportModal(true)
+
+  }
   return (
     <>
       <div className="flex-1 p-5">
@@ -47,6 +56,9 @@ export default function Material({ quoteDetail }) {
                       </th>
                       <th className=" p-3 text-sm font-semibold tracking-wide text-right">
                         Price (VNĐ)
+                      </th>
+                      <th className=" p-3 text-sm font-semibold tracking-wide text-right">
+                       Action
                       </th>
                     </tr>
                   </thead>
@@ -90,6 +102,15 @@ export default function Material({ quoteDetail }) {
                           <td className="p-3 text-sm text-gray-700 whitespace-nowrap text-right">
                             <CurrencyFormatter amount={item.total} />
                           </td>
+                          <td className="flex justify-end items-center">
+                        <Button
+                          className="text-xs font-semibold leading-6 text-white bg-baseGreen hover:bg-green-600 rounded-lg transition duration-200"
+                          onClick={() => handleExportView(item)}
+                        >
+                          View export
+                        </Button>
+                      </td>
+
                         </tr>
                       );
                     })}
@@ -174,6 +195,11 @@ export default function Material({ quoteDetail }) {
           </div>
         </div>
       </div>
+      <ViewExportQuotationModal
+        data={data}
+        visible={exportModal}
+        onClose={() => setExportModal(false)}
+      />
     </>
   );
 }

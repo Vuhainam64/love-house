@@ -141,7 +141,7 @@ function Auth() {
               Doesn't have an account ?
               <motion.button
                 {...buttonClick}
-                className="text-[rgba(251,146,60)] cursor-pointer bg-transparent px-2 font-semibold"
+                className="text-green-600 cursor-pointer bg-transparent px-2 font-semibold"
                 onClick={() => setIsSignUp(true)}
               >
                 Create one
@@ -152,7 +152,7 @@ function Auth() {
               Already have an account ?
               <motion.button
                 {...buttonClick}
-                className="text-[rgba(251,146,60)] cursor-pointer bg-transparent px-2 font-semibold"
+                className="text-green-600 cursor-pointer bg-transparent px-2 font-semibold"
                 onClick={() => setIsSignUp(false)}
               >
                 Sign-in here

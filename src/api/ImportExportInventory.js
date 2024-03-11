@@ -43,10 +43,7 @@ export const getAllImportInventory = async (pageIndex, pageSize) => {
 export const getAllExportByQuotationDetailId = async (id) => {
   try {
     const res = await axios.get(
-      `${baseURL}/import-export-inventory/get-all-export-by-quotation-detail-id`, {
-        params: {
-          id
-        },
+      `${baseURL}/import-export-inventory/get-all-export-by-quotation-detail-id/${id}`, {
         headers: {
           Authorization: `Bearer ${usertoken}`,
           "Content-Type": "application/json",
@@ -156,6 +153,27 @@ export const validInventoryExcelFile = async (excelData) => {
       withCredentials: true,
     });
 
+    return res.data;
+  } catch (err) {
+    return null;
+  }
+};
+
+export const importMaterial = async (quantity, supplierPriceDetailId) => {
+  try {
+    const res = await axios.post(
+      `${baseURL}/import-export-inventory/import-material`,
+      [{
+        quantity,
+        supplierPriceDetailId
+      }], {
+        headers: {
+          Authorization: `Bearer ${usertoken}`,
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      }
+    );
     return res.data;
   } catch (err) {
     return null;

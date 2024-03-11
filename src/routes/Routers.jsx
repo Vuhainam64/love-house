@@ -70,6 +70,7 @@ import PaymentNotification from "../pages/Customer/Payment/PaymentNotification.j
 import AdminDashboard from "../pages/Admin/AdminDashboard/AdminDashboard";
 import WorkerManagement from "../pages/Staff/WorkerManagement/WorkerManagement";
 import HouseProjectDetails from "../pages/HouseProjects/HouseProjectDetails/HouseProjectDetails";
+import Login2 from "../pages/Auth/Login2.jsx";
 
 export default function Routers() {
   const auth = useSelector((state) => state?.auth);
@@ -104,7 +105,7 @@ export default function Routers() {
     {
       path: "/auth",
       element: <AuthLayout />,
-      children: [{ path: "/auth", element: <Auth /> }],
+      children: [{ path: "/auth", element: <Login2/>}],
     },
     {
       path: "/customer",
@@ -137,7 +138,6 @@ export default function Routers() {
     },
     {
       path: "/staff",
-      element: isStaff ? <StaffLayout /> : <Navigate to="/404" replace />,
       element: isStaff ? <StaffLayout /> : <Navigate to="/404" replace />,
       children: [
         { path: "all-request", element: <AllRequest /> },
@@ -229,9 +229,7 @@ export default function Routers() {
     {
       path: "/admin",
       element: isAdmin ? <AdminLayout /> : <Navigate to="/404" replace />,
-      element: isAdmin ? <AdminLayout /> : <Navigate to="/404" replace />,
       children: [
-        { path: "dashboard", element: <AdminDashboard /> },
         { path: "dashboard", element: <AdminDashboard /> },
         { path: "users-list", element: <UsersList /> },
         { path: "view-supplier", element: <ViewSupplier /> },

@@ -1,109 +1,90 @@
-import React, { useEffect, useState } from "react";
-import { Table, Space, Button, Modal } from "antd";
-import DatePicker from "react-datepicker";
+import React, { useState, useEffect } from "react";
+import { Select, DatePicker, Button, Table, Modal, Input } from "antd";
+import { toast } from "react-toastify";
+import moment from "moment";
 
 import { IoPricetagsSharp } from "react-icons/io5";
-import { FaChevronRight } from "react-icons/fa6";
+import { FaChevronRight } from "react-icons/fa";
 
-import { getAllQuotationPrices } from "../../../api";
-import { MutatingDots } from "../../../components";
+import {
+  getAllSuppliers,
+  getLatestQuotationPriceBySupplierName,
+  importMaterial,
+} from "../../../api";
+
+const { Option } = Select;
 
 const ViewSupplierPrice = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [quotationPrices, setQuotationPrices] = useState([]);
-  const [uniqueSupplierQuotations, setUniqueSupplierQuotations] = useState([]);
+  const [suppliers, setSuppliers] = useState([]);
   const [selectedSupplier, setSelectedSupplier] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [sortedData, setSortedData] = useState([]);
-  const [materialDetail, setMaterialDetail] = useState(null);
-  const [openModal, setOpenModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [importModalVisible, setImportModalVisible] = useState(false);
+  const [importQuantity, setImportQuantity] = useState(0);
+  const [idImport, setIdImport] = useState(null);
 
   useEffect(() => {
-    const fetchAllQuotationPrices = async () => {
-      try {
-        const data = await getAllQuotationPrices(1, 100);
-        setQuotationPrices(data.result.data || []);
-        setIsLoading(false);
-      } catch (error) {
-        console.error("Error fetching quotation prices:", error);
-        setIsLoading(false);
+    const fetchSuppliers = async () => {
+      const result = await getAllSuppliers(1, 100);
+      if (result.isSuccess) {
+        setSuppliers(result.result.data);
       }
     };
-    fetchAllQuotationPrices();
+
+    fetchSuppliers();
   }, []);
 
-  useEffect(() => {
-    if (!isLoading && quotationPrices.length > 0) {
-      const uniqueSuppliersMap = new Map();
-
-      quotationPrices.forEach((price) => {
-        const supplierQuotation = price.supplierPriceQuotation;
-        const supplier = supplierQuotation?.supplier;
-        const supplierId = supplier?.id;
-
-        if (supplierId && !uniqueSuppliersMap.has(supplierId)) {
-          uniqueSuppliersMap.set(supplierId, supplier);
-        }
-      });
-
-      const uniqueSupplierQuotationsArray = Array.from(
-        uniqueSuppliersMap.values()
-      );
-
-      setUniqueSupplierQuotations(uniqueSupplierQuotationsArray);
-    }
-  }, [isLoading, quotationPrices]);
-
-  const handleSupplierChange = (event) => {
-    const selectedSupplierId = event.target.value;
-    const supplier = uniqueSupplierQuotations.find(
-      (sup) => sup.id === selectedSupplierId
-    );
-    setSelectedSupplier(supplier);
+  const handleSupplierChange = (value) => {
+    setSelectedSupplier(value);
   };
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
 
-  const handleSortSubmit = () => {
-    // Implement your sorting logic based on selectedSupplier and selectedDate
-    console.log("Sorting based on:", selectedSupplier, selectedDate);
+  const disabledDate = (current) => {
+    return current && current > moment().endOf("day");
+  };
 
-    // Replace this with your actual sorting logic
-    const sortedResult = quotationPrices.filter((item) => {
-      const supplierName =
-        item.supplierPriceQuotation.supplier.supplierName.toLowerCase();
-      const selectedSupplierName =
-        selectedSupplier?.supplierName.toLowerCase() || "";
-
-      const date = new Date(item.supplierPriceQuotation.date);
-      const selectedMonth = selectedDate?.getMonth() + 1;
-      const selectedYear = selectedDate?.getFullYear();
-
-      return (
-        supplierName.includes(selectedSupplierName) &&
-        (!selectedDate ||
-          (date.getMonth() + 1 === selectedMonth &&
-            date.getFullYear() === selectedYear))
+  const handleSortSubmit = async () => {
+    try {
+      console.log("selectedSupplier: ", selectedSupplier);
+      setIsLoading(true);
+      const result = await getLatestQuotationPriceBySupplierName(
+        selectedSupplier,
+        1,
+        100
       );
-    });
 
-    console.log("Sorted Result:", sortedResult);
+      if (result.isSuccess) {
+        setSortedData(result.result.data);
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-    setSortedData(sortedResult);
+  const openImportModal = (record) => {
+    console.log("record: ", record);
+    setIdImport(record.key);
+    setImportModalVisible(true);
+  };
+
+  const closeImportModal = () => {
+    setImportModalVisible(false);
+  };
+
+  const handleQuantityChange = (e) => {
+    setImportQuantity(Number(e.target.value));
   };
 
   const columns = [
     {
-      title: "Supplier",
-      dataIndex: "supplierName",
-      key: "supplierName",
-    },
-    {
-      title: "Date",
-      dataIndex: "date",
-      key: "date",
+      title: "No",
+      dataIndex: "index",
+      key: "index",
+      render: (_, record, index) => index + 1,
     },
     {
       title: "MOQ",
@@ -121,164 +102,169 @@ const ViewSupplierPrice = () => {
       key: "price",
     },
     {
-      title: "Actions",
-      dataIndex: "actions",
-      key: "actions",
+      title: "Unit Material",
+      dataIndex: "unitMaterial",
+      key: "unitMaterial",
+      render: (unitMaterial) => {
+        switch (unitMaterial) {
+          case 0:
+            return "KG";
+          case 1:
+            return "M3";
+          case 2:
+            return "BAR";
+          case 3:
+            return "ITEM";
+          default:
+            return "Unknown Unit";
+        }
+      },
+    },
+    {
+      title: "Material Type",
+      dataIndex: "materialType",
+      key: "materialType",
+      render: (materialType) =>
+        materialType === 0 ? "Raw Materials" : "Furniture",
+    },
+    {
+      title: "Action",
+      dataIndex: "action",
+      key: "action",
       render: (_, record) => (
-        <Space size="middle">
-          <Button
-            type="primary"
-            className="text-white bg-green-500 hover:bg-green-600"
-            onClick={() => handleViewDetail(record.material)}
-          >
-            View Detail
-          </Button>
-        </Space>
+        <Button
+          className="bg-blue-500 text-white"
+          onClick={() => openImportModal(record)}
+          loading={isLoading}
+        >
+          Import
+        </Button>
       ),
     },
   ];
 
-  const data = sortedData.map((item) => ({
+  const data = sortedData.map((item, index) => ({
     key: item.id,
-    supplierName: item.supplierPriceQuotation.supplier.supplierName,
-    date: new Date(item.supplierPriceQuotation.date).toLocaleDateString(),
+    index,
     moq: item.moq,
-    price: item.price,
-    material: item.material,
     materialName: item.material.name,
+    price: item.price,
+    unitMaterial: item.material.unitMaterial,
+    materialType: item.material.materialType,
   }));
 
-  const handleViewDetail = (material) => {
-    console.log("Material Detail:", material);
-    setMaterialDetail(material);
-    setOpenModal(true);
-  };
-
-  const getUnitName = (unitMaterial) => {
-    switch (unitMaterial) {
-      case 0:
-        return "KG";
-      case 1:
-        return "M3";
-      case 2:
-        return "BAR";
-      case 3:
-        return "ITEM";
-      default:
-        return "Unknown Unit";
+  const handleImportSubmit = async () => {
+    try {
+      setIsLoading(true);
+      const importResult = await importMaterial(importQuantity, idImport);
+      if (importResult.isSuccess) {
+        toast.success("Material imported successfully");
+      } else {
+        const errorMessage = importResult.messages.join(", ");
+        toast.error(`Failed to import material. Error: ${errorMessage}`);
+      }
+    } finally {
+      setIsLoading(false);
+      closeImportModal();
     }
   };
 
   return (
-    <>
-      {isLoading ? (
-        <div className="flex items-center justify-center h-full">
-          <MutatingDots />
-        </div>
-      ) : (
-        <div className="flex flex-col p-8 text-gray-900">
-          {/* title  */}
-          <div className="flex items-center space-x-2 text-xl">
-            <IoPricetagsSharp />
-            <div>Supplier</div>
-            <FaChevronRight />
-            <div>Supplier Price Detail</div>
-            <FaChevronRight />
-          </div>
-          <div className="text-2xl text-green-400 font-semibold py-4">
-            View Supplier Price
-          </div>
+    <div className="flex flex-col p-8 text-gray-900">
+      <div className="flex items-center space-x-2 text-xl">
+        <IoPricetagsSharp />
+        <div>Supplier</div>
+        <FaChevronRight />
+        <div>Supplier Price Detail</div>
+        <FaChevronRight />
+      </div>
+      <div className="text-2xl text-green-400 font-semibold py-4">
+        View Supplier Price
+      </div>
 
-          <div className="grid grid-cols-3 gap-4">
-            <div className="col-span-1">
-              <div className="mb-4">
-                <label
-                  htmlFor="supplier"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Select Supplier
-                </label>
-                <select
-                  id="supplier"
-                  name="supplier"
-                  className="mt-1 p-2 border border-gray-300 rounded-md w-64"
-                  onChange={handleSupplierChange}
-                  value={selectedSupplier ? selectedSupplier.id : ""}
-                >
-                  <option value="" disabled>
-                    Select Supplier
-                  </option>
-                  {uniqueSupplierQuotations.map((supplier) => (
-                    <option key={supplier.id} value={supplier.id}>
-                      {supplier.supplierName}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="mb-4">
-                <label
-                  htmlFor="date"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Select Date
-                </label>
-                <DatePicker
-                  selected={selectedDate}
-                  onChange={handleDateChange}
-                  dateFormat="MM/yyyy"
-                  showMonthYearPicker
-                  className="mt-1 p-2 border border-gray-300 rounded-md w-64"
-                />
-              </div>
-
-              <button
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                onClick={handleSortSubmit}
-              >
-                Sort
-              </button>
-            </div>
-
-            <div className="col-span-2">
-              {/* Display Sorted Data using Ant Design Table */}
-              <Table
-                columns={columns}
-                dataSource={data}
-                pagination={{ pageSize: 5 }}
-              />
-            </div>
+      <div className="grid grid-cols-3 gap-4">
+        <div className="col-span-1">
+          <div className="mb-4">
+            <label
+              htmlFor="supplier"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Select Supplier
+            </label>
+            <Select
+              id="supplier"
+              placeholder="Select Supplier"
+              style={{ width: "100%" }}
+              onChange={handleSupplierChange}
+              value={
+                selectedSupplier ? selectedSupplier.supplierName : undefined
+              }
+            >
+              {suppliers.map((supplier) => (
+                <Option key={supplier.id} value={supplier.supplierName}>
+                  {supplier.supplierName}
+                </Option>
+              ))}
+            </Select>
           </div>
 
-          {/* Material Detail Modal */}
-          <Modal
-            title="Material Detail"
-            open={openModal}
-            onCancel={() => setOpenModal(false)}
-            footer={null}
-            className="flex items-center justify-center bg-white shadow-md rounded-md pt-6"
+          <div className="mb-4">
+            <label
+              htmlFor="date"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Select Date
+            </label>
+            <DatePicker
+              style={{ width: "100%" }}
+              onChange={handleDateChange}
+              placeholder="Select Date"
+              disabledDate={disabledDate}
+            />
+          </div>
+
+          <Button
+            type="primary"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            onClick={handleSortSubmit}
           >
-            {materialDetail && (
-              <>
-                <p className="text-lg font-bold mb-2">
-                  ID: {materialDetail.id}
-                </p>
-                <p className="mb-2">Name: {materialDetail.name}</p>
-                <p className="mb-2">
-                  Type:{" "}
-                  {materialDetail.materialType === 0
-                    ? "Raw Materials"
-                    : "Furniture"}
-                </p>
-                <p className="mb-4">
-                  Unit: {getUnitName(materialDetail.unitMaterial)}
-                </p>
-              </>
-            )}
-          </Modal>
+            Sort
+          </Button>
         </div>
-      )}
-    </>
+
+        <div className="col-span-2">
+          {/* Display Sorted Data using Ant Design Table */}
+          <Table
+            columns={columns}
+            dataSource={data}
+            pagination={{ pageSize: 7 }}
+            loading={isLoading}
+          />
+        </div>
+
+        <Modal
+          title="Import Material"
+          open={importModalVisible}
+          onOk={handleImportSubmit}
+          onCancel={closeImportModal}
+        >
+          <div className="mb-4">
+            <label
+              htmlFor="quantity"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Quantity
+            </label>
+            <Input
+              id="quantity"
+              type="number"
+              value={importQuantity}
+              onChange={handleQuantityChange}
+            />
+          </div>
+        </Modal>
+      </div>
+    </div>
   );
 };
 
