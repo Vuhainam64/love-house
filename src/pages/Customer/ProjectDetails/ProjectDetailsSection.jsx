@@ -1,75 +1,118 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-
-import { getProjectByIdForCustomer } from "../../../constants/apiQuotationOfCustomer";
+import React from "react";
+import { NavLink } from "react-router-dom";
 import {
-  LoadingOverlay,
   ProjectStatusBadge,
   DateFormatter,
 } from "../../../components";
-import { FaRegUser, FaRegCalendarAlt, FaChartArea } from "react-icons/fa";
+import { Tag } from "antd";
 import {
-  IoBuildOutline,
-  IoLocationOutline,
-  IoHomeOutline,
-  IoTimeOutline,
-} from "react-icons/io5";
+  AiOutlineUser,
+  AiOutlineEye,
+  AiOutlinePhone,
+  AiOutlineMail,AiOutlineCarryOut
+} from "react-icons/ai";
+import ProjectDetailGrid from "./Grid/ProjectDetailGrid";
 
-export default function ProjectDetailsForCustomer() {
-  const { id } = useParams();
-  const [projectDetail, setProjectDetail] = useState({});
-  const [loading, setLoading] = useState(true);
+export default function ProjectDetailsForCustomer({projectDetail}) {
 
-  const fetchProjectDetail = async () => {
-    try {
-      const data = await getProjectByIdForCustomer(id);
-
-      if (data && data.result) {
-        setProjectDetail(data.result.data);
-        setLoading(false);
-      }
-    } catch (error) {
-      console.error("Error fetching project detail:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchProjectDetail();
-  }, [id]);
 
   return (
     <>
-      <LoadingOverlay loading={loading} />
       <div className="flex-1 p-5">
-        <h1 className="text-xl font-semibold pb-5 uppercase">Project Detail</h1>
+        <div className="px-2 mb-4">
+          <div className="font-semibold border-b-2 mb-4 ">
+            <h4 className="pb-2 uppercase">Customer Information</h4>
+          </div>
 
-        <div className="p-5 h-225">
+          <div className="flex flex-col space-y-5 mb-4 mx-5">
+            <div className="flex ">
+              <div className="flex items-center mr-4">
+                <AiOutlineUser className="text-baseGreen" size={19} />
+                <span className="ml-2 text-gray-700">Customer:</span>
+              </div>
+              <div>
+                {projectDetail?.project?.account?.firstName}{" "}
+                {projectDetail?.project?.account?.lastName}
+              </div>
+            </div>
+
+            <div className="flex ">
+              <div className="flex items-center mr-4">
+                <AiOutlinePhone className="text-baseGreen" size={19} />
+                <span className="ml-2 text-gray-700">Phone:</span>
+              </div>
+              <div>
+                {" "}
+                {projectDetail?.project?.account?.phoneNumber
+                  ? projectDetail?.project?.account?.phoneNumber
+                  : "N/A"}
+              </div>
+            </div>
+
+            <div className="flex ">
+              <div className="flex items-center mr-4">
+                <AiOutlineMail className="text-baseGreen" size={19} />
+                <span className="ml-2 text-gray-700">Email:</span>
+              </div>
+              <div>
+                {" "}
+                {projectDetail?.project?.account?.email
+                  ? projectDetail?.project?.account?.email
+                  : "N/A"}
+              </div>
+            </div>
+
+            <div className="flex ">
+              <div className="flex items-center mr-4">
+                <AiOutlineCarryOut className="text-baseGreen" size={19} />
+                <span className="ml-2 text-gray-700">Request creation date:</span>
+              </div>
+              <div>
+              <DateFormatter dateString={projectDetail?.project?.createDate} />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="py-5 px-2 h-auto mt-4">
+          <div className="font-semibold border-b-2 mb-4 flex space-x-4 items-center">
+            <h4 className="pb-2 uppercase">Project details</h4>
+            <div className="pb-2">
+              <ProjectStatusBadge
+                projectStatus={projectDetail?.project?.status}
+              />
+            </div>
+          </div>
           <div className="overflow-auto rounded-lg shadow hidden md:block">
             <table className="w-full">
               <thead className="bg-gray-50 border-b-2 border-gray-200">
                 <tr>
-                  <th className=" p-3 text-sm font-semibold tracking-wide text-left">
-                    Description
+                  <th className="w-44 p-3 text-sm font-semibold tracking-wide text-left">
+                    Descriptions
                   </th>
-                  <th className=" p-3 text-sm font-semibold tracking-wide text-left">
+                  <th className="w-56 p-3 text-sm font-semibold tracking-wide text-left">
+                    Location
+                  </th>
+                  <th className="w-40 p-3 text-sm font-semibold tracking-wide text-left">
+
                     Construction Type
                   </th>
-                  <th className="p-3 text-sm font-semibold tracking-wide ">
+                  <th className="w-28 p-3 text-sm font-semibold tracking-wide text-left">
                     Tiled Area
                   </th>
-                  <th className="p-3 text-sm font-semibold tracking-wide ">
+                  <th className="w-28 p-3 text-sm font-semibold tracking-wide text-left ">
                     Wall Dimensions
                   </th>
 
-                  <th className=" p-3 text-sm font-semibold tracking-wide text-left ">
+                  <th className="w-32 p-3 text-sm font-semibold tracking-wide text-left ">
                     Mixing Ratio
                   </th>
 
-                  <th className=" p-3 text-sm font-semibold tracking-wide">
-                    EstimatedTime Completion
+                  <th className="w-44 p-3 text-sm font-semibold tracking-wide text-left">
+                    Estimated Time of Completion
                   </th>
-                  <th className=" p-3 text-sm font-semibold tracking-wide">
-                    Number Of Labor
+                  <th className="w-20 p-3 text-sm font-semibold tracking-wide text-left">
+                    Image
                   </th>
                 </tr>
               </thead>
@@ -83,15 +126,20 @@ export default function ProjectDetailsForCustomer() {
                     <br />
                     Area: {projectDetail?.project?.area} m<sup>2</sup>
                   </td>
-                  <td className="p-3 text-sm text-gray-700 whitespace-nowrap text-center">
-                    {projectDetail?.project?.constructionType === 0
-                      ? "Rough"
-                      : "Completed"}
+                  <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                    {projectDetail?.project?.addressProject}
                   </td>
-                  <td className="w-40 p-3 text-sm text-gray-700 whitespace-nowrap text-center">
+                  <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                    {projectDetail?.project?.constructionType === 0 ? (
+                      <Tag color="gold">Rough</Tag>
+                    ) : (
+                      <Tag color="cyan">Completed</Tag>
+                    )}
+                  </td>
+                  <td className="w-40 p-3 text-sm text-gray-700 whitespace-nowrap">
                     {projectDetail?.project?.tiledArea} m<sup>2</sup>
                   </td>
-                  <td className=" w-40 p-3 text-sm text-gray-700 whitespace-nowrap text-center">
+                  <td className=" w-40 p-3 text-sm text-gray-700 whitespace-nowrap">
                     Length: {projectDetail?.project?.wallLength} m
                     <br />
                     Height: {projectDetail?.project?.wallHeight} m
@@ -103,110 +151,24 @@ export default function ProjectDetailsForCustomer() {
                     <br />
                     Stone: {projectDetail?.project?.stoneMixingRatio}
                   </td>
-                  <td className="p-3 text-sm text-gray-700 whitespace-nowrap text-center">
+                  <td className="p-3 text-sm text-gray-700 whitespace-nowrap ">
                     {projectDetail?.project?.estimatedTimeOfCompletion} days
                   </td>
-                  <td className="p-3 text-sm text-gray-700 whitespace-nowrap text-center">
-                    {projectDetail?.project?.numberOfLabor}
+
+                  <td className="p-3 text-sm text-gray-700 text-center">
+                    <NavLink
+                      to={projectDetail?.project?.landDrawingFileUrl}
+                      className="text-blue-500 hover:text-black"
+                    >
+                      <AiOutlineEye size={24} />
+                    </NavLink>
                   </td>
-                  <td className="p-3 text-sm text-gray-700 text-center"></td>
                 </tr>
               </tbody>
             </table>
           </div>
 
-          <div className="grid grid-cols-1 gap-4 md:hidden">
-            <div
-              key={projectDetail.id}
-              className="bg-gray-50 border border-gray-300 space-y-3 rounded-lg shadow px-8 py-5"
-            >
-              <div className="text-right">
-                <ProjectStatusBadge
-                  projectStatus={projectDetail?.project?.projectStatus}
-                />
-              </div>
-
-              <div className="flex justify-between sm:mb-3 pt-2">
-                <span className="flex items-center">
-                  {" "}
-                  <FaRegUser className="mr-2 pb-1" size={20} />
-                  Customer:{" "}
-                </span>
-                <div className="text-blue-500 font-bold hover:underline ml-4">
-                  {projectDetail?.project?.account?.firstName}{" "}
-                  {projectDetail?.project?.account?.lastName}
-                </div>
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <FaRegCalendarAlt className="mr-2 pb-1" size={20} />
-                  Create date:
-                </div>
-
-                <span className="text-gray-500">
-                  <DateFormatter
-                    dateString={projectDetail?.project?.createDate}
-                  />
-                </span>
-              </div>
-
-              <div className="flex justify-between">
-                <div className="flex items-center">
-                  <IoLocationOutline className="mr-2" />
-                  Location:
-                </div>
-                <span className="text-gray-500">
-                  {projectDetail?.project?.addressProject}
-                </span>
-              </div>
-
-              <div className="flex justify-between">
-                <div className="flex items-center">
-                  <IoBuildOutline className="mr-2" />
-                  Construction type:
-                </div>
-
-                <span className="text-gray-500">
-                  {projectDetail?.project?.constructionType === 0
-                    ? "Rough"
-                    : "Completed"}
-                </span>
-              </div>
-
-              <div className="flex justify-between">
-                <div className="flex items-center">
-                  <IoHomeOutline className="mr-2" />
-                  Floors:
-                </div>
-                <span className="text-gray-500">
-                  {projectDetail?.project?.numOfFloor}
-                </span>
-              </div>
-
-              <div className="flex justify-between">
-                <div className="flex items-center">
-                  <FaChartArea className="mr-2" />
-                  Area:
-                </div>
-                <span className="text-gray-500">
-                  {projectDetail?.project?.area} m&#178;
-                </span>
-              </div>
-
-              <div className="flex justify-between">
-                <div className="flex items-center">
-                  <IoTimeOutline className="mr-2" />
-                  Estimated completion time:
-                </div>
-                <span className="text-gray-500">
-                  {projectDetail?.project?.estimatedTimeOfCompletion} days
-                </span>
-              </div>
-
-              <div className="text-sm font-medium text-black text-right"></div>
-            </div>
-          </div>
+          <ProjectDetailGrid projectDetail={projectDetail}/>
         </div>
       </div>
     </>

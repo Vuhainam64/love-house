@@ -19,7 +19,7 @@ export default function ProjectSection({ projectDetail }) {
       <div className="flex-1 p-5">
         <div className="px-2 mb-4">
           <div className="font-semibold border-b-2 mb-4 ">
-            <h4 className="pb-2 uppercase">I. Customer Information</h4>
+            <h4 className="pb-2 uppercase">Customer Information</h4>
           </div>
 
           <div className="flex flex-col space-y-5 mb-4 mx-8">
@@ -74,7 +74,7 @@ export default function ProjectSection({ projectDetail }) {
 
         <div className="py-5 px-2 h-auto mt-4">
           <div className="font-semibold border-b-2 mb-4 flex space-x-4 items-center">
-            <h4 className="pb-2 uppercase">II. Project details</h4>
+            <h4 className="pb-2 uppercase">Project details</h4>
             <div className="pb-2">
               <ProjectStatusBadge
                 projectStatus={projectDetail?.project?.status}

@@ -172,7 +172,7 @@ export default function QuotationForm() {
 
   return (
     <>
-      <section className="pb-8">
+      <section className="pb-8 mt-24">
         <div className="container px-4 mx-auto">
           <div className="w-full px-4">
             <div className="px-8 md:px-16 pt-6 pb-8 bg-gray-50 shadow border-2 border-gray-200 rounded-xl">
@@ -353,7 +353,7 @@ export default function QuotationForm() {
 
                   <div className="mt-8 text-right">
                     <Button
-                      className="inline-block py-1.3 px-4 mb-2 text-xs text-center font-semibold leading-6 text-white bg-baseGreen hover:bg-green-600 rounded-lg transition duration-200"
+                      className="inline-block  px-4  text-xs text-center font-semibold leading-6 text-white bg-baseGreen hover:bg-green-600 rounded-lg transition duration-200"
                       onClick={submitRequest}
                       loading={loading}
                     >

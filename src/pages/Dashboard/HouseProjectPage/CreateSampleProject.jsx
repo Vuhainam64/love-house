@@ -103,7 +103,7 @@ function CreateSampleProject() {
 
       if (response) {
         toast.success("Project created successfully");
-        navigate("/dashboard/list-project");
+        navigate("/staff/list-project");
       } else {
         toast.error("Failed to create project");
       }
@@ -185,7 +185,7 @@ function CreateSampleProject() {
   };
 
   return (
-    <div className="flex flex-col p-8">
+    <div className="flex flex-col p-8 pb-32 mb-12 h-screen overflow-y-auto scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent">
       {/* title */}
       <div>
         <div className="flex items-center space-x-2 text-xl">

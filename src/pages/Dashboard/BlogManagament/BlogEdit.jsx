@@ -124,7 +124,7 @@ const BlogEdit = () => {
 
       if (response?.isSuccess) {
         toast.success("Blog updated successfully");
-        navigate("/dashboard/list-blog");
+        navigate("/staff/list-blog");
       } else {
         toast.error("Failed to update blog");
       }
@@ -161,7 +161,7 @@ const BlogEdit = () => {
   };
 
   return (
-    <div className="flex flex-col p-8">
+    <div className="flex flex-col p-8 pb-32 mb-12 h-screen overflow-y-auto scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent">
       {/* header */}
       <div>
         <div className="flex items-center space-x-2 text-xl">

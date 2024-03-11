@@ -46,10 +46,6 @@ export { default as CustomerAccount } from "./Customer/Account/Account";
 
 // House Projects
 export { default as HouseProject } from "../pages/HouseProjects/HouseProject";
-export { default as HouseRoofList } from "../pages/HouseProjects/HouseRoof/HouseRoofList";
-export { default as HouseRoofDetail } from "../pages/HouseProjects/HouseRoof/HouseRoofDetail";
-export { default as TownHouseList } from "../pages/HouseProjects/TownHouse/TownHouseList";
-export { default as TownHouseDetail } from "../pages/HouseProjects/TownHouse/TownHouseDetail";
 
 // News
 export { default as News } from "../pages/News/News";

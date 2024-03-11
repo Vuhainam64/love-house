@@ -196,7 +196,7 @@ const UsersList = () => {
   return (
     <>
       <Spin spinning={loading}>
-        <div className="flex flex-col p-8 text-gray-900">
+        <div className="flex flex-col p-8 px-20 text-gray-900 pb-32 mb-12 h-screen overflow-y-auto scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent">
           {/* title */}
           <div>
             <div className="flex items-center space-x-2 text-xl">

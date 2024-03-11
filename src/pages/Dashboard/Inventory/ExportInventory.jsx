@@ -76,7 +76,8 @@ const ExportInventory = () => {
   };
 
   return (
-    <div className="flex flex-col p-8">
+    <>
+     <div className="flex flex-col py-8 pb-32 mb-12 h-screen overflow-y-auto scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent">
       <div>
         <div className="flex items-center space-x-2 text-xl">
           <MdInventory />
@@ -97,6 +98,8 @@ const ExportInventory = () => {
         />
       </div>
     </div>
+    </>
+   
   );
 };
 

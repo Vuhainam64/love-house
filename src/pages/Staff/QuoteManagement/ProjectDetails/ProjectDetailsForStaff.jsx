@@ -33,27 +33,12 @@ export default function ProjectDetails() {
   return (
     <>
       <LoadingOverlay loading={loading} />
-
-      {/* <div className="flex overflow-hidden">
-        <StaffSidebar />
-        <div className="h-screen overflow-y-auto flex-1">
-          <DBHeader />
-          <div className="">
-            <ProjectSection projectDetail={projectDetail} />
-            <QuotationSection projectDetail={projectDetail} />
-            <DealQuotationSection projectDetail={projectDetail} />
-            
-            <ContractSection2 />
-          </div>
-        </div>
-      </div> */}
-
       <div className="h-screen overflow-y-auto scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent">
-            <ProjectSection projectDetail={projectDetail} />
-            <QuotationSection projectDetail={projectDetail} />
-            <DealQuotationSection projectDetail={projectDetail} />
-            <ContractSection2 projectDetail={projectDetail}/>
-          </div>
+        <ProjectSection projectDetail={projectDetail} />
+        <QuotationSection projectDetail={projectDetail} />
+        <DealQuotationSection projectDetail={projectDetail} />
+        <ContractSection2 projectDetail={projectDetail} />
+      </div>
     </>
   );
 }

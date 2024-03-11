@@ -64,9 +64,9 @@ export default function CreateWokerPrice({ onModalClose,fetchAllWorker }) {
       <Fragment>
         <button
           onClick={handleButtonClick}
-          className="bg-baseOrange text-white rounded-lg p-2 mb-2 font-semibold mx-2"
+          className="bg-baseGreen hover:bg-base3 transition duration-300 ease-in-out text-white text-sm text-center rounded-lg p-2 font-semibold mx-5 mt-6"
         >
-          Create Worker Price
+         + Create Worker Price
         </button>
 
         <Modal isVisible={showModal} onClose={() => setShowModal(false)}>

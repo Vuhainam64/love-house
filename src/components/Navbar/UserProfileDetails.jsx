@@ -3,11 +3,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AnimatePresence, motion } from "framer-motion";
 
-import { FaChevronDown, FaChevronRight } from "react-icons/fa6";
+import { FaChevronRight } from "react-icons/fa6";
+import { AiOutlineMore } from "react-icons/ai";
 
-import { Avatar } from "../../assets";
 import { logout } from "../../context/actions/authActions";
 import { SET_USER_NULL } from "../../context/actions/userActions";
+import avt from "../../assets/images/avt.jpg";
 
 function UserProfileDetails() {
   const dispatch = useDispatch();
@@ -41,13 +42,13 @@ function UserProfileDetails() {
       >
         <motion.img
           whileHover={{ scale: 1.2 }}
-          src={user?.photoURL ? user?.photoURL : Avatar}
+          src={user?.photoURL ? user?.photoURL : avt}
           alt="avatar"
-          className="rounded-full w-10 h-10"
+          className="rounded-full w-12 h-12"
         />
-        <button className="ml-2 hidden sm:inline">{user?.displayName}</button>
-        <div className="p-4 rounded-md flex items-center justify-center cursor-pointer">
-          <FaChevronDown className="text-white" />
+        {/* <button className="ml-2 hidden sm:inline">{user?.displayName}</button> */}
+        <div className="rounded-md flex items-center justify-center cursor-pointer">
+          <AiOutlineMore size={20} />
         </div>
       </motion.div>
       <AnimatePresence>

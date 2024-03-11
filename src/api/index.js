@@ -121,7 +121,8 @@ export {
   getImportMaterialTemplate,
   importMaterialWithExcel,
   getImportMaterialWithExcelError,
-  validInventoryExcelFile
+  validInventoryExcelFile,
+  getAllExportByQuotationDetailId
 }
 from "./ImportExportInventory.js";
 

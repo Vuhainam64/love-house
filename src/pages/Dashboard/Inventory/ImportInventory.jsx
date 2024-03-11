@@ -228,7 +228,7 @@ const ImportInventory = () => {
           <MutatingDots />
         </div>
       ) : (
-        <div className="flex flex-col p-8">
+        <div className="flex flex-col p-8 pb-32 mb-12 h-screen overflow-y-auto scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent">
           {/* title */}
           <div>
             <div className="flex items-center space-x-2 text-xl">

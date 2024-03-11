@@ -24,12 +24,7 @@ export default function QuotationSection({ projectDetail }) {
       <div className="flex-1 p-5">
         <div className="px-2 mb-4 pb-6 -mt-4">
           <div className="font-semibold border-b-2 mb-4 flex space-x-4">
-            <h4 className="pb-2 uppercase">III. Quotation</h4>
-            {/* <div>
-              <QuotationStatusBadge
-                quotationStatus={projectDetail?.quotations.quotationStatus}
-              />
-            </div> */}
+            <h4 className="pb-2 uppercase">Quotation</h4>
           </div>
           <div className="overflow-auto rounded-lg shadow hidden md:block">
             <table className="w-full">
@@ -77,7 +72,8 @@ export default function QuotationSection({ projectDetail }) {
                             <span className="mr-1">
                               <CurrencyFormatter
                                 amount={quotation.rawMaterialPrice}
-                              />{" "}VNĐ
+                              />{" "}
+                              VNĐ
                             </span>
                             {calculateOriginalPrice(
                               quotation.rawMaterialPrice,
@@ -89,7 +85,8 @@ export default function QuotationSection({ projectDetail }) {
                                     quotation.rawMaterialPrice,
                                     quotation.rawMaterialDiscount
                                   )}
-                                />{" "}VNĐ
+                                />{" "}
+                                VNĐ
                               </span>
                             )}
                           </div>
@@ -110,7 +107,8 @@ export default function QuotationSection({ projectDetail }) {
                             <span className="mr-2">
                               <CurrencyFormatter
                                 amount={quotation.furniturePrice}
-                              />{" "}VNĐ
+                              />{" "}
+                              VNĐ
                             </span>
                             {calculateOriginalPrice(
                               quotation.furniturePrice,
@@ -122,7 +120,8 @@ export default function QuotationSection({ projectDetail }) {
                                     quotation.furniturePrice,
                                     quotation.furnitureDiscount
                                   )}
-                                />{" "}VNĐ
+                                />{" "}
+                                VNĐ
                               </span>
                             )}
                           </div>
@@ -143,7 +142,8 @@ export default function QuotationSection({ projectDetail }) {
                             <span className="mr-2">
                               <CurrencyFormatter
                                 amount={quotation.laborPrice}
-                              />{" "}VNĐ
+                              />{" "}
+                              VNĐ
                             </span>
                             {calculateOriginalPrice(
                               quotation.laborPrice,
@@ -155,7 +155,8 @@ export default function QuotationSection({ projectDetail }) {
                                     quotation.laborPrice,
                                     quotation.laborDiscount
                                   )}
-                                />{" "}VNĐ
+                                />{" "}
+                                VNĐ
                               </span>
                             )}
                           </div>
@@ -172,8 +173,9 @@ export default function QuotationSection({ projectDetail }) {
 
                       <td className="p-3 text-sm text-red-500 font-semibold whitespace-nowrap text-center">
                         {quotation.total ? (
-                          <span><CurrencyFormatter amount={quotation.total} />{" "}VNĐ</span>               
-                          
+                          <span>
+                            <CurrencyFormatter amount={quotation.total} /> VNĐ
+                          </span>
                         ) : (
                           "N/A"
                         )}
@@ -186,7 +188,7 @@ export default function QuotationSection({ projectDetail }) {
                           />
                         </span>
                       </td>
-                      <td className="p-3 text-sm text-gray-700 text-center">
+                      <td className="flex flex-col justify-center items-center space-y-2 p-3 text-sm text-gray-700 text-center">
                         {quotation.quotationStatus === 0 && (
                           <NavLink
                             to={`/staff/manage-material-detail/${quotation.id}`}
@@ -199,7 +201,8 @@ export default function QuotationSection({ projectDetail }) {
 
                         {quotation.quotationStatus !== 0 && (
                           <NavLink
-                            to={`/staff/quotation-detail/${quotation.id}`} className="text-blue-600 italic hover:text-black"
+                            to={`/staff/quotation-detail/${quotation.id}`}
+                            className="text-blue-600 italic hover:text-black"
                           >
                             View Quotation Detail
                           </NavLink>

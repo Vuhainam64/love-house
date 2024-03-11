@@ -7,6 +7,7 @@ import { Input, Button } from "antd";
 
 import { Modal } from "../../../../../components";
 import { alert } from "../../../../../components/Alert/Alert";
+import { toast } from "react-toastify";
 import { FiEdit } from "react-icons/fi";
 
 import {
@@ -48,18 +49,18 @@ export default function FormUpdateMaterialDetail({
   });
 
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
-    try {
-      const formattedData = {
-        id: values.id,
-        quantity: values.quantity,
-        quotationId: id,
-        materialId: values.materialId,
-      };
+    const formattedData = {
+      id: values.id,
+      quantity: values.quantity,
+      quotationId: id,
+      materialId: values.materialId,
+    };
 
-      console.log("Form data submitted:", formattedData);
+    console.log("Form data submitted:", formattedData);
 
-      await updateQuotationDetail(formattedData);
-      resetForm();
+    const result = await updateQuotationDetail(formattedData);
+    resetForm();
+    if (result.isSuccess) {
       alert.alertSuccessWithTime(
         "Update Material Successfully",
         "",
@@ -67,20 +68,15 @@ export default function FormUpdateMaterialDetail({
         "30",
         () => {}
       );
-
-      setShowModal(false);
-      onModalClose();
-    } catch (error) {
-      alert.alertFailedWithTime(
-        "Failed To Update",
-        "Please try again",
-        2500,
-        "25",
-        () => {}
-      );
-    } finally {
-      setSubmitting(false);
+    } else {
+      for (var i = 0; i < result.messages.length; i++) {
+        toast.error(result.messages[i]);
+      }
     }
+
+    setShowModal(false);
+    onModalClose();
+    setSubmitting(false);
   };
 
   const fetchMaterial = async () => {

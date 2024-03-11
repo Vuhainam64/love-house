@@ -103,7 +103,7 @@ const ProjectList = () => {
   );
 
   return (
-    <div className="flex flex-col p-8 ">
+    <div className="flex flex-col p-8 pb-32 mb-12 h-screen overflow-y-auto scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent">
       {/* title */}
       <div>
         <div className="flex items-center space-x-2 text-xl">
@@ -126,7 +126,7 @@ const ProjectList = () => {
                 Your Project
               </h2>
               <Link
-                to={"/dashboard/create-sample-project"}
+                to={"/staff/create-sample-project"}
                 className="v-btn py-2 px-4
               bg-green-600 hover:bg-green-700 focus:ring-green-500 focus:ring-offset-green-200
               text-white transition ease-in duration-200 text-center text-base font-medium focus:outline-none focus:ring-2
@@ -227,7 +227,7 @@ const ProjectList = () => {
                                 <div className="flex flex-col">
                                   {/* Edit  */}
                                   <Link
-                                    to={`/dashboard/edit-project/${project.sampleProject.id}`}
+                                    to={`/staff/edit-project/${project.sampleProject.id}`}
                                     className="flex items-center justify-start px-2 py-1 m-2 hover:bg-gray-300 
                                     rounded-md"
                                   >

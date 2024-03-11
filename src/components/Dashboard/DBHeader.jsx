@@ -11,6 +11,8 @@ import { buttonClick } from "../../assets/animations";
 import { FaArrowLeft } from "react-icons/fa";
 import { TbHomeMove } from "react-icons/tb";
 
+import avt from "../../assets/images/avt.jpg"
+
 function DBHeader({ setIsOpen, isOpen }) {
   const user = useSelector((state) => state?.user?.user);
 
@@ -38,11 +40,11 @@ function DBHeader({ setIsOpen, isOpen }) {
         </div> */}
 
         <div className="flex items-center">
-          <img src={Avatar} alt="avatar" className="w-10" />
+          <img src={avt} alt="avatar" className="w-10"/>
           {user && (
-          <span className="mx-4  font-semibold p-1 ml-2 rounded">
+          <div className="box mx-4 font-semibold p-1 ml-2 rounded">
             Welcome, {user.firstName} !
-          </span>
+          </div>
         )}
         </div>
       </div>

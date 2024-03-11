@@ -6,6 +6,8 @@ import {
 } from "../../../../../constants/apiQuotationOfStaff";
 import { LoadingOverlay } from "../../../../../components";
 
+import { Tag } from "antd";
+
 export default function InforSection() {
   const { id } = useParams();
   const [quote, setQuote] = useState({});
@@ -138,8 +140,8 @@ export default function InforSection() {
                         <div className="text w-full pl-2">
                           <strong>Construction Type: </strong>
                           {projectDetail?.project?.constructionType === 0
-                            ? "Rough"
-                            : "Completed"}
+                            ? <Tag color="gold">Rough</Tag>
+                            : <Tag color="cyan">Completed</Tag>}
                         </div>
                       </li>
                     </ul>

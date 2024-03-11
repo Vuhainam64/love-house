@@ -4,6 +4,7 @@ import Slider from "../../components/Slider/Slider";
 
 import Slider2 from "../../components/Slider/Slider2";
 import Hero from "../../components/Banner/Hero";
+import OtherNews from "../../components/NewsComponent/OtherNews"
 
 function Home() {
   return (
@@ -13,12 +14,15 @@ function Home() {
         <Hero/>
         {/* <Slider /> */}
         {/* <Slider2 /> */}
-        <IntroSection />
+        {/* <IntroSection /> */}
+       
+        {/* <QuoteSection /> */}
+       
+        <ProjectsSection/>
         <Parallax />
-        <QuoteSection />
-        <ProjectsSection />
-        <WhySection />
-        <NewsSection />
+        {/* <WhySection /> */}
+        {/* <NewsSection /> */}
+        <OtherNews/>
 
         <Footer />
       

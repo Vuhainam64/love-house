@@ -1,38 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import React, { useState} from "react";
 import { motion } from "framer-motion";
-import { getProjectDetail } from "../../constants/apiHouseProject";
-import LoadingOverlay from "../../components/Loading/LoadingOverlay";
 
-export default function ImageDetailSection() {
-    const { id } = useParams();
-    const [houseProjectDetail, setHouseProjectDetail] = useState({});
-    const [positionIndexes, setPositionIndexes] = useState([0, 1, 2, 3, 4]);
-    const [loading, setLoading] = useState(true);
-  
-    useEffect(() => {
-      const fetchHouseProjectDetail = async () => {
-        try {
-          const data = await getProjectDetail(id);
-          if (data && data.result) {
-            setHouseProjectDetail(data.result.data);
-            setLoading(false);
-          } else {
-            console.error("Invalid data format:", data);
-          }
-        } catch (error) {
-          console.error("Error fetching house roof data:", error);
-        }
-      };
-  
-      fetchHouseProjectDetail();
-    }, [id]);
-  
-    if (!houseProjectDetail || !houseProjectDetail.staticFiles) {
-      return null;
-    }
-  
+export default function ImageDetailSection({houseProjectDetail}) {
  
+    const [positionIndexes, setPositionIndexes] = useState([0, 1, 2, 3, 4]);
+
   
     const handleNext = () => {
       setPositionIndexes((prevIndexes) =>
@@ -57,7 +29,7 @@ export default function ImageDetailSection() {
     };
   return (
     <>
-     <LoadingOverlay loading={loading} />
+    
     <div className="flex items-center flex-col justify-center h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] xl:h-[700px] my-4 lg:my-24">
         {houseProjectDetail.staticFiles.map((image, index) => (
           <motion.img

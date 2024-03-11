@@ -1,45 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { NavLink } from "react-router-dom";
-import { useParams } from "react-router-dom";
-import { getProjectDetail } from "../../constants/apiHouseProject";
 
 import { FaFacebookF } from "react-icons/fa";
 import { SiZalo } from "react-icons/si";
 import { FaInstagram } from "react-icons/fa";
 
-import LoadingOverlay from "../../components/Loading/LoadingOverlay";
-import CurrencyFormatter from "../../components/Common/CurrencyFormatter";
+import {CurrencyFormatter} from "../../../components"
 
-export default function OverviewProjectSection() {
-  const { id } = useParams();
-  const [houseProjectDetail, setHouseProjectDetail] = useState({});
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchHouseProjectDetail = async () => {
-      try {
-        const data = await getProjectDetail(id);
-        if (data && data.result) {
-          setHouseProjectDetail(data.result.data);
-          setLoading(false);
-        } else {
-          console.error("Invalid data format:", data);
-        }
-      } catch (error) {
-        console.error("Error fetching house project data:", error);
-      }
-    };
-
-    fetchHouseProjectDetail();
-  }, [id]);
-
-  if (!houseProjectDetail || !houseProjectDetail.staticFiles) {
-    return null;
-  }
+export default function OverviewProjectSection({houseProjectDetail}) { 
 
   return (
     <>
-      <LoadingOverlay loading={loading} />
       <div className="detail wrapper py-4 mx-auto mt-12">
         <div className="wraps max-w-[970px] mx-auto">
           <div className="tpdetail">

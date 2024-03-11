@@ -201,7 +201,7 @@ const ConstructionConfigManagement = () => {
           Construction Config
         </h1>
 
-        <div className="flex justify-between mb-4 px-16">
+        <div className="flex flex-1 justify-between mb-4 px-16">
           <Button
             className="bg-baseGreen text-white flex items-center justify-between w-24"
             onClick={toggleFilter}

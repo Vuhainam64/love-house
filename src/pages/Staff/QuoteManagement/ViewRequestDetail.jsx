@@ -94,7 +94,7 @@ export default function ViewRequestDetail({ details }) {
                 <div className="flex ">
                   <div className="flex items-center mr-4">
                     <AiOutlineTool className="text-baseGreen" size={19} />
-                    <span className="ml-2">Comstruction Type:</span>
+                    <span className="ml-2">Construction Type:</span>
                   </div>
                   <div>
                     {details.constructionType === 1 && (

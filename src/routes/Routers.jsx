@@ -32,10 +32,6 @@ import {
   ProjectDetail,
   CreateSampleProject,
   HouseProject,
-  HouseRoofList,
-  HouseRoofDetail,
-  TownHouseList,
-  TownHouseDetail,
   News,
   NewsDetail,
   Blog,
@@ -73,6 +69,7 @@ import ConstructionConfigManagement from "../pages/Staff/ConstructionConfig/Cons
 import PaymentNotification from "../pages/Customer/Payment/PaymentNotification.jsx";
 import AdminDashboard from "../pages/Admin/AdminDashboard/AdminDashboard";
 import WorkerManagement from "../pages/Staff/WorkerManagement/WorkerManagement";
+import HouseProjectDetails from "../pages/HouseProjects/HouseProjectDetails/HouseProjectDetails";
 
 export default function Routers() {
   const auth = useSelector((state) => state?.auth);
@@ -84,6 +81,7 @@ export default function Routers() {
   const routing = useRoutes([
     { path: "/payment/*", element: <PaymentNotification /> },
 
+
     {
       path: "/",
       element: <HomeLayout />,
@@ -91,15 +89,9 @@ export default function Routers() {
         { path: "/", element: <Home /> },
         { path: "/aboutus", element: <AboutUs /> },
         { path: "/houseProject", element: <HouseProject /> },
-        { path: "/house-roof-projects", element: <HouseRoofList /> },
         {
-          path: "/house-roof-projects/details/:id",
-          element: <HouseRoofDetail />,
-        },
-        { path: "/town-house-projects", element: <TownHouseList /> },
-        {
-          path: "/town-house-projects/details/:id",
-          element: <TownHouseDetail />,
+          path: "/house-projects/details/:id",
+          element: <HouseProjectDetails />,
         },
         { path: "/news", element: <News /> },
         { path: "/news/newsDetail/:id", element: <NewsDetail /> },
@@ -146,6 +138,7 @@ export default function Routers() {
     {
       path: "/staff",
       element: isStaff ? <StaffLayout /> : <Navigate to="/404" replace />,
+      element: isStaff ? <StaffLayout /> : <Navigate to="/404" replace />,
       children: [
         { path: "all-request", element: <AllRequest /> },
         {
@@ -174,37 +167,20 @@ export default function Routers() {
           path: "construction-config",
           element: <ConstructionConfigManagement />,
         },
-        { path: "/staff/worker-management", element: <WorkerManagement /> },
+        { path: "worker-management", element: <WorkerManagement /> },
 
         { path: "create-news", element: <NewsCreate /> },
         { path: "list-news", element: <NewsList /> },
         { path: "edit-news/:id", element: <NewsEdit /> },
-        { path: "dashboard", element: <AdminDashboard /> },
-        { path: "users-list", element: <UsersList /> },
-        { path: "view-supplier-price", element: <ViewSupplierPrice /> },
-        { path: "import-quotation", element: <ImportQuotation /> },
-        { path: "list-quotation", element: <ListQuotation /> },
-      ],
-    },
-    {
-      path: "/dashboard",
-      element: isStaff ? <Dashboard /> : <Navigate to="/404" replace />,
-      children: [
-        { path: "home", element: <DBHome /> },
-        // { path: "users-list", element: <UsersList /> },
-
-        // { path: "create-news", element: <NewsCreate /> },
-        // { path: "list-news", element: <NewsList /> },
-        // { path: "edit-news/:id", element: <NewsEdit /> },
-
-        { path: "create-blog", element: <BlogCreate /> },
-        { path: "list-blog", element: <BlogsList /> },
-        { path: "edit-blog/:id", element: <BlogEdit /> },
 
         { path: "create-sample-project", element: <CreateSampleProject /> },
         { path: "list-project", element: <ProjectList /> },
         { path: "detail-project/:id", element: <ProjectDetail /> },
         { path: "edit-project/:id", element: <EditProject /> },
+
+        { path: "create-blog", element: <BlogCreate /> },
+        { path: "list-blog", element: <BlogsList /> },
+        { path: "edit-blog/:id", element: <BlogEdit /> },
 
         { path: "import-inventory", element: <ImportInventory /> },
         { path: "export-inventory", element: <ExportInventory /> },
@@ -216,10 +192,36 @@ export default function Routers() {
         { path: "list-material", element: <MaterialList /> },
         { path: "export-price-material", element: <ExportPrice /> },
 
+        { path: "users-list", element: <UsersList /> },
+           { path: "view-supplier-price", element: <ViewSupplierPrice /> },
+
+        { path: "import-quotation", element: <ImportQuotation /> },
+        { path: "import-quotation", element: <ImportQuotation /> },
+        { path: "list-quotation", element: <ListQuotation /> },
+
+      ],
+    },
+    {
+      path: "/dashboard",
+      element: isStaff ? <Dashboard /> : <Navigate to="/404" replace />,
+      children: [
+        { path: "home", element: <DBHome /> },
+        // { path: "users-list", element: <UsersList /> },
+        // { path: "import-inventory", element: <ImportInventory /> },
+        // { path: "export-inventory", element: <ExportInventory /> },
+        // {
+        //   path: "export-inventory/quotation-detail/:id",
+        //   element: <QuotationDetail />,
+        // },
+
+        // { path: "list-material", element: <MaterialList /> },
+        // { path: "export-price-material", element: <ExportPrice /> },
+
         // { path: "view-supplier", element: <ViewSupplier /> },
 
         // { path: "view-supplier-price", element: <ViewSupplierPrice /> },
 
+        // { path: "import-quotation", element: <ImportQuotation /> },
         // { path: "import-quotation", element: <ImportQuotation /> },
         // { path: "list-quotation", element: <ListQuotation /> },
       ],
@@ -227,7 +229,9 @@ export default function Routers() {
     {
       path: "/admin",
       element: isAdmin ? <AdminLayout /> : <Navigate to="/404" replace />,
+      element: isAdmin ? <AdminLayout /> : <Navigate to="/404" replace />,
       children: [
+        { path: "dashboard", element: <AdminDashboard /> },
         { path: "dashboard", element: <AdminDashboard /> },
         { path: "users-list", element: <UsersList /> },
         { path: "view-supplier", element: <ViewSupplier /> },

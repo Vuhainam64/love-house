@@ -77,7 +77,7 @@ export default function CreateDealByStaff({ onModalClose, quotationId }) {
       <Fragment>
         <button
           onClick={handleButtonClick}
-          className="bg-baseOrange text-white rounded-lg p-2 mb-2 font-semibold mx-2"
+          className="bg-baseOrange text-white rounded-lg p-2 mb-2 font-semibold mx-2 w-40"
         >
           Create Deal Quotation
         </button>

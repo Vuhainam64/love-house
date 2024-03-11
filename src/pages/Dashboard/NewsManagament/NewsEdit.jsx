@@ -121,7 +121,7 @@ const NewsEdit = () => {
 
       if (response?.isSuccess) {
         toast.success("News updated successfully");
-        navigate("/dashboard/list-news");
+        navigate("/staff/list-news");
       } else {
         toast.error("Failed to update news");
       }
@@ -134,7 +134,7 @@ const NewsEdit = () => {
   };
 
   return (
-    <div className="flex flex-col p-8">
+    <div className="flex flex-col p-8 pb-32 mb-12 h-screen overflow-y-auto scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent">
       {/* title */}
       <div>
         <div className="flex items-center space-x-2 text-xl">

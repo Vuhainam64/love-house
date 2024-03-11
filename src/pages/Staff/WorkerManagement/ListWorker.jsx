@@ -3,18 +3,26 @@ import WorkerGrid from "./Grid/WorkerGrid";
 import CreateWokerPrice from "./CreateWokerPrice";
 import UpdateWorkerPrice from "./UpdateWorkerPrice";
 
-import { getWokerById, updateWorkerPrice } from "../../../constants/apiWorker";
 import DeleteWorkerPrice from "./DeleteWorkerPrice";
 
-export default function ListWorker({ allWorker, handleReloadContent,fetchAllWorker }) {
+import { CurrencyFormatter } from "../../../components";
 
-
-
+export default function ListWorker({
+  allWorker,
+  handleReloadContent,
+  fetchAllWorker,
+}) {
   return (
     <>
       <div className="flex-1 p-5">
-        <h1 className="text-xl font-semibold uppercase">Worker</h1>
-        <CreateWokerPrice onModalClose={handleReloadContent} fetchAllWorker={fetchAllWorker}/>
+        <h1 className="text-xl font-semibold uppercase text-center">Worker Management</h1>
+        <div className="text-right">
+        <CreateWokerPrice
+          onModalClose={handleReloadContent}
+          fetchAllWorker={fetchAllWorker}
+        />
+        </div>
+        
         <div className="p-5 h-auto">
           <div className="overflow-auto rounded-lg shadow hidden md:block">
             <table className="w-full">
@@ -27,7 +35,7 @@ export default function ListWorker({ allWorker, handleReloadContent,fetchAllWork
                     Position
                   </th>
                   <th className="p-3 text-sm font-semibold tracking-wide ">
-                    Labor Cost
+                    Labor Cost (VNĐ)
                   </th>
                   <th className="p-3 text-sm font-semibold tracking-wide ">
                     Action
@@ -48,19 +56,22 @@ export default function ListWorker({ allWorker, handleReloadContent,fetchAllWork
                         {worker.positionName}
                       </td>
                       <td className="p-3 text-sm text-gray-700 whitespace-nowrap text-center">
-                        {worker.laborCost}
+                      <CurrencyFormatter amount={worker.laborCost}/>
                       </td>
                       <td className="p-3 text-sm text-gray-700 text-center">
                         <div className="flex justify-center">
-                        <UpdateWorkerPrice
-                          workerDetail={worker}
-                          onModalClose={handleReloadContent}
-                          fetchAllWorker={fetchAllWorker}
-                        />
+                          <UpdateWorkerPrice
+                            workerDetail={worker}
+                            onModalClose={handleReloadContent}
+                            fetchAllWorker={fetchAllWorker}
+                          />
 
-                        <DeleteWorkerPrice workerDetail={worker} onDelete={handleReloadContent} fetchAllWorker={fetchAllWorker}/>
+                          <DeleteWorkerPrice
+                            workerDetail={worker}
+                            onDelete={handleReloadContent}
+                            fetchAllWorker={fetchAllWorker}
+                          />
                         </div>
-                       
                       </td>
                     </tr>
                   ))}

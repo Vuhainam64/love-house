@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
+import { useDispatch } from "react-redux";
+
 import control from "../../assets/images/control.png";
 import HouseLogo from "../../assets/images/HouseLogo.png";
 
@@ -7,11 +9,19 @@ import {
   AiOutlineFileSearch,
   AiOutlineIdcard,
   AiOutlineHome,
-  AiOutlineSwap,
   AiOutlineLogout,
 } from "react-icons/ai";
+import { logout } from "../../context/actions/authActions";
+import { SET_USER_NULL } from "../../context/actions/userActions";
 
 export default function CustomerSidebar() {
+  const dispatch = useDispatch();
+
+  const handleSignout = () => {
+    dispatch(logout());
+    dispatch(SET_USER_NULL());
+  };
+
   const [open, setOpen] = useState(true);
   const Menus = [
     {
@@ -22,14 +32,12 @@ export default function CustomerSidebar() {
     {
       title: "Accounts",
       icon: <AiOutlineIdcard />,
-      gap: true,
       path: "/customer/account/profile",
     },
-    { title: "Transaction ", icon: <AiOutlineSwap /> },
 
     { title: "Go to Home page", icon: <AiOutlineHome />, gap: true, path: "/" },
-    { title: "Log out", icon: <AiOutlineLogout /> },
   ];
+
   return (
     <div className="flex pr-4">
       <div
@@ -69,7 +77,7 @@ export default function CustomerSidebar() {
             >
               <li
                 key={index}
-                className={`flex  rounded-md p-2 cursor-pointer hover:bg-baseGreen text-black hover:text-white text-sm items-center gap-x-4 
+                className={`flex my-2 rounded-md p-2 cursor-pointer hover:bg-baseGreen text-black hover:text-white text-sm items-center gap-x-4 
               ${Menu.gap ? "mt-9" : "mt-2"} ${
                   index === 0 && "bg-baseGreen text-white"
                 } `}
@@ -84,6 +92,18 @@ export default function CustomerSidebar() {
               </li>
             </NavLink>
           ))}
+          <NavLink
+            to={"/auth"}
+            onClick={handleSignout}
+            className="text-decoration-none"
+          >
+            <li className="flex my-2 rounded-md p-2 cursor-pointer hover:bg-baseGreen text-black hover:text-white text-sm items-center gap-x-4 mt-2">
+              <span className="text-2xl">
+                <AiOutlineLogout />
+              </span>
+              <span>Logout</span>
+            </li>
+          </NavLink>
         </ul>
       </div>
     </div>

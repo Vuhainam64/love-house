@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
-import { CustomerSidebar, DBHeader, LoadingOverlay } from "../../../components";
 import OverviewSection from "./OverviewSection";
 import MaterialDetailSection from "./MaterialDetailSection";
 import WorkerDetailSection from "./WorkerDetailSection";
 import DealingSection from "./DealingSection";
 import QuotationDealing from "./QuotationDealing";
 import { getProjectByIdForCustomer, getQuoteDetailForCustomer } from "../../../constants/apiQuotationOfCustomer";
-import { useParams } from "react-router-dom";
+
 
 export default function QuoteDetailsForCustomer() {
   const { id } = useParams();
@@ -16,11 +16,12 @@ export default function QuoteDetailsForCustomer() {
   const [quoteDetail, setQuoteDetail] = useState([]);
 
   const [projectDetail, setProjectDetail] = useState([]);
+
+
   const fetchQuoteDetail = async () => {
     try {
       const data = await getQuoteDetailForCustomer(id);
 
-      console.log(data);
       if (data.isSuccess) {
         setQuoteDetail(data.result.data);
         setQuotationDealing(data.result.data.quotationDealings);
@@ -40,11 +41,7 @@ export default function QuoteDetailsForCustomer() {
   }, [id]);
   return (
     <>
-      <div className="flex overflow-hidden">
-        <CustomerSidebar />
-        <div className="h-screen overflow-y-auto flex-1 ">
-          <DBHeader />
-          <div>
+          <div className="h-screen overflow-y-auto scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent">
             <OverviewSection
               quoteDetail={quoteDetail}
               projectDetail={projectDetail}
@@ -53,8 +50,7 @@ export default function QuoteDetailsForCustomer() {
             <MaterialDetailSection quoteDetail={quoteDetail} />
             <WorkerDetailSection quoteDetail={quoteDetail} />
           </div>
-        </div>
-      </div>
+        
     </>
   );
 }

@@ -36,7 +36,7 @@ export default function DeleteWorkerPrice({ workerDetail, onDelete ,fetchAllWork
        
         const res = await deleteWorkerPrice(workerDetail.id);
         if (res.isSuccess) {
-          setReloadContent(true);
+        //  setReloadContent(true);
           alert.alertSuccessWithTime(
             "Worker Price deleted successfully!",
             "",

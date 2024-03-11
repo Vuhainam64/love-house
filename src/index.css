@@ -24,13 +24,24 @@ input[type="password"]::-ms-clear {
   z-index: 10;
   overflow: hidden;
 } */
-/* 
+
+.item{
+  @apply relative text-gray-500 font-mono font-bold tracking-[1px] hover:text-black
+}
+.item::after{
+  @apply content-[''] bg-baseGreen h-[3px] w-[0%] left-0 -bottom-[5px] rounded-xl absolute duration-300
+}
+
+.item:hover::after{
+  @apply w-[100%]
+}
+
  .lh-button {
-  @apply text-center uppercase tracking-wider py-4 px-8 text-[13px] font-semibold cursor-pointer rounded-md hover: bg-opacity-90 bg-baseOrange text-white w-max
+  @apply text-center uppercase tracking-wider py-4 px-8 text-[13px] font-semibold cursor-pointer rounded-md hover:bg-opacity-90 bg-baseOrange text-white w-max
 }
 
 .dropdown {
-  @apply w-full lg: max-w-[296px] cursor-pointer;
+  @apply w-full lg:max-w-[296px] cursor-pointer;
 }
 
 .dropdown-btn {
@@ -47,9 +58,19 @@ input[type="password"]::-ms-clear {
 
 .dropdown-menu {
   @apply px-6 py-8 text-[15px] space-y-6 shadow-md bg-white absolute w-full z-10 list-none rounded-b-lg;
-} */
+}
 
 /*.error-input {
   border-color: #e53e3e;
 } */
 
+.responsive-type-animation {
+  font-size: 56px;
+}
+
+/* Media query cho màn hình md trở xuống */
+@media (max-width: 768px) {
+  .responsive-type-animation {
+    font-size: 32px;
+  }
+}

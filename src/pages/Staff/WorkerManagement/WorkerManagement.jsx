@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { StaffSidebar, DBHeader, LoadingOverlay } from "../../../components";
+import { LoadingOverlay } from "../../../components";
 
-import { getAllWorker, getWokerById } from "../../../constants/apiWorker";
+import { getAllWorker } from "../../../constants/apiWorker";
 import ListWorker from "./ListWorker";
 
 export default function WorkerManagement() {
@@ -25,22 +24,21 @@ export default function WorkerManagement() {
     }
   };
 
-
   useEffect(() => {
     window.scrollTo(0, 0);
     fetchAllWorker();
-  
   }, [reloadContent]);
 
   return (
     <>
       <LoadingOverlay loading={loading} />
-      <div className="flex overflow-hidden">
-        <div className="h-screen overflow-y-auto flex-1">
-          <div className="">
-            <ListWorker allWorker={allWorker} handleReloadContent={handleReloadContent} fetchAllWorker= {fetchAllWorker}/>
-          </div>
-        </div>
+
+      <div className="h-screen overflow-y-auto scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent">
+        <ListWorker
+          allWorker={allWorker}
+          handleReloadContent={handleReloadContent}
+          fetchAllWorker={fetchAllWorker}
+        />
       </div>
     </>
   );

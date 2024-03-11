@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Space, Table, Input, notification } from "antd";
+import { Space, Table, Input, notification, Modal } from "antd";
 
 import { FaChevronRight } from "react-icons/fa";
 import { IoReturnUpBack } from "react-icons/io5";
@@ -9,8 +9,10 @@ import { MdInventory } from "react-icons/md";
 import {
   createProgressConstructionMaterial,
   getAllApprovedQuotationDetailsByProjectId,
+  getAllExportByQuotationDetailId,
   getRemainQuantityForFulfillment,
 } from "../../../api";
+import moment from "moment";
 
 const QuotationDetail = () => {
   const id = useParams().id;
@@ -19,6 +21,8 @@ const QuotationDetail = () => {
   const [loading, setLoading] = useState(true);
   const [fulfillmentQuantity, setFulfillmentQuantity] = useState(0);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [historyModalVisible, setHistoryModalVisible] = useState(false);
+  const [historyData, setHistoryData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -149,13 +153,78 @@ const QuotationDetail = () => {
           >
             FulFill
           </button>
+          <button
+            onClick={() => handleViewHistory(record)}
+            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+          >
+            View History
+          </button>
         </Space>
       ),
     },
   ];
 
+  const handleViewHistory = async (record) => {
+    try {
+      const history = await getAllExportByQuotationDetailId(record.id);
+      setHistoryData(history.result.data);
+      setHistoryModalVisible(true);
+    } catch (error) {
+      console.error("Error fetching history:", error);
+    }
+  };
+
+  const handleHistoryModalCancel = () => {
+    setHistoryModalVisible(false);
+  };
+
+  const historyColumns = [
+    {
+      title: "No",
+      dataIndex: "index",
+      key: "index",
+      render: (_, record, index) => index + 1,
+    },
+    {
+      title: "Quantity",
+      dataIndex: "quantity",
+      key: "quantity",
+    },
+    {
+      title: "Price",
+      dataIndex: "price",
+      key: "price",
+    },
+    {
+      title: "Total",
+      dataIndex: "total",
+      key: "total",
+    },
+    {
+      title: "Date",
+      dataIndex: "date",
+      key: "date",
+      render: (text) => moment(text).format("DD-MM-YYYY"),
+    },
+  ];
+
+  const renderHistoryModal = () => (
+    <Modal
+      title="Export History"
+      open={historyModalVisible}
+      onCancel={handleHistoryModalCancel}
+      footer={null}
+    >
+      <Table
+        columns={historyColumns}
+        dataSource={historyData}
+        pagination={{ pageSize: 5 }}
+      />
+    </Modal>
+  );
+
   return (
-    <div className="relative flex flex-col p-8">
+    <div className="relative flex flex-col p-8 pb-32 mb-12 h-screen overflow-y-auto scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent">
       <div className="flex items-center space-x-2 text-xl">
         <MdInventory />
         <div>Import Export</div>
@@ -170,7 +239,7 @@ const QuotationDetail = () => {
           Quotation Detail
         </div>
         <Link
-          to={"/dashboard/export-inventory"}
+          to={"/staff/export-inventory"}
           className="inline-flex items-center px-4 py-2 bg-indigo-500 cursor-pointer 
         hover:bg-indigo-600 text-white text-sm font-medium rounded-md space-x-2"
         >
@@ -190,6 +259,7 @@ const QuotationDetail = () => {
         pagination={{ pageSize: 5 }}
       />
       {renderPopup()}
+      {renderHistoryModal()}
     </div>
   );
 };

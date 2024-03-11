@@ -50,5 +50,3 @@ export { default as PaymentStatusBadge } from "./QuotationComponent/Status/Payme
 // Staff Component
 export { default as InputField } from "./StaffComponent/QuoteComponent/InputField"; 
 
-
-export { default as TabsComponent } from "./Tabs/TabsComponent"; 

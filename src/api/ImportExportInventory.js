@@ -40,6 +40,27 @@ export const getAllImportInventory = async (pageIndex, pageSize) => {
   }
 };
 
+export const getAllExportByQuotationDetailId = async (id) => {
+  try {
+    const res = await axios.get(
+      `${baseURL}/import-export-inventory/get-all-export-by-quotation-detail-id`, {
+        params: {
+          id
+        },
+        headers: {
+          Authorization: `Bearer ${usertoken}`,
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      }
+    );
+    return res.data;
+  } catch (err) {
+    return null;
+  }
+};
+
+
 export const getAllExportInventory = async (pageIndex, pageSize) => {
   try {
     const res = await axios.post(

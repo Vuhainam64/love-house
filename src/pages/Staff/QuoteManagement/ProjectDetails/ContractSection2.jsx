@@ -16,7 +16,7 @@ export default function ContractSection2({ projectDetail }) {
           <div className="flex-1 px-5 pb-12">
             <div className=" px-2 mb-4 h-auto pb-12">
               <div className="font-semibold border-b-2 mb-4 flex space-x-4 items-center">
-                <h4 className="pb-2 uppercase">IV. Contract</h4>
+                <h4 className="pb-2 uppercase">Contract</h4>
                 <div className="pb-2">
                   <ContractStatusBadge
                     contractStatus={projectDetail?.contract?.contractStatus}

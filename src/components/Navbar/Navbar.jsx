@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { FaBars } from "react-icons/fa";
-import { AiOutlineClose } from "react-icons/ai";
+import { AiOutlineClose,AiOutlineMenu } from "react-icons/ai";
 
 import Swal from "sweetalert2";
 import mainlogo from "../../assets/images/mainlogo.png";
@@ -62,7 +62,7 @@ export default function Navbar() {
             <li>
               <NavLink
                 to="/"
-                className={`hover:text-baseGreen transition border-b-2 border-white hover:border-baseGreen ${
+                className={` item ${
                   location.pathname === "/"
                     ? "bg-baseGreen text-white rounded-full px-4 py-1 hover:text-black hover:border-none"
                     : ""
@@ -75,7 +75,7 @@ export default function Navbar() {
             <li>
               <NavLink
                 to="/aboutus"
-                className={`hover:text-baseGreen transition border-b-2 border-white hover:border-baseGreen ${
+                className={` item ${
                   location.pathname === "/aboutus"
                     ? "bg-baseGreen text-white rounded-full px-4 py-1 hover:text-black hover:border-none"
                     : ""
@@ -88,7 +88,7 @@ export default function Navbar() {
             <li>
               <NavLink
                 to="/houseProject"
-                className={`hover:text-baseGreen transition border-b-2 border-white hover:border-baseGreen ${
+                className={`item ${
                   location.pathname === "/houseProject"
                     ? "bg-baseGreen text-white rounded-full px-4 py-1 hover:text-black hover:border-none"
                     : ""
@@ -101,7 +101,7 @@ export default function Navbar() {
             <li>
               <span
                 onClick={handleConstructionQuotesClick}
-                className={`hover:text-baseGreen transition border-b-2 border-white hover:border-baseGreen cursor-pointer ${
+                className={`item cursor-pointer ${
                   location.pathname === "/quote-request"
                     ? "bg-baseGreen text-white rounded-full px-4 py-1 hover:text-black hover:border-none"
                     : ""
@@ -114,7 +114,7 @@ export default function Navbar() {
             <li>
               <NavLink
                 to="/news"
-                className={`hover:text-baseGreen transition border-b-2 border-white hover:border-baseGreen ${
+                className={`item ${
                   location.pathname === "/news"
                     ? "bg-baseGreen text-white rounded-full px-4 py-1 hover:text-black hover:border-none"
                     : ""
@@ -127,7 +127,7 @@ export default function Navbar() {
             <li>
               <NavLink
                 to="/blog"
-                className={`hover:text-baseGreen transition border-b-2 border-white hover:border-baseGreen ${
+                className={`item ${
                   location.pathname === "/blog"
                     ? "bg-baseGreen text-white rounded-full px-4 py-1 hover:text-black hover:border-none"
                     : ""
@@ -146,7 +146,7 @@ export default function Navbar() {
             className="text-3xl cursor-pointer md:hidden"
             onClick={() => setNavBar(!navBar)}
           >
-            {navBar ? <AiOutlineClose /> : <FaBars />}
+            {navBar ? <AiOutlineClose /> : <AiOutlineMenu />}
           </button>
         </div>
       </nav>

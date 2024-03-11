@@ -9,10 +9,7 @@ function StaffLayout() {
         <div className="sticky top-0 z-50 w-full">
           <DBHeader />
         </div>
-
         <Outlet />
-
-        <DBFooter />
       </div>
     </div>
   );

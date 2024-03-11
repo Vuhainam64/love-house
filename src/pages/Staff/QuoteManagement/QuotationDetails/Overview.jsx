@@ -25,11 +25,6 @@ export default function Overview({ quoteDetail }) {
         <div className="px-2 mb-4 pb-6 -mt-4">
           <div className="font-semibold border-b-2 mb-4 flex space-x-4">
             <h4 className="pb-2 uppercase">Quotation</h4>
-            {/* <div>
-              <QuotationStatusBadge
-                quotationStatus={projectDetail?.quotations.quotationStatus}
-              />
-            </div> */}
           </div>
 
           <div className="overflow-auto rounded-lg shadow hidden md:block">
