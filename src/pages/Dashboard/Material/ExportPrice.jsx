@@ -74,9 +74,11 @@ const ExportPrice = () => {
   console.log("allExportPriceMaterialsData: ", allExportPriceMaterialsData);
   const columns = [
     {
-      title: "ID",
+      title: "No",
       dataIndex: "id",
-      key: "id",
+      key: "no",
+      render: (text, record) =>
+        exportPriceData.findIndex((item) => item.id === record.id) + 1,
     },
     {
       title: "Price",

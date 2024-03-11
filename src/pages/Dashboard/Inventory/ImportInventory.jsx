@@ -11,6 +11,7 @@ import { SearchOutlined } from "@ant-design/icons";
 import { buttonClick } from "../../../assets/animations";
 import { DataTable, MutatingDots } from "../../../components";
 import {
+  getAllImportInventory,
   getAllInventory,
   getImportMaterialTemplate,
   getImportMaterialWithExcelError,
@@ -32,7 +33,7 @@ const ImportInventory = () => {
     const fetchData = async () => {
       try {
         setIsLoading(true);
-        const data = await getAllInventory(1, 100);
+        const data = await getAllImportInventory(1, 100);
 
         if (data) {
           setInventoryData(data.result.data);
@@ -103,15 +104,14 @@ const ImportInventory = () => {
           {text
             .toString()
             .split(new RegExp(`(?<=${searchText})|(?=${searchText})`, "i"))
-            .map(
-              (fragment, i) =>
-                fragment.toLowerCase() === searchText.toLowerCase() ? (
-                  <span key={i} className="highlight">
-                    {fragment}
-                  </span>
-                ) : (
-                  fragment
-                ) // Highlight matched text
+            .map((fragment, i) =>
+              fragment.toLowerCase() === searchText.toLowerCase() ? (
+                <span key={i} className="highlight">
+                  {fragment}
+                </span>
+              ) : (
+                fragment
+              )
             )}
         </span>
       ) : (
@@ -121,10 +121,11 @@ const ImportInventory = () => {
 
   const columns = [
     {
-      title: "ID",
+      title: "No",
       dataIndex: "id",
-      key: "id",
-      ...getColumnSearchProps("id"),
+      key: "no",
+      render: (text, record) =>
+        inventoryData.findIndex((item) => item.id === record.id) + 1,
     },
     {
       title: "Quantity",
@@ -137,6 +138,23 @@ const ImportInventory = () => {
       dataIndex: "date",
       key: "date",
       ...getColumnSearchProps("date"),
+    },
+    {
+      title: "Supplier Name",
+      dataIndex: "supplierName",
+      key: "supplierName",
+      render: (text, record) => {
+        return record.supplierPriceDetail.supplierPriceQuotation.supplier
+          .supplierName;
+      },
+    },
+    {
+      title: "Material Name",
+      dataIndex: "name",
+      key: "name",
+      render: (text, record) => {
+        return record.supplierPriceDetail.material.name;
+      },
     },
   ];
 
