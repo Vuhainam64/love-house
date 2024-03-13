@@ -64,7 +64,7 @@ export default function Navbar() {
                 to="/"
                 className={` item ${
                   location.pathname === "/"
-                    ? "bg-baseGreen text-white rounded-full px-4 py-1 hover:text-black hover:border-none"
+                    ? "border-baseGreen border-b-2 px-2 py-1 text-black hover:border-none"
                     : ""
                 }`}
               >
@@ -77,7 +77,7 @@ export default function Navbar() {
                 to="/aboutus"
                 className={` item ${
                   location.pathname === "/aboutus"
-                    ? "bg-baseGreen text-white rounded-full px-4 py-1 hover:text-black hover:border-none"
+                    ? "border-baseGreen border-b-2 px-2 py-1 text-black hover:border-none"
                     : ""
                 }`}
               >
@@ -90,7 +90,7 @@ export default function Navbar() {
                 to="/houseProject"
                 className={`item ${
                   location.pathname === "/houseProject"
-                    ? "bg-baseGreen text-white rounded-full px-4 py-1 hover:text-black hover:border-none"
+                    ? "border-baseGreen border-b-2 px-2 py-1 text-black hover:border-none"
                     : ""
                 }`}
               >
@@ -103,7 +103,7 @@ export default function Navbar() {
                 onClick={handleConstructionQuotesClick}
                 className={`item cursor-pointer ${
                   location.pathname === "/quote-request"
-                    ? "bg-baseGreen text-white rounded-full px-4 py-1 hover:text-black hover:border-none"
+                    ? "border-baseGreen border-b-2 px-2 py-1 text-black hover:border-none"
                     : ""
                 }`}
               >
@@ -116,7 +116,7 @@ export default function Navbar() {
                 to="/news"
                 className={`item ${
                   location.pathname === "/news"
-                    ? "bg-baseGreen text-white rounded-full px-4 py-1 hover:text-black hover:border-none"
+                    ? "border-baseGreen border-b-2  px-2 py-1 text-black hover:border-none"
                     : ""
                 }`}
               >
@@ -129,7 +129,7 @@ export default function Navbar() {
                 to="/blog"
                 className={`item ${
                   location.pathname === "/blog"
-                    ? "bg-baseGreen text-white rounded-full px-4 py-1 hover:text-black hover:border-none"
+                    ? "border-baseGreen border-b-2 px-2 py-1 text-black hover:border-none"
                     : ""
                 }`}
               >

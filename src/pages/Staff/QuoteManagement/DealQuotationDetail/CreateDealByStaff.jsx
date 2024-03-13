@@ -84,7 +84,7 @@ export default function CreateDealByStaff({ onModalClose, quotationId }) {
 
         <Modal isVisible={showModal} onClose={() => setShowModal(false)}>
           <div className="p-4 my-auto lg:px-8 text-left overflow-y-auto max-h-[500px]">
-            <h3 className="text-xl font-semibold text-gray-900 mb-5">
+            <h3 className="text-xl font-semibold text-gray-900 mb-5 text-center uppercase">
               Create Deal Request
             </h3>
 
@@ -95,7 +95,7 @@ export default function CreateDealByStaff({ onModalClose, quotationId }) {
             >
               {({ values, errors, touched, setFieldValue }) => (
                 <Form>
-                  <label htmlFor="rawMaterialDiscount">Material Discount</label>
+                  <label htmlFor="rawMaterialDiscount">Material Discount (%)</label>
                   <Field
                     name="rawMaterialDiscount"
                     as={Input}
@@ -109,7 +109,7 @@ export default function CreateDealByStaff({ onModalClose, quotationId }) {
                       </div>
                     )}
 
-                  <label htmlFor="furnitureDiscount">Furniture Discount</label>
+                  <label htmlFor="furnitureDiscount">Furniture Discount (%)</label>
                   <Field
                     name="furnitureDiscount"
                     as={Input}
@@ -121,14 +121,14 @@ export default function CreateDealByStaff({ onModalClose, quotationId }) {
                       {errors.furnitureDiscount}
                     </div>
                   )}
-
-                  <Button
-                    type="primary"
-                    htmlType="submit"
-                    className="text-white bg-baseGreen font-semibold mx-auto mt-4"
-                  >
-                    Create
-                  </Button>
+                  <div className="text-right">
+                    <button
+                      htmlType="submit"
+                      className="text-white bg-baseGreen hover:bg-base3 font-semibold mx-auto  py-2 px-4 rounded"
+                    >
+                      Create
+                    </button>
+                  </div>
                 </Form>
               )}
             </Formik>

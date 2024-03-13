@@ -12,7 +12,6 @@ module.exports = {
       colors: {
         main: "#003b29",
         baseOrange: "#E48824",
-        // baseGreen: "#88B844",
         baseGreen: "#4CAF50",
         base4: "#66BB6A",
         base3: "#81C784",

@@ -66,10 +66,10 @@ export default function Blog() {
           </div>
           <div className="flex flex-wrap -m-4">
             {blogData.map((blog) => (
-              <div key={blog.id} className="p-4 sm:w-1/2 lg:w-1/3">
-                <div className="h-full border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden">
+              <div key={blog.id} className="p-4 sm:w-1/2 lg:w-1/3 w-[360px]">
+                <div className="h-full  border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden">
                   <img
-                    className="lg:h-72 md:h-48 w-full object-cover object-center"
+                    className="lg:h-[240px] md:h-48 w-full object-cover object-center"
                     src={blog.imageUrl}
                     alt="blog"
                   />
@@ -84,13 +84,6 @@ export default function Blog() {
                           : blog.header}
                       </NavLink>
                     </h1>
-
-                    <p
-                      className="leading-relaxed mb-2"
-                      dangerouslySetInnerHTML={{
-                        __html: truncateContent(blog.content, 15),
-                      }}
-                    ></p>
 
                     <div className="flex items-center flex-wrap ">
                       <NavLink

@@ -1,41 +1,51 @@
-import React, { useState } from 'react';
-import { Modal, Input, Button, Form } from 'antd';
-import { sendResetPassOTP } from '../../api';
-import { toast } from 'react-toastify';
+import React, { useState } from "react";
+import { Modal, Input, Button, Form } from "antd";
+import { sendResetPassOTP } from "../../api";
+import { toast } from "react-toastify";
 
 const ForgotPasswordModal = ({ visible, onCancel, onSubmit }) => {
   const [step, setStep] = useState(1);
-  const [email, setEmail] = useState('');
-  const [recoveryCode, setRecoveryCode] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false)
+  const [email, setEmail] = useState("");
+  const [recoveryCode, setRecoveryCode] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const handleEmailSubmit = async () => {
-    setIsLoading(true)
+    setIsLoading(true);
     const result = await sendResetPassOTP(email);
     if (result.isSuccess) {
-      toast.success("OTP has just been sent to your email")
-      setIsLoading(false)
-    setStep(2);
-
+      toast.success("OTP has just been sent to your email");
+      setIsLoading(false);
+      setStep(2);
+    } else {
+      for (var i = 0; i < result.messages.length; i++) {
+        toast.error(result.messages[i]);
+        setIsLoading(false);
+      }
     }
   };
   const handleCodeSubmit = () => {
     setStep(3);
   };
   const handleVerificationSubmit = () => {
-    setIsLoading(true)
+    setIsLoading(true);
     onSubmit({ email, recoveryCode, newPassword });
-    setIsLoading(false)
-    setEmail('');
-    setRecoveryCode('');
-    setNewPassword('');
+    setIsLoading(false);
+    setEmail("");
+    setRecoveryCode("");
+    setNewPassword("");
 
     setStep(1); // Reset to step 1 after submission
   };
 
   return (
     <Modal
-      title={step === 1 ? 'Step 1: Enter Email' : step === 2 ? 'Step 2: Enter Verification Code' : 'Step 3: Enter new password'}
+      title={
+        step === 1
+          ? "Step 1: Enter Email"
+          : step === 2
+          ? "Step 2: Enter Verification Code"
+          : "Step 3: Enter new password"
+      }
       visible={visible}
       onCancel={onCancel}
       footer={null}
@@ -49,18 +59,22 @@ const ForgotPasswordModal = ({ visible, onCancel, onSubmit }) => {
             rules={[
               {
                 required: true,
-                message: 'Please input your email!',
-
+                message: "Please input your email!",
               },
               {
-                type: 'email',
-                message: 'The input is not a valid email!',
+                type: "email",
+                message: "The input is not a valid email!",
               },
             ]}
           >
             <Input value={email} onChange={(e) => setEmail(e.target.value)} />
           </Form.Item>
-          <Button loading={isLoading} type="primary" htmlType="submit" className=' inline-block  px-4  text-xs text-center font-semibold leading-6 text-white bg-baseGreen hover:bg-green-600 rounded-lg transition duration-200' >
+          <Button
+            loading={isLoading}
+            type="primary"
+            htmlType="submit"
+            className=" inline-block  px-4  text-xs text-center font-semibold leading-6 text-white bg-baseGreen hover:bg-green-600 rounded-lg transition duration-200"
+          >
             Next
           </Button>
         </Form>
@@ -74,15 +88,28 @@ const ForgotPasswordModal = ({ visible, onCancel, onSubmit }) => {
             rules={[
               {
                 required: true,
-                message: 'Please input the verification code!',
+                message: "Please input the verification code!",
               },
             ]}
           >
-            <Input value={recoveryCode} onChange={(e) => setRecoveryCode(e.target.value)} />
+            <Input
+              value={recoveryCode}
+              onChange={(e) => setRecoveryCode(e.target.value)}
+            />
           </Form.Item>
-          <Button type="primary" htmlType="submit" className=' inline-block  px-4  text-xs text-center font-semibold leading-6 text-white bg-baseGreen hover:bg-green-600 rounded-lg transition duration-200' >
+          <Button
+            type="primary"
+            htmlType="submit"
+            className=" inline-block  px-4  text-xs text-center font-semibold leading-6 text-white bg-baseGreen hover:bg-green-600 rounded-lg transition duration-200"
+          >
             Next
           </Button>
+          <span
+            style={{ position: "absolute", bottom: "2.2rem", right: "1rem" }}
+            onClick={handleEmailSubmit}
+          >
+            <Button type="link">Resend OTP Code</Button>
+          </span>
         </Form>
       )}
       {step === 3 && (
@@ -93,25 +120,35 @@ const ForgotPasswordModal = ({ visible, onCancel, onSubmit }) => {
             rules={[
               {
                 required: true,
-                message: 'Please input your new password!',
+                message: "Please input your new password!",
               },
               {
                 min: 8,
-                message: 'Password must be at least 8 characters!',
+                message: "Password must be at least 8 characters!",
               },
               {
                 pattern: /[A-Z]/,
-                message: 'Password must contain at least one uppercase letter!',
+                message: "Password must contain at least one uppercase letter!",
               },
               {
                 pattern: /[!@#$%^&*(),.?":{}|<>]/,
-                message: 'Password must contain at least one special character (!@#$%^&*(),.?":{}|<>)!',
+                message:
+                  'Password must contain at least one special character (!@#$%^&*(),.?":{}|<>)!',
               },
             ]}
           >
-            <Input type='password' value={recoveryCode} onChange={(e) => setNewPassword(e.target.value)} />
+            <Input
+              type="password"
+              value={recoveryCode}
+              onChange={(e) => setNewPassword(e.target.value)}
+            />
           </Form.Item>
-          <Button loading={isLoading} type="primary" htmlType="submit" className=' inline-block  px-4  text-xs text-center font-semibold leading-6 text-white bg-baseGreen hover:bg-green-600 rounded-lg transition duration-200'>
+          <Button
+            loading={isLoading}
+            type="primary"
+            htmlType="submit"
+            className=" inline-block  px-4  text-xs text-center font-semibold leading-6 text-white bg-baseGreen hover:bg-green-600 rounded-lg transition duration-200"
+          >
             Submit
           </Button>
         </Form>

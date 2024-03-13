@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { getAllNews } from "../../constants/apiNews";
-import NewsBanner from "../../components/Banner/NewsBanner";
 import Breadcrumb from "../../components/Breadcrumb/Breadcrumb";
 import { Navbar, Footer, LoadingOverlay } from "../../components";
 
@@ -44,7 +43,6 @@ export default function News() {
     <>
     <LoadingOverlay loading={loading} />
       <Navbar />
-      <NewsBanner />
       <Breadcrumb />
 
       <div className="container mx-auto my-12 px-4 sm:px-0">

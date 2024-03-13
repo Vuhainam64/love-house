@@ -53,10 +53,10 @@ export const getAllConstructionConfig = async () => {
     return null;
   }
 };
-export const getMaxConfig = async () => {
+export const getMaxConfig = async (num) => {
   try {
     const res = await axios.get(
-      `${baseURL}/construction-config/get-max-config`,
+      `${baseURL}/construction-config/get-max-config?ConstructionType=${num}`,
       {
         headers: {
           Authorization: `Bearer ${usertoken}`,

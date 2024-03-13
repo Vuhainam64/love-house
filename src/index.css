@@ -19,12 +19,6 @@ input[type="password"]::-ms-clear {
   display: none;
 }
 
-/* .navbar {
-  position: relative;
-  z-index: 10;
-  overflow: hidden;
-} */
-
 .item{
   @apply relative text-gray-500 font-mono font-bold tracking-[1px] hover:text-black
 }
@@ -40,29 +34,6 @@ input[type="password"]::-ms-clear {
   @apply text-center uppercase tracking-wider py-4 px-8 text-[13px] font-semibold cursor-pointer rounded-md hover:bg-opacity-90 bg-baseOrange text-white w-max
 }
 
-.dropdown {
-  @apply w-full lg:max-w-[296px] cursor-pointer;
-}
-
-.dropdown-btn {
-  @apply flex h-[64px] items-center px-[18px] border rounded-lg;
-}
-
-.dropdown-icon-primary {
-  @apply text-2xl mr-[18px] text-violet-700;
-}
-
-.dropdown-icon-secondary {
-  @apply text-2xl text-violet-700 ml-auto;
-}
-
-.dropdown-menu {
-  @apply px-6 py-8 text-[15px] space-y-6 shadow-md bg-white absolute w-full z-10 list-none rounded-b-lg;
-}
-
-/*.error-input {
-  border-color: #e53e3e;
-} */
 
 .responsive-type-animation {
   font-size: 56px;

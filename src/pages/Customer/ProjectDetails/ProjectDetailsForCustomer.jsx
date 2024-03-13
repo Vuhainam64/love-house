@@ -40,8 +40,7 @@ export default function ProjectDetailsForCustomer() {
        <LoadingOverlay loading={loading} />
           <div className="h-screen overflow-y-auto scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent">
             <ProjecDetailsSection projectDetail={projectDetail}/>
-            <QuotationOverviewSection projectDetail={projectDetail}/>
-            {/* <DealingSection /> */}
+            <QuotationOverviewSection projectDetail={projectDetail}/> 
             <Contract />
           </div>
         

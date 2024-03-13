@@ -8,7 +8,7 @@ import { MdConstruction, MdOutlineMessage } from "react-icons/md";
 import { RiHandCoinLine, RiPencilRuler2Line } from "react-icons/ri";
 import { GiHomeGarage } from "react-icons/gi";
 
-import { About, BackgroundPattern, Hero, Process } from "../../assets";
+import { About, BackgroundPattern,  Process } from "../../assets";
 import Navbar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
 

@@ -13,14 +13,14 @@ function Modal({ isVisible, onClose, children }) {
       id="wrapper"
       onClick={handleClose}
     >
-      <div className="w-[600px] flex flex-col">
+      <div className="w-[600px] flex flex-col ">
         <button
           className="text-white font-semibold place-self-end mb-3"
           onClick={() => onClose()}
         >
-         <AiOutlineClose size={20}/>
+          <AiOutlineClose size={20} />
         </button>
-        <div className="bg-white p-2 rounded">{children}</div>
+        <div className="bg-white p-2 rounded-lg">{children}</div>
       </div>
     </div>
   );

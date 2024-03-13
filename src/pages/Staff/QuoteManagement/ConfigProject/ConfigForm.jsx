@@ -33,7 +33,7 @@ const ConfigForm = ({ projectDetail }) => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const errorStyle = { color: "red", marginBottom: "20px" };
+  const errorStyle = { color: "red", marginBottom: "0" };
 
   const initialValues = {
     id: id,
@@ -68,7 +68,7 @@ const ConfigForm = ({ projectDetail }) => {
   return (
     <>
 
-      <div className="h-[580px] md:w-1/2 p-4 mb-24 order-2 md:order-2 overflow-y-auto scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent">
+      <div className="h-[680px] md:w-1/2 p-4 mb-24 order-2 md:order-2 overflow-y-auto scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent">
         <Formik
           initialValues={initialValues}
           validationSchema={projectConfigValidationSchema}
@@ -128,7 +128,7 @@ const ConfigForm = ({ projectDetail }) => {
           {({ values, errors, touched }) => (
             <Form>
               <p className="font-semibold text-l mx-4 pt-6">Properties</p>
-              <div className="flex flex-col md:flex-row justify-between mt-6 gap-x-10">
+              <div className="flex flex-col md:flex-row justify-between mt-6 mb-16">
                 <InputField
                   label="Wall Length (m)"
                   name="wallLength"

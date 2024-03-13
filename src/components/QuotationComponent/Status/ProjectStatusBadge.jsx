@@ -6,15 +6,15 @@ const ProjectStatusBadge = ({ projectStatus }) => {
   switch (projectStatus) {
     case 0:
       return (
-        <Tag color="orange">PENDING</Tag>
+        <Tag color="orange" >PENDING</Tag>
       );
     case 1:
       return (
-        <Tag color="processing">PROCESSING</Tag>
+        <Tag  color="processing">PROCESSING</Tag>
       );
     case 2:
       return (
-         <Tag color="green">UNDER CONSTRUCTION</Tag>
+         <Tag color="green" >UNDER CONSTRUCTION</Tag>
       );
     case 3:
       return (

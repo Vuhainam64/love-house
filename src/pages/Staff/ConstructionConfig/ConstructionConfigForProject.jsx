@@ -20,12 +20,24 @@ const ConstructionConfigForProject = ({
   };
   const [maxData, setMaxData] = useState({});
   const [isLoading, setIsLoading] = useState(false); // Initialize loading state
+  const [constructionType, setConstructionType] = useState(0); // State to store constructionType
 
   const fetchMax = async () => {
-    const result = await getMaxConfig();
+    const result = await getMaxConfig(0);
     console.log(result);
     if (result.isSuccess) {
       setMaxData(result.result.data);
+    }
+  };
+  const handleChange = async (e) => {
+    const selectedConstructionType = e.target.value;
+    setConstructionType(selectedConstructionType);
+    try {
+      console.log(e.target.value);
+      const maxConfig = await getMaxConfig(selectedConstructionType);
+      setMaxData(maxConfig.result.data);
+    } catch (error) {
+      console.error("Error fetching min area data:", error);
     }
   };
 
@@ -71,7 +83,7 @@ const ConstructionConfigForProject = ({
     sandMixingRatio: 0,
     cementMixingRatio: 0,
     stoneMixingRatio: 0,
-    constructionType: 0,
+    constructionType: constructionType,
     numOfFloorMin: maxData.numOfFloorMax,
     numOfFloorMax: 0,
     areaMin: maxData.areaMax,
@@ -95,7 +107,7 @@ const ConstructionConfigForProject = ({
                     sandMixingRatio: values.sandMixingRatio,
                     cementMixingRatio: values.cementMixingRatio,
                     stoneMixingRatio: values.stoneMixingRatio,
-                    constructionType: Number(values.constructionType),
+                    constructionType: Number(constructionType),
                     numOfFloorMin: values.numOfFloorMin,
                     numOfFloorMax: values.numOfFloorMax,
                     areaMin: values.areaMin,
@@ -180,6 +192,8 @@ const ConstructionConfigForProject = ({
                       as="select"
                       name="constructionType"
                       className="border border-gray-300 p-2 rounded-md"
+                      onChange={handleChange} // Call handleChange when constructionType changes
+                      value={constructionType}
                     >
                       <option value={0}>Rough Construction</option>
                       <option value={1}>Complete Construction</option>
@@ -197,6 +211,7 @@ const ConstructionConfigForProject = ({
                       name="numOfFloorMin"
                       type="number"
                       className="border border-gray-300 p-2 rounded-md"
+                      value={initialValues.numOfFloorMin}
                     />
                     <ErrorMessage
                       name="numOfFloorMin"
@@ -225,6 +240,7 @@ const ConstructionConfigForProject = ({
                       name="areaMin"
                       type="number"
                       className="border border-gray-300 p-2 rounded-md"
+                      value={initialValues.areaMin}
                     />
                     <ErrorMessage
                       name="areaMin"
@@ -253,6 +269,7 @@ const ConstructionConfigForProject = ({
                       name="tiledAreaMin"
                       type="number"
                       className="border border-gray-300 p-2 rounded-md"
+                      value={initialValues.tiledAreaMin}
                     />
                     <ErrorMessage
                       name="tiledAreaMin"

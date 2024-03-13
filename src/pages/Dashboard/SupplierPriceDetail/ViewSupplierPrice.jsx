@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Select, DatePicker, Button, Table, Modal, Input } from "antd";
+import { Select, DatePicker, Button, Table, Input } from "antd";
 import { toast } from "react-toastify";
 import moment from "moment";
 
@@ -44,21 +44,39 @@ const ViewSupplierPrice = () => {
   };
 
   const disabledDate = (current) => {
-    return current && current > moment().endOf("day");
+    return current && current > moment().endOf("month");
   };
 
   const handleSortSubmit = async () => {
     try {
-      console.log("selectedSupplier: ", selectedSupplier);
+      if (!selectedSupplier) {
+        toast.error("Please select a supplier");
+        return;
+      }
       setIsLoading(true);
-      const result = await getLatestQuotationPriceBySupplierName(
-        selectedSupplier,
-        1,
-        100
-      );
-
-      if (result.isSuccess) {
+      let result;
+      if (!selectedDate) {
+        result = await getLatestQuotationPriceBySupplierName(
+          selectedSupplier,
+          1,
+          100
+        );
         setSortedData(result.result.data);
+      } else {
+        result = await getLatestQuotationPriceBySupplierName(
+          selectedSupplier,
+          1,
+          100
+        );
+        if (result.isSuccess) {
+          const filteredData = result.result.data.filter((item) => {
+            const itemDate = moment(item.supplierPriceQuotation.date).format(
+              "YYYY-MM"
+            );
+            return itemDate === selectedDate.format("YYYY-MM");
+          });
+          setSortedData(filteredData);
+        }
       }
     } finally {
       setIsLoading(false);
@@ -85,6 +103,11 @@ const ViewSupplierPrice = () => {
       dataIndex: "index",
       key: "index",
       render: (_, record, index) => index + 1,
+    },
+    {
+      title: "Date",
+      dataIndex: "date",
+      key: "date",
     },
     {
       title: "MOQ",
@@ -146,6 +169,7 @@ const ViewSupplierPrice = () => {
   const data = sortedData.map((item, index) => ({
     key: item.id,
     index,
+    date: moment(item.supplierPriceQuotation.date).format("DD-MM-YYYY"),
     moq: item.moq,
     materialName: item.material.name,
     price: item.price,
@@ -182,8 +206,8 @@ const ViewSupplierPrice = () => {
         View Supplier Price
       </div>
 
-      <div className="grid grid-cols-3 gap-4">
-        <div className="col-span-1">
+      <div className="flex flex-col">
+        <div className="flex space-x-2 items-center">
           <div className="mb-4">
             <label
               htmlFor="supplier"
@@ -216,6 +240,8 @@ const ViewSupplierPrice = () => {
               Select Date
             </label>
             <DatePicker
+              picker="month"
+              format="MM-YYYY"
               style={{ width: "100%" }}
               onChange={handleDateChange}
               placeholder="Select Date"
@@ -225,7 +251,7 @@ const ViewSupplierPrice = () => {
 
           <Button
             type="primary"
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 rounded "
             onClick={handleSortSubmit}
           >
             Sort
@@ -237,32 +263,46 @@ const ViewSupplierPrice = () => {
           <Table
             columns={columns}
             dataSource={data}
-            pagination={{ pageSize: 7 }}
+            pagination={{ pageSize: 5 }}
             loading={isLoading}
           />
         </div>
 
-        <Modal
-          title="Import Material"
-          open={importModalVisible}
-          onOk={handleImportSubmit}
-          onCancel={closeImportModal}
-        >
-          <div className="mb-4">
-            <label
-              htmlFor="quantity"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Quantity
-            </label>
-            <Input
-              id="quantity"
-              type="number"
-              value={importQuantity}
-              onChange={handleQuantityChange}
-            />
+        {importModalVisible && (
+          <div className="fixed inset-0 flex items-center justify-center shadow-xl border">
+            <div className="bg-white p-8 rounded shadow-md">
+              <h2 className="text-lg font-semibold mb-4">Import Material</h2>
+              <div className="mb-4">
+                <label
+                  htmlFor="quantity"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Quantity
+                </label>
+                <Input
+                  id="quantity"
+                  type="number"
+                  value={importQuantity}
+                  onChange={handleQuantityChange}
+                />
+              </div>
+              <div className="flex justify-end">
+                <Button
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 rounded mr-2"
+                  onClick={handleImportSubmit}
+                >
+                  Import
+                </Button>
+                <Button
+                  className="bg-gray-500 hover:bg-gray-700 text-white font-bold px-4 rounded"
+                  onClick={closeImportModal}
+                >
+                  Cancel
+                </Button>
+              </div>
+            </div>
           </div>
-        </Modal>
+        )}
       </div>
     </div>
   );

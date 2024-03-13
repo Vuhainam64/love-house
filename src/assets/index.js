@@ -8,8 +8,7 @@ export { default as HouseLogo } from "./images/HouseLogo.png";
 export { default as BGProfile } from "./images/bgProfile.png";
 export { default as BGResetPass } from "./images/BGResetPass.png";
 export { default as BackgroundPattern } from "./images/background-pattern.png";
-export { default as Hero } from "./images/Hero.png";
-export { default as Vision } from "./images/vision.png";
+
 export { default as Process } from "./images/working process.png";
 export { default as About } from "./images/About.png";
 export { default as NewFormCreate } from "./images/NewFormCreate.jpg";

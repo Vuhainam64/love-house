@@ -152,11 +152,11 @@ const Login2 = () => {
     return (
         <>
             <LoadingOverlay loading={isLoading} ></LoadingOverlay>
-            {isSignUp ? <div className="flex items-center justify-center min-h-screen bg-gray-100">
+            {isSignUp ? <div className="flex items-center justify-center min-h-screen bg-base2">
                 <div className="relative flex flex-col m-6 space-y-8 bg-white shadow-2xl rounded-2xl md:flex-row md:space-y-0">
-                    <div className="flex flex-col justify-center p-8 md:p-14">
+                    <div className="flex flex-col justify-center px-8 md:p-14">
                         <span className="mb-3 text-4xl font-bold">Welcome back</span>
-                        <span className="font-light text-gray-400 mb-8">
+                        <span className="font-light text-gray-400 mb-2">
                             Welcome back! Please enter your details
                         </span>
                         <Formik
@@ -201,7 +201,7 @@ const Login2 = () => {
                         >
                             {({ isSubmitting, errors, touched }) => (
                                 <Form>
-                                    <div className="py-4">
+                                    <div className="py-2">
                                         <span className="mb-2 text-md">Email</span>
                                         <Field
                                             className="w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
@@ -214,7 +214,7 @@ const Login2 = () => {
                                         {errors.email && touched.email && <div className="text-red-500">{errors.email}</div>}
                                     </div>
 
-                                    <div className="py-4 flex justify-between">
+                                    <div className="py-2 flex justify-between">
                                         <div className='flex flex-col justify-between  mr-5'>
                                             <span className="mb-2 text-md mr-6">First Name</span>
                                             <Field
@@ -236,7 +236,7 @@ const Login2 = () => {
                                             {errors.lastName && touched.lastName && <div className="text-red-500">{errors.lastName}</div>}
                                         </div>
                                     </div>
-                                    <div className="py-4">
+                                    <div className="py-2">
                                         <span className="mb-2 text-md">Phone Number</span>
                                         <Field
                                             className="w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
@@ -249,7 +249,7 @@ const Login2 = () => {
                                             </div>
                                         )}
                                     </div>
-                                    <div className="py-4">
+                                    <div className="py-2">
                                         <span className="mb-2 text-md">Password</span>
                                         <Field
                                             className="w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
@@ -265,7 +265,7 @@ const Login2 = () => {
                                             </div>
                                         )}
                                     </div>
-                                    <div className="py-4">
+                                    <div className="py-2">
                                         <span className="mb-2 text-md">Confirm Password</span>
                                         <Field
                                             className="w-full p-2 border border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
@@ -281,17 +281,17 @@ const Login2 = () => {
                                             </div>
                                         )}
                                     </div>
-                                    <Button
+                                    <button
                                         htmlType="submit"
-                                        className="w-full mb-6 inline-block  px-4  text-xs text-center font-semibold leading-6 text-white bg-baseGreen hover:bg-green-600 rounded-lg transition duration-200"
+                                        className="w-full mb-3 inline-block  px-4 py-2 text-xs text-center font-semibold leading-6 text-white bg-baseGreen hover:bg-base4 rounded-lg transition duration-200"
                                         disabled={isSubmitting}
                                         loading={isLoading}
                                     >
                                         Sign Up
-                                    </Button>
+                                    </button>
                                     <div className="text-center text-gray-400">
-                                        I have an account?
-                                        <a style={{ cursor: 'pointer' }} onClick={() => setIsSignUp(false)} className="font-bold text-black">Login</a>
+                                        I have an account? 
+                                        <a style={{ cursor: 'pointer' }} onClick={() => setIsSignUp(false)} className="font-bold text-black hover:text-baseGreen"> Login</a>
                                     </div>
                                 </Form>
                             )}
@@ -314,7 +314,7 @@ const Login2 = () => {
 
                 </div>
             </div> :
-                <div className="flex items-center justify-center min-h-screen bg-gray-100">
+                <div className="flex items-center justify-center min-h-screen bg-base2">
                     <div className="relative flex flex-col m-6 space-y-8 bg-white shadow-2xl rounded-2xl md:flex-row md:space-y-0">
                         <div className="flex flex-col justify-center p-8 md:p-14">
                             <span className="mb-3 text-4xl font-bold">Welcome back</span>
@@ -392,7 +392,7 @@ const Login2 = () => {
                                         </div>
                                         <div className="flex justify-between w-full py-4  mr-24">
 
-                                            <span style={{cursor:'pointer'}} onClick={() => setIsModalForgotPasswordVisible(true)} className="font-bold text-md w-full block">Forgot password</span>
+                                            <span style={{cursor:'pointer'}} onClick={() => setIsModalForgotPasswordVisible(true)} className=" text-md w-full block text-baseGreen italic">Forgot password?</span>
                                         </div>
                                         <Button
                                             htmlType="submit"
@@ -409,7 +409,7 @@ const Login2 = () => {
                                         </Button>
                                         <div className="text-center text-gray-400">
                                             Don't have an account?
-                                            <a style={{ cursor: 'pointer' }} className="font-bold text-black" onClick={() => setIsSignUp(true)}>Sign up for free</a>
+                                            <a style={{ cursor: 'pointer' }} className="font-bold text-black hover:text-baseGreen" onClick={() => setIsSignUp(true)}> Sign up for free</a>
                                         </div>
                                     </Form>
                                 )}

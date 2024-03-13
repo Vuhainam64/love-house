@@ -4,9 +4,6 @@ import { toast } from "react-toastify";
 import { Button, DatePicker, Modal } from "antd";
 import * as XLSX from "xlsx";
 
-import { IoPricetagsSharp } from "react-icons/io5";
-import { FaChevronRight } from "react-icons/fa6";
-
 import {
   getAllSuppliers,
   getSupplierQuotationTemplate,
@@ -15,7 +12,6 @@ import {
   validExcelFile,
 } from "../../../api";
 import { DataTable } from "../../../components";
-import { ImportExcel } from "../../../assets";
 import { buttonClick } from "../../../assets/animations";
 import DataTableFalse from "../../../components/Dashboard/DataTableFalse";
 
@@ -131,28 +127,14 @@ const ImportQuotation = () => {
   };
 
   return (
-    <div className="flex flex-col p-8 ">
-      {/* title */}
-      <div>
-        <div className="flex items-center space-x-2 text-xl">
-          <IoPricetagsSharp />
-          <div>Supplier</div>
-          <FaChevronRight />
-          <div>Price Quotation</div>
-          <FaChevronRight />
-        </div>
-        <div className="text-2xl text-green-400 font-semibold py-4">
-          Import Quotation
-        </div>
-      </div>
-
+    <div className="flex flex-col">
       <div className="flex flex-wrap justify-start">
         <motion.div
           {...buttonClick}
           onClick={() => setIsOpenModal(true)}
-          className="px-4 py-2 border rounded-md text-white bg-gray-500 hover:bg-gray-600 font-semibold shadow-md cursor-pointer"
+          className="px-4 py-2 border rounded-md text-white bg-green-500 hover:bg-green-600 font-semibold shadow-md cursor-pointer"
         >
-          Open Flow
+          Import Quotation
         </motion.div>
 
         <motion.div
@@ -162,10 +144,6 @@ const ImportQuotation = () => {
         >
           Dowload Example
         </motion.div>
-      </div>
-
-      <div className="my-4">
-        <img src={ImportExcel} alt="gif" className="rounded-xl" />
       </div>
 
       <DataTableFalse

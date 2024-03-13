@@ -133,9 +133,9 @@ const MaterialList = () => {
       key: "name",
     },
     {
-      title: "Type",
-      dataIndex: "materialType",
-      key: "materialType",
+      title: "Unit Material",
+      dataIndex: "unitMaterial",
+      key: "unitMaterial",
       render: (materialType) => {
         return materialType === 0
           ? "KG"

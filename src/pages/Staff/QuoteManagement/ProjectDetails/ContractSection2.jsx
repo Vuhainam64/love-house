@@ -55,7 +55,7 @@ export default function ContractSection2({ projectDetail }) {
                       key={projectDetail.id}
                       className="bg-white text-black text-left"
                     >
-                      <td className="p-3 text-sm text-red-500 font-semibold whitespace-nowrap text-center">
+                      <td className="p-3 text-sm text-red-500 font-semibold whitespace-wrap text-center">
                         <CurrencyFormatter
                           amount={projectDetail?.contract?.total}
                         />{" "}VNĐ
@@ -81,7 +81,7 @@ export default function ContractSection2({ projectDetail }) {
                         />
                       </td>
                      
-                      <td className="p-3 text-sm text-gray-700 whitespace-nowrap text-center">
+                      <td className="p-3 text-sm text-gray-700 whitespace-wrap text-center">
                         {projectDetail?.contract?.contractUrl ? (
                           <>
                             <NavLink

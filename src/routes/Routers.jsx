@@ -17,7 +17,6 @@ import {
   Auth,
   BlogCreate,
   BlogsList,
-  DBHome,
   Dashboard,
   NewsEdit,
   NewsCreate,
@@ -36,7 +35,6 @@ import {
   NewsDetail,
   Blog,
   BlogDetail,
-  QuoteRequestForm,
   QuotationForm,
   Quotation,
   Customer,
@@ -57,20 +55,19 @@ import {
   ExportInventory,
   QuotationDetail,
   CustomerAccount,
+  ListPaymentProgress,
+  CreateProgress,
+  QuoteDetailsForStaff,
+  PaymentProgress,
+  ConstructionConfigManagement,
+  PaymentNotification,
+  AdminDashboard,
+  WorkerManagement,
+  HouseProjectDetails,
+  Login2,
 } from "../pages";
 
 import { PageNotfound } from "../components";
-import ListPaymentProgress from "../pages/Staff/QuoteManagement/ContractDetails/ListPaymentProgress";
-import CreateProgressForm from "../pages/Staff/QuoteManagement/ContractDetails/ManageContract/CreateProgressForm";
-import CreateProgress from "../pages/Staff/QuoteManagement/ContractDetails/ManageContract/CreateProgress";
-import QuoteDetailsForStaff from "../pages/Staff/QuoteManagement/QuotationDetails/QuoteDetailsForStaff";
-import PaymentProgress from "../pages/Customer/Contract/PaymentProgress";
-import ConstructionConfigManagement from "../pages/Staff/ConstructionConfig/ConstructionConfigManagement.jsx";
-import PaymentNotification from "../pages/Customer/Payment/PaymentNotification.jsx";
-import AdminDashboard from "../pages/Admin/AdminDashboard/AdminDashboard";
-import WorkerManagement from "../pages/Staff/WorkerManagement/WorkerManagement";
-import HouseProjectDetails from "../pages/HouseProjects/HouseProjectDetails/HouseProjectDetails";
-import Login2 from "../pages/Auth/Login2.jsx";
 
 export default function Routers() {
   const auth = useSelector((state) => state?.auth);
@@ -81,7 +78,6 @@ export default function Routers() {
 
   const routing = useRoutes([
     { path: "/payment/*", element: <PaymentNotification /> },
-
 
     {
       path: "/",
@@ -98,14 +94,13 @@ export default function Routers() {
         { path: "/news/newsDetail/:id", element: <NewsDetail /> },
         { path: "/blog", element: <Blog /> },
         { path: "/blog/blogDetail/:id", element: <BlogDetail /> },
-        // { path: "/quote-request", element: <QuoteRequestForm /> },
         { path: "/quote-request", element: <Quotation /> },
       ],
     },
     {
       path: "/auth",
       element: <AuthLayout />,
-      children: [{ path: "/auth", element: <Login2/>}],
+      children: [{ path: "/auth", element: <Login2 /> }],
     },
     {
       path: "/customer",
@@ -193,39 +188,14 @@ export default function Routers() {
         { path: "export-price-material", element: <ExportPrice /> },
 
         { path: "users-list", element: <UsersList /> },
-           { path: "view-supplier-price", element: <ViewSupplierPrice /> },
+        { path: "view-supplier-price", element: <ViewSupplierPrice /> },
 
         { path: "import-quotation", element: <ImportQuotation /> },
         { path: "import-quotation", element: <ImportQuotation /> },
         { path: "list-quotation", element: <ListQuotation /> },
-
       ],
     },
-    {
-      path: "/dashboard",
-      element: isStaff ? <Dashboard /> : <Navigate to="/404" replace />,
-      children: [
-        { path: "home", element: <DBHome /> },
-        // { path: "users-list", element: <UsersList /> },
-        // { path: "import-inventory", element: <ImportInventory /> },
-        // { path: "export-inventory", element: <ExportInventory /> },
-        // {
-        //   path: "export-inventory/quotation-detail/:id",
-        //   element: <QuotationDetail />,
-        // },
 
-        // { path: "list-material", element: <MaterialList /> },
-        // { path: "export-price-material", element: <ExportPrice /> },
-
-        // { path: "view-supplier", element: <ViewSupplier /> },
-
-        // { path: "view-supplier-price", element: <ViewSupplierPrice /> },
-
-        // { path: "import-quotation", element: <ImportQuotation /> },
-        // { path: "import-quotation", element: <ImportQuotation /> },
-        // { path: "list-quotation", element: <ListQuotation /> },
-      ],
-    },
     {
       path: "/admin",
       element: isAdmin ? <AdminLayout /> : <Navigate to="/404" replace />,
@@ -233,8 +203,7 @@ export default function Routers() {
         { path: "dashboard", element: <AdminDashboard /> },
         { path: "users-list", element: <UsersList /> },
         { path: "view-supplier", element: <ViewSupplier /> },
-        { path: "view-supplier-price", element: <ViewSupplierPrice /> }
-       
+        { path: "view-supplier-price", element: <ViewSupplierPrice /> },
       ],
     },
     {

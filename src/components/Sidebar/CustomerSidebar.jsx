@@ -101,7 +101,7 @@ export default function CustomerSidebar() {
               <span className="text-2xl">
                 <AiOutlineLogout />
               </span>
-              <span>Logout</span>
+              <span className={open ? "inline-block" :"hidden"}>Logout</span>
             </li>
           </NavLink>
         </ul>

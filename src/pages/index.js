@@ -1,5 +1,3 @@
-
-
 export { default as Auth } from "./Auth/Auth";
 export { default as Login } from "./Auth/Login";
 
@@ -9,7 +7,6 @@ export { default as Password } from "./Setting/Password";
 export { default as Account } from "./Setting/Account";
 
 export { default as Dashboard } from "./Dashboard/Dashboard";
-export { default as DBHome } from "./Dashboard/DBHome";
 
 export { default as UsersList } from "./Dashboard/UserManagament/UsersList";
 
@@ -56,7 +53,6 @@ export { default as Blog } from "../pages/Blogs/Blog";
 export { default as BlogDetail } from "../pages/Blogs/BlogDetail";
 
 // Quotation
-export { default as QuoteRequestForm } from "../pages/Quotation/QuotationForm/QuoteRequestForm";
 export { default as QuotationForm } from "../pages/Quotation/QuotationForm/QuotationForm";
 export { default as Quotation } from "../pages/Quotation/Quotation";
 
@@ -71,3 +67,15 @@ export { default as AllRequest } from "../pages/Staff/QuoteManagement/AllRequest
 export { default as ConfigProject2 } from "../pages/Staff/QuoteManagement/ConfigProject/ConfigProject2";
 export { default as ManageMaterialDetails } from "./Staff/QuoteManagement/QuotationDetails/Manage/ManageMaterialDetails";
 export { default as ProjectDetailsForStaff } from "../pages/Staff/QuoteManagement/ProjectDetails/ProjectDetailsForStaff";
+
+export { default as ListPaymentProgress } from "../pages/Staff/QuoteManagement/ContractDetails/ListPaymentProgress";
+export { default as CreateProgressForm } from "../pages/Staff/QuoteManagement/ContractDetails/ManageContract/CreateProgressForm";
+export { default as CreateProgress } from "../pages/Staff/QuoteManagement/ContractDetails/ManageContract/CreateProgress";
+export { default as QuoteDetailsForStaff } from "../pages/Staff/QuoteManagement/QuotationDetails/QuoteDetailsForStaff";
+export { default as PaymentProgress } from "../pages/Customer/Contract/PaymentProgress";
+export { default as ConstructionConfigManagement } from "../pages/Staff/ConstructionConfig/ConstructionConfigManagement.jsx";
+export { default as PaymentNotification } from "../pages/Customer/Payment/PaymentNotification.jsx";
+export { default as AdminDashboard } from "../pages/Admin/AdminDashboard/AdminDashboard";
+export { default as WorkerManagement } from "../pages/Staff/WorkerManagement/WorkerManagement";
+export { default as HouseProjectDetails } from "../pages/HouseProjects/HouseProjectDetails/HouseProjectDetails";
+export { default as Login2 } from "../pages/Auth/Login2.jsx";

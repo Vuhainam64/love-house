@@ -40,12 +40,15 @@ export default function Contract() {
       {projectDetail?.contract !== null && (
         <>
           <LoadingOverlay loading={loading} />
-          <h1 className="text-xl font-semibold py-5 uppercase">
-            Contract information
-          </h1>
-
-          <div className="p-5 h-225">
-            <div className="overflow-auto rounded-lg shadow hidden md:block">
+          
+          <div className="flex-1 p-5">
+            <div className="px-2 mb-4">
+              <div className="font-semibold border-b-2 mb-4 ">
+                <h4 className="pb-2 uppercase"> Contract information</h4>
+              </div>
+            </div>
+            <div className="py-5 px-2 h-auto mt-4 overflow-x"> 
+            <div className="rounded-lg shadow hidden md:block">
               <table className="w-full">
                 <thead className="bg-gray-50 border-b-2 border-gray-200">
                   <tr>
@@ -106,36 +109,45 @@ export default function Contract() {
                         contractStatus={projectDetail?.contract?.contractStatus}
                       />
                     </td>
-                    <td className="p-3 text-sm text-gray-700 whitespace-nowrap text-center flex-col">
-                      {projectDetail?.contract?.contractStatus === 1 || projectDetail?.contract?.contractStatus === 2 ? (
+                    <td className="p-3 text-sm text-gray-700 whitespace-wrap text-center flex-col">
+                      {projectDetail?.contract?.contractStatus === 1 ||
+                      projectDetail?.contract?.contractStatus === 2 ? (
                         <NavLink
                           to={projectDetail?.contract?.contractUrl}
-                          className="text-blue-500 hover:underline"
+                          className="mb-5 text-blue-500 hover:underline block"
                         >
                           View contract
                         </NavLink>
                       ) : null}
-                      <div>
+                     
                         <NavLink
                           to={`/customer/payment-progress/${projectDetail?.contract?.id}`}
-                          className="text-blue-500 hover:underline"
+                          className="mb-5 text-blue-500 hover:underline block"
                         >
                           View payment progress
                         </NavLink>
-                      </div>
-                      {projectDetail?.contract != null && projectDetail?.contract.contractStatus == 1 && (
-                        // <button>Sign Contract</button>
+                      
+                      {projectDetail?.contract != null &&
+                        projectDetail?.contract.contractStatus == 1 && (
+                          // <button>Sign Contract</button>
 
-                        <SignContractForm onModalClose={handleReloadContent} id={projectDetail?.contract?.id}  projectDetail={projectDetail} fetchData={fetchProjectDetail}/>
-
-                      )}
+                          <SignContractForm
+                            onModalClose={handleReloadContent}
+                            id={projectDetail?.contract?.id}
+                            projectDetail={projectDetail}
+                            fetchData={fetchProjectDetail}
+                          />
+                        )}
                     </td>
                   </tr>
                 </tbody>
               </table>
             </div>
+             </div>
 
-            <div className="grid grid-cols-1 gap-4 md:hidden pb-6 ">
+          </div>
+
+          <div className="grid grid-cols-1 gap-4 md:hidden pb-6 ">
               <div
                 key={projectDetail.id}
                 className="bg-gray-50 border border-gray-300 space-y-3 rounded-lg shadow  px-8 py-5"
@@ -231,7 +243,6 @@ export default function Contract() {
                 </div>
               </div>
             </div>
-          </div>
         </>
       )}
     </>

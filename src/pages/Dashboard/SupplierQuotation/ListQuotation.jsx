@@ -12,6 +12,7 @@ import {
 } from "../../../api";
 import { MutatingDots } from "../../../components";
 import ConfirmPopup from "../../../components/Dashboard/ConfirmPopup";
+import ImportQuotation from "./ImportQuotation";
 
 const { Column } = Table;
 
@@ -135,16 +136,19 @@ function ListQuotation() {
             </div>
           </div>
           <div className="px-3 py-4">
-            <div className="flex items-center space-x-2 mb-4">
-              <div className="px-2">Search</div>
-              <div>
-                <Input
-                  type="text"
-                  className="border px-2 py-1"
-                  value={searchTerm}
-                  onChange={handleSearchChange}
-                />
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-2 mb-4">
+                <div className="px-2">Search</div>
+                <div>
+                  <Input
+                    type="text"
+                    className="border px-2 py-1"
+                    value={searchTerm}
+                    onChange={handleSearchChange}
+                  />
+                </div>
               </div>
+              <ImportQuotation />
             </div>
             <Table
               dataSource={currentQuotations}

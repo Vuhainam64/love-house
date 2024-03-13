@@ -15,6 +15,7 @@ import Highlighter from "react-highlight-words";
 import BaseButton from "../../../components/Button/BaseButton";
 import { IoIosArrowDropdown } from "react-icons/io";
 import { AiOutlineFunnelPlot } from "react-icons/ai";
+import Instruction from "../../UserCommon/Instruction/Instruction";
 
 const ConstructionConfigManagement = () => {
   const [constructionConfigList, setConstructionConfigList] = useState([]);
@@ -191,7 +192,13 @@ const ConstructionConfigManagement = () => {
   const toggleFilter = () => {
     setShowFilter(!showFilter); // Khi nhấn nút filter, toggle trạng thái hiển thị của phần filter
   };
+  const [modalVisible, setModalVisible] = useState(true);
 
+  const handleCreate = (newInput) => {
+    // Handle creation of new configuration
+    console.log("Creating new configuration with:", newInput);
+    setModalVisible(false);
+  };
   return (
     <>
       <LoadingOverlay loading={loading} />
@@ -202,12 +209,20 @@ const ConstructionConfigManagement = () => {
         </h1>
 
         <div className="flex justify-between mb-4 px-16">
-          <Button
-            className="bg-baseGreen text-white flex items-center justify-between w-24"
-            onClick={toggleFilter}
-          >
-            Filter <AiOutlineFunnelPlot />
-          </Button>
+          <div className="flex">
+            <Button
+              className="bg-baseGreen text-white flex items-center justify-between w-24"
+              onClick={toggleFilter}
+            >
+              Filter <AiOutlineFunnelPlot />
+            </Button>
+            <Button
+              className="bg-baseGreen text-white mx-2"
+              onClick={() => setModalVisible(true)}
+            >
+              Policy
+            </Button>
+          </div>
 
           <Button
             className="bg-baseGreen text-white "
@@ -315,6 +330,11 @@ const ConstructionConfigManagement = () => {
           />
         )}
       </div>
+      <Instruction
+        visible={modalVisible}
+        onCreate={handleCreate}
+        onCancel={() => setModalVisible(false)}
+      />
     </>
   );
 };

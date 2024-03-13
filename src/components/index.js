@@ -31,8 +31,7 @@ export { default as IntroSection } from "./HomeComponent/IntroSection";
 export { default as NewsSection } from "./HomeComponent/NewsSection"; 
 export { default as Parallax } from "./HomeComponent/Parallax"; 
 export { default as ProjectsSection } from "./HomeComponent/ProjectsSection"; 
-export { default as QuoteSection } from "./HomeComponent/QuoteSection"; 
-export { default as WhySection } from "./HomeComponent/WhySection"; 
+
 
 //Modal
 export { default as Modal } from "./Modal/Modal"; 

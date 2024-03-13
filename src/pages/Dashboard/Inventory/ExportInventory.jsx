@@ -25,6 +25,11 @@ const ExportInventory = () => {
 
   const columns = [
     {
+      title: "No",
+      render: (_, __, index) => index + 1,
+      key: "index",
+    },
+    {
       title: "Number Of Floors",
       dataIndex: "numOfFloor",
       key: "numOfFloor",
@@ -56,6 +61,11 @@ const ExportInventory = () => {
       key: "name",
     },
     {
+      title: "Phone",
+      render: (record) => `${record.account.phoneNumber}`,
+      key: "name",
+    },
+    {
       title: "Actions",
       key: "actions",
       render: (text, record) => (
@@ -77,29 +87,31 @@ const ExportInventory = () => {
 
   return (
     <>
-     <div className="flex flex-col py-8 pb-32 mb-12 h-screen overflow-y-auto scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent">
-      <div>
-        <div className="flex items-center space-x-2 text-xl">
-          <MdInventory />
-          <div>Import Export</div>
-          <FaChevronRight />
-          <div>Inventory</div>
-          <FaChevronRight />
-        </div>
-        <div className="text-2xl text-green-400 font-semibold py-4">
-          Export Inventory
-        </div>
+      <div className="flex flex-col py-8 pb-32 mb-12 h-screen overflow-y-auto scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent p-8">
+        <div>
+          <div className="flex items-center space-x-2 text-xl">
+            <MdInventory />
+            <div>Import Export</div>
+            <FaChevronRight />
+            <div>Inventory</div>
+            <FaChevronRight />
+          </div>
+          <div className="text-2xl text-green-400 font-semibold py-4">
+            Export Inventory
+          </div>
 
-        {/* Display the Ant Design Table */}
-        <Table
-          dataSource={projects}
-          columns={columns}
-          pagination={{ pageSize: 6 }}
-        />
+          {/* Display the Ant Design Table */}
+          <Table
+            dataSource={projects.map((project) => ({
+              ...project,
+              key: project.id,
+            }))}
+            columns={columns}
+            pagination={{ pageSize: 6 }}
+          />
+        </div>
       </div>
-    </div>
     </>
-   
   );
 };
 

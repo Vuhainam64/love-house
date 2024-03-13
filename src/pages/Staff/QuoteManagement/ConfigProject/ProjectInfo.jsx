@@ -17,8 +17,9 @@ if(projectDetail !== null){
       <div className="flex flex-col items-center bg-white rounded-lg shadow-md p-6">
         <img
           src={projectDetail?.project?.landDrawingFileUrl}
+          // style={{height:'550px'}}
           alt="Project"
-          className="w-full mb-4 rounded-lg shadow-md"
+          className="w-full mb-4 rounded-lg shadow-md md:h-96 md:w-9/12	"
         />
         <div className="grid grid-cols-2 gap-x-32 gap-y-6 justify-items-between">
           <div className="flex flex-col">

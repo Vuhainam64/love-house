@@ -34,7 +34,6 @@ export default function DealForm({ onModalClose, id }) {
       .integer("Must be an integer"),
     furnitureDiscount: Yup.number()
       .required("Required")
-      .positive("Must be positive")
       .integer("Must be an integer"),
   });
 

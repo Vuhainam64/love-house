@@ -129,16 +129,17 @@ export default function AllRequest() {
                       <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
                         {item.addressProject}
                       </td>
-                      <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                        Floors: {item.numOfFloor}, Area: {item.area} m&#178;
+                      <td className="p-3 text-sm text-gray-700 whitespace-wrap">
+                        Floors: {item.numOfFloor},<br /> Area: {item.area} m&#178;
                       </td>
                       <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
                         <DateFormatter dateString={item.createDate} />
                       </td>
-                      <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                      <td className="w-24 p-3 text-sm text-gray-700 whitespace-wrap">
+                      
                         <ProjectStatusBadge projectStatus={item.status} />
                       </td>
-                      <td className="p-3 text-sm text-gray-700 whitespace-nowrap flex items-center">
+                      <td className="p-3 text-sm text-gray-700 whitespace-wrap flex items-center">
                         {item.status === 0 && (
                           <>
                             <NavLink

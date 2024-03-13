@@ -1,6 +1,6 @@
-// ExportPriceHistoryPopup.jsx
 import React, { useEffect, useState } from "react";
 import { Modal, Table } from "antd";
+import moment from "moment";
 
 const ExportPriceHistoryPopup = ({
   visible,
@@ -21,14 +21,20 @@ const ExportPriceHistoryPopup = ({
       (a, b) => new Date(b.date) - new Date(a.date)
     );
 
-    setHistoryData(sortedData);
+    // Add No column to the sorted data
+    const dataWithNo = sortedData.map((item, index) => ({
+      ...item,
+      No: index + 1,
+    }));
+
+    setHistoryData(dataWithNo);
   }, [materialId, exportPrices]);
 
   const columns = [
     {
-      title: "ID",
-      dataIndex: "id",
-      key: "id",
+      title: "No",
+      dataIndex: "No",
+      key: "No",
     },
     {
       title: "Price",
@@ -38,7 +44,7 @@ const ExportPriceHistoryPopup = ({
     {
       title: "Date",
       dataIndex: "date",
-      key: "date",
+      render: (text) => moment(text).format("DD-MM-YYYY"),
     },
   ];
 

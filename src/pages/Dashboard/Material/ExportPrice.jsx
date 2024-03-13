@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Table, Space, Modal, Input } from "antd";
+import { Table, Space, Input } from "antd";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 import * as XLSX from "xlsx";
@@ -21,6 +21,7 @@ import {
   getImportExportPriceMaterialFromExcelSheetError,
 } from "../../../api/ExportPriceMaterial";
 import ExportPriceHistoryPopup from "./ExportPriceHistoryPopup";
+import moment from "moment";
 
 const ExportPrice = () => {
   const [exportPriceData, setExportPriceData] = useState([]);
@@ -89,11 +90,7 @@ const ExportPrice = () => {
       title: "Date",
       dataIndex: "date",
       key: "date",
-    },
-    {
-      title: "Material ID",
-      dataIndex: "materialId",
-      key: "materialId",
+      render: (text) => moment(text).format("DD-MM-YYYY"),
     },
     {
       title: "Material Name",
@@ -221,7 +218,7 @@ const ExportPrice = () => {
   };
 
   return (
-    <div className="flex flex-col pb-32 mb-12 h-screen overflow-y-auto scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent">
+    <div className="flex flex-col pb-32 mb-12 h-screen overflow-y-auto scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent p-8">
       {/* title */}
       <div>
         <div className="flex items-center space-x-2 text-xl">
@@ -271,33 +268,59 @@ const ExportPrice = () => {
       />
 
       {/* Update Modal */}
-      <Modal
-        title="Update Price"
-        open={isUpdateModalVisible}
-        onOk={handleUpdate}
-        onCancel={() => setIsUpdateModalVisible(false)}
-      >
-        <div>
-          <label>Material Name:</label>
-          <span>
-            {allMaterialsData.find((m) => m.id === updatePriceData.materialId)
-              ?.name || "Unknown Material"}
-          </span>
+      {isUpdateModalVisible && (
+        <div className="fixed inset-0 flex items-center justify-center shadow-2xl border">
+          <div className="bg-white p-8 rounded shadow-2xl border">
+            <h2 className="text-lg font-semibold mb-4">Update Price</h2>
+            <div className="mb-4">
+              <label
+                htmlFor="materialName"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Material Name:
+              </label>
+              <span>
+                {allMaterialsData.find(
+                  (m) => m.id === updatePriceData.materialId
+                )?.name || "Unknown Material"}
+              </span>
+            </div>
+            <div className="mb-4">
+              <label
+                htmlFor="newPrice"
+                className="block text-sm font-medium text-gray-700"
+              >
+                New Price:
+              </label>
+              <Input
+                id="newPrice"
+                type="number"
+                value={updatePriceData.price}
+                onChange={(e) =>
+                  setUpdatePriceData({
+                    ...updatePriceData,
+                    price: parseFloat(e.target.value) || 0,
+                  })
+                }
+              />
+            </div>
+            <div className="flex justify-end">
+              <button
+                className="bg-green-500 hover:bg-green-700 text-white font-bold px-4 py-2 rounded mr-2"
+                onClick={handleUpdate}
+              >
+                Update
+              </button>
+              <button
+                className="bg-gray-500 hover:bg-gray-700 text-white font-bold px-4 py-2 rounded"
+                onClick={() => setIsUpdateModalVisible(false)}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
         </div>
-        <div>
-          <label>New Price:</label>
-          <Input
-            type="number"
-            value={updatePriceData.price}
-            onChange={(e) =>
-              setUpdatePriceData({
-                ...updatePriceData,
-                price: parseFloat(e.target.value) || 0,
-              })
-            }
-          />
-        </div>
-      </Modal>
+      )}
 
       {/* History Popup */}
       <ExportPriceHistoryPopup
